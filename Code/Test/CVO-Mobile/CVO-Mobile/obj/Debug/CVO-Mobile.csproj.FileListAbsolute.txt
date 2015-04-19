@@ -9,3 +9,4 @@ C:\Users\LanceDH\Documents\GitHub\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobi
 C:\Users\LanceDH\Documents\GitHub\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.pdb
 C:\Users\LanceDH\Documents\GitHub\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\Newtonsoft.Json.dll
 C:\Users\LanceDH\Documents\GitHub\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\Newtonsoft.Json.xml
+C:\Users\LanceDH\Documents\GitHub\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.csprojResolveAssemblyReference.cache

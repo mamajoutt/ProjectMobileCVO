@@ -3,8 +3,19 @@
 
     string token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
     int cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, "kiep_out@hotmail.com");
-    
-    //List<Moodle.BLL.Course> _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses();
+
+    List<Moodle.BLL.Course> _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
+
+    foreach (Moodle.BLL.Course _course in _enrolledCourses)
+    {
+        _course.AssignMents = Moodle.DAL.Assignment.SelectAll(url, token, _course.Id);
+
+        foreach (Moodle.BLL.Assignment _assing in _course.AssignMents)
+        {
+            _assing.UserScore = Moodle.Model.GradeSelectOne(url, token, _assing.Id, cursistId);
+        }
+    }
+
 }
 
 <!DOCTYPE html>
@@ -13,10 +24,39 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title></title>
+    <link href="~/App_Themes/TempTest.css" rel="stylesheet" />
 </head>
 <body>
     <div>
-    @cursistId
+        @token <br />
+        @cursistId
+    </div>
+    <div>
+        @foreach (Moodle.BLL.Course course in _enrolledCourses)
+        {
+            <div class="moodleCourse">
+                @course.FullName
+
+                @foreach (Moodle.BLL.Assignment assign in course.AssignMents)
+                {
+                    <div class="moodleAssignment">
+                        @assign.Name<br />
+                        @if (assign.UserScore.Equals("-1"))
+                        {
+                            <div class="moodleGrade">
+                                Score: --
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="moodleGrade">
+                                Score: @assign.UserScore
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
     </div>
 </body>
 </html>

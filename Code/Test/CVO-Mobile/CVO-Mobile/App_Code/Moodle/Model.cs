@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Moodle
 {
-    class Model
+    public class Model
     {
         public static List<Moodle.BLL.Assignment> AssingmentSelectAll(string url, string token, int courseId)
         {

@@ -39,6 +39,8 @@ namespace Moodle.BLL
 		public int TimeModified { get; set; }    //last time assignment was modified
 		public int CutOffDate { get; set; }   //date after which submission is not accepted without an extension
 		public int MaxAttempts { get; set; }    //maximum number of attempts allowed
+        public string UserScore { get; set; } 
+        public List<Moodle.BLL.Grade> Grades { get; set; } 
 
         public Assignment(JObject jSon)
         {
@@ -107,6 +109,7 @@ namespace Moodle.BLL
         public int Id { get; set; }
         public string ShortName { get; set; }
         public string FullName { get; set; }
+        public List<Moodle.BLL.Assignment> AssignMents { get; set; }
 
         public Course(JObject jSon)
         {
