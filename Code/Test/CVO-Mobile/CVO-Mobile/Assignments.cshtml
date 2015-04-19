@@ -1,0 +1,22 @@
+﻿@{
+    string url = "moodle-cvomobile.rhcloud.com";
+
+    string token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
+    int cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, "kiep_out@hotmail.com");
+    
+    //List<Moodle.BLL.Course> _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+    @cursistId
+    </div>
+</body>
+</html>
