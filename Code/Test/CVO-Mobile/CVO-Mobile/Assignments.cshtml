@@ -1,22 +1,48 @@
 ﻿@{
-    string url = "moodle-cvomobile.rhcloud.com";
+    string token = "";
+    int cursistId = -1;
+    string email = "";
+    string action = "none";
 
-    string token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
-    int cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, "kiep_out@hotmail.com");
+    List<Moodle.BLL.Course> _enrolledCourses = new List<Moodle.BLL.Course>();
 
-    List<Moodle.BLL.Course> _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
-
-    foreach (Moodle.BLL.Course _course in _enrolledCourses)
+    if (IsPost)
     {
-        _course.AssignMents = Moodle.DAL.Assignment.SelectAll(url, token, _course.Id);
+        action = Request["action"];
 
-        foreach (Moodle.BLL.Assignment _assing in _course.AssignMents)
+        if (action.Equals("viewing"))
         {
-            _assing.UserScore = Moodle.Model.GradeSelectOne(url, token, _assing.Id, cursistId);
-        }
-    }
+            email = Request["search-email"];
+            string url = "moodle-cvomobile.rhcloud.com";
 
-}
+            token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
+            cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, email);
+
+            // Get all courses the student is enrolled in
+            _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
+
+            foreach (Moodle.BLL.Course _course in _enrolledCourses)
+            {
+                // Get all assignments of a course
+                _course.AssignMents = Moodle.DAL.Assignment.SelectAll(url, token, _course.Id);
+
+                
+                foreach (Moodle.BLL.Assignment _assing in _course.AssignMents)
+                {
+                    
+                    // Get the score of the student for the assignment
+                    string score = Moodle.Model.GradeSelectOne(url, token, _assing.Id, cursistId);
+                    if (score.Equals("-1"))
+                    {
+                        score = "--";
+                    }
+                        _assing.UserScore = score;
+                    }
+                }
+            }
+        }
+
+    }
 
 <!DOCTYPE html>
 
@@ -27,10 +53,40 @@
     <link href="~/App_Themes/TempTest.css" rel="stylesheet" />
 </head>
 <body>
+
+    <form id="viewing" method="post" action="">
+        <fieldset>
+            <legend>Bekijk je deadlines en punten</legend>
+            <div>
+                <label for="name-insert">
+                    Email adres
+                </label>
+                <input type="text" name="search-email" id="author-FirstName" />
+            </div>
+            <div>
+                <button type="submit" name="action" value="viewing">Zoek</button>
+            </div>
+        </fieldset>
+    </form>
+
     <div>
-        @token <br />
-        @cursistId
+        Action: @action
     </div>
+    <div>
+        Token: @token
+    </div>
+    @if (@cursistId == -1)
+    {
+        <div>
+            Geen cursist gevonden met het volgende email adress: @email
+        </div>
+    }
+    else
+    {
+        <div>
+            CursistId: @cursistId
+        </div>
+    }
     <div>
         @foreach (Moodle.BLL.Course course in _enrolledCourses)
         {
@@ -41,18 +97,11 @@
                 {
                     <div class="moodleAssignment">
                         @assign.Name<br />
-                        @if (assign.UserScore.Equals("-1"))
-                        {
-                            <div class="moodleGrade">
-                                Score: --
-                            </div>
-                        }
-                        else
-                        {
+                        Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
+                        
                             <div class="moodleGrade">
                                 Score: @assign.UserScore
                             </div>
-                        }
                     </div>
                 }
             </div>

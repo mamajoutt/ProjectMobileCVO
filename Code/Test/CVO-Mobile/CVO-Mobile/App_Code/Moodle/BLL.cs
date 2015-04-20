@@ -33,11 +33,11 @@ namespace Moodle.BLL
         public int Id { get; set; }    //assignment id
         public int Course { get; set; }    //course id
 		public string Name { get; set; }  //assignment name
-		public int DueDate { get; set; }    //assignment due date
+        public DateTime DueDate { get; set; }    //assignment due date
 		public int AllowSubmissionsFromDate { get; set; }    //allow submissions from date
 		public int Grade { get; set; }    //grade type
 		public int TimeModified { get; set; }    //last time assignment was modified
-		public int CutOffDate { get; set; }   //date after which submission is not accepted without an extension
+		public DateTime CutOffDate { get; set; }   //date after which submission is not accepted without an extension
 		public int MaxAttempts { get; set; }    //maximum number of attempts allowed
         public string UserScore { get; set; } 
         public List<Moodle.BLL.Grade> Grades { get; set; } 
@@ -47,11 +47,15 @@ namespace Moodle.BLL
             this.Id = Convert.ToInt32(jSon["id"]);
             this.Course = Convert.ToInt32(jSon["course"]);
             this.Name = (string)jSon["name"];
-            this.DueDate = Convert.ToInt32( jSon["duedate"]);
+            int unixTimeDueDate = Convert.ToInt32((string)jSon["duedate"]);
+            this.DueDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unixTimeDueDate);
+            //this.DueDate = Convert.ToInt32( jSon["duedate"]);
             this.AllowSubmissionsFromDate = Convert.ToInt32( (string)jSon["allowsubmissionsfromdate"]);
             this.Grade = Convert.ToInt32( (string)jSon["grade"]);
             this.TimeModified = Convert.ToInt32( (string)jSon["timemodified"]);
-            this.CutOffDate = Convert.ToInt32( (string)jSon["cutoffdate"]);
+            int unixTimeCutOffDate = Convert.ToInt32((string)jSon["cutoffdate"]);
+            this.CutOffDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unixTimeCutOffDate);
+            //this.CutOffDate = Convert.ToInt32( (string)jSon["cutoffdate"]);
             this.MaxAttempts = Convert.ToInt32( (string)jSon["maxattempts"]);
         }
     }
