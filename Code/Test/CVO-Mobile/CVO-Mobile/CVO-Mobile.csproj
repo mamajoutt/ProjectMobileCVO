@@ -75,6 +75,9 @@
     <Content Include="App_Code\Moodle\BLL.cs" />
     <Content Include="App_Code\Moodle\DAL.cs" />
     <Content Include="App_Code\Moodle\Model.cs" />
+    <Content Include="App_Code\Administratix\DAL.cs" />
+    <Content Include="App_Code\Administratix\BLL.cs" />
+    <Content Include="App_Code\Administratix\Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
