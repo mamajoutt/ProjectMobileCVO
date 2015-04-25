@@ -69,7 +69,7 @@ namespace Moodle.DAL
 
     public class Assignment
     {
-        public static List<Moodle.BLL.Assignment> SelectAll(string url, string token, int courseId)
+        public static List<Moodle.BLL.Assignment> GetAllAssingmentInCourse(string url, string token, int courseId)
         {
             List<BLL.Assignment> assignments = new List<BLL.Assignment>();
 
@@ -84,11 +84,9 @@ namespace Moodle.DAL
             try
             {
                 jCourses = JObject.Parse(pAssignment.Execute());
-                //jCourses.TryGetValue("warnings", out jWarning);
 
-                //Console.WriteLine(jCourses);
-
-                if (!jCourses["warnings"].ToString().Equals("[]"))//check for errors
+                //If warning isn't empty, throw error with warning
+                if (!jCourses["warnings"].ToString().Equals("[]"))
                 {
                     throw new Exception("mod_assign_get_assignments: " + jCourses["warnings"][0]);
                 }
@@ -156,10 +154,9 @@ namespace Moodle.DAL
 
     public class Grade
     {
-        public static List<Moodle.BLL.Grade> SelectAll(string url, string token, int assignmentId)
+        public static double GetGradeOfStudentForAssignment(string url, string token, int studentId, int assignmentId)
         {
-            List<BLL.Grade> grades = new List<BLL.Grade>();
-
+            double grade = -1;
 
             Package pGrade = new Package(url + "/webservice/rest/server.php");
             pGrade.P("wstoken", token);
@@ -173,12 +170,12 @@ namespace Moodle.DAL
             {
                 jAssignments = JObject.Parse(pGrade.Execute());
                 //JObject test = (JObject)jAssignments["warnings"];
-                
-                    
+
+
                 if (!jAssignments["assignments"].HasValues)
-	            {
-                    return grades;
-	            }
+                {
+                    return -1;
+                }
 
                 JObject jGrades = (JObject)jAssignments["assignments"][0];
                 //Console.WriteLine(assignments);
@@ -186,8 +183,15 @@ namespace Moodle.DAL
 
                 foreach (JObject g in jGrades["grades"])
                 {
-                    BLL.Grade grade = new BLL.Grade(g);
-                    grades.Add(grade);
+                    if (Convert.ToInt32((string)g["userid"]) == studentId)
+                    {
+                        string score = (string)g["grade"];
+                        grade = Convert.ToDouble(score);
+                        grade /= 100000;
+
+                        return grade;
+                    }
+                    
                 }
             }
             catch (Exception e)
@@ -195,29 +199,8 @@ namespace Moodle.DAL
 
                 Console.WriteLine(e.Message);
             }
-            
 
-            /*
-                jCourses = JObject.Parse(pAssignment.Execute());
-                JObject jAssignments = (JObject)jCourses["courses"][0];
-                //Console.WriteLine(assignments);
-
-
-                foreach (JObject c in jAssignments["assignments"])
-                {
-                    BLL.Assignment a = new BLL.Assignment(c);
-                    assignments.Add(a);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }*/
-
-
-
-            return grades;
+            return grade;
         }
 
     }

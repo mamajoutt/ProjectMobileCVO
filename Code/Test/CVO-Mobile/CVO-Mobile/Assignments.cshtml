@@ -24,19 +24,19 @@
             foreach (Moodle.BLL.Course _course in _enrolledCourses)
             {
                 // Get all assignments of a course
-                _course.AssignMents = Moodle.DAL.Assignment.SelectAll(url, token, _course.Id);
+                _course.AssignMents = Moodle.DAL.Assignment.GetAllAssingmentInCourse(url, token, _course.Id);
 
                 
                 foreach (Moodle.BLL.Assignment _assing in _course.AssignMents)
                 {
                     
                     // Get the score of the student for the assignment
-                    string score = Moodle.Model.GradeSelectOne(url, token, _assing.Id, cursistId);
-                    if (score.Equals("-1"))
+                    double score = Moodle.Model.GetGradeOfStudentForAssignment(url, token, _assing.Id, cursistId);
+                    if (score == -1)
                     {
-                        score = "--";
+                        _assing.UserScore = "--";
                     }
-                        _assing.UserScore = score;
+                        _assing.UserScore = "" + score;
                     }
                 }
             }
@@ -100,7 +100,7 @@
                         Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
                         
                             <div class="moodleGrade">
-                                Score: @assign.UserScore
+                                Score: @assign.UserScore / @assign.MaxGrade
                             </div>
                     </div>
                 }
