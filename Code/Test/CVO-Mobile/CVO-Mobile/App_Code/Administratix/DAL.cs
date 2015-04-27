@@ -13,7 +13,6 @@ namespace MobileCVO.DAL
         //bool Update(TypeEntity entity); 
         //int Insert(TypeEntity entity); 
         //bool Delete(int Id); 
-        TypeEntity SelectOne(int id);
         TypeEntity SelectOne(int cursistNummer);
         List<TypeEntity> SelectAll();
     }
@@ -96,6 +95,16 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return cursist;
+        }
+
+        string MobileCVO.DAL.IDal<BLL.Cursist>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public List<BLL.Cursist> SelectAll()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -249,6 +258,11 @@ namespace Administratix.DAL
        
         }
 
+
+        string MobileCVO.DAL.IDal<BLL.Personeel>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
     public class Schooljaar : MobileCVO.DAL.IDal<BLL.Schooljaar>
@@ -324,6 +338,16 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return schooljaar;
+        }
+
+        string MobileCVO.DAL.IDal<BLL.Schooljaar>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public List<BLL.Schooljaar> SelectAll()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -408,6 +432,16 @@ namespace Administratix.DAL
 
         }
 
+
+        string MobileCVO.DAL.IDal<BLL.Kalender>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public BLL.Kalender SelectOne(int cursistNummer)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Evenement : MobileCVO.DAL.IDal<BLL.Evenement>
@@ -467,7 +501,7 @@ namespace Administratix.DAL
                     {
                         result.Read();
                         evenement.Id = (int)result["Id"];
-                        evenement.Evenement = result["Evenement"].ToString();
+                        evenement.EvenementNaam = result["Evenement"].ToString();
                         evenement.Datum = (DateTime)result["Datum"];
                     }
                 }
@@ -527,7 +561,7 @@ namespace Administratix.DAL
                         {
                             Administratix.BLL.Evenement evenement = new Administratix.BLL.Evenement();
                             evenement.Id = (int)result["Id"];
-                            evenement.Evenement = result["Evenement"].ToString();
+                            evenement.EvenementNaam = result["Evenement"].ToString();
                             evenement.Datum = (DateTime)result["Datum"];
                             evenementenLijst.Add(evenement);
                         }
@@ -546,6 +580,11 @@ namespace Administratix.DAL
 
         }
 
+
+        string MobileCVO.DAL.IDal<BLL.Evenement>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 
     public class Module : MobileCVO.DAL.IDal<BLL.Module>
@@ -623,6 +662,16 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return module;
+        }
+
+        string MobileCVO.DAL.IDal<BLL.Module>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public List<BLL.Module> SelectAll()
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -848,6 +897,16 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return lesDavinci;
+        }
+
+        string MobileCVO.DAL.IDal<BLL.LesDavinci>.message
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public List<BLL.LesDavinci> SelectAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

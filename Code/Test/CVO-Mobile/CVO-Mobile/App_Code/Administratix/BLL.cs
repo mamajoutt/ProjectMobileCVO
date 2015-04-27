@@ -70,7 +70,7 @@ namespace Administratix.BLL
     public class Evenement
     {
         public int Id { get; set; }
-        public string Evenement { get; set; }
+        public string EvenementNaam { get; set; }
         public DateTime Datum { get; set; }
 
     }
