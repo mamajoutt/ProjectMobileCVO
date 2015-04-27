@@ -152,12 +152,18 @@ namespace Administratix.BLL
     public class LesDavinci
     {
         public int Id { get; set; }
-        public DateTime Lesdatum { get; set; }
+        public string Dag { get; set; }
+        public string Datum { get; set; }
+        public int IdLesplaats { get; set; }
+        public string Campus { get; set; }
+        public int IdIngerichteModulevariant { get; set; }
+        public string Module { get; set; }
         public int IdPersoneel { get; set; }
+        public string Docent { get; set; }
         public int IdLokaal { get; set; }
-        public decimal AantalLestijden { get; set; }
-        public DateTime Aanvangsdatum { get; set; }
-        public DateTime Einddatum { get; set; }
+        public string Lokaal { get; set; }
+        public string Aanvangsdatum { get; set; }
+        public string Einddatum { get; set; }
 
     }
 
