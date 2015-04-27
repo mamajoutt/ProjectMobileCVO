@@ -872,7 +872,6 @@ namespace Administratix.DAL
                     if (result.HasRows)
                     {
                         result.Read();
-                        lesDavinci.Id = (int)result["Id"];
                         lesDavinci.Dag = result["Dag"].ToString();
                         lesDavinci.Datum = result["Datum"].ToString();
                         lesDavinci.IdPersoneel = (int)result["IdPersoneel"];
