@@ -20,6 +20,92 @@ namespace MobileCVO.DAL
 
 namespace Administratix.DAL
 {
+    public class CursusResultaat //: MobileCVO.DAL.IDal<BLL.CursusResultaat>
+    {
+        /*private string message;
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
+
+        public CursusResultaat()
+       {
+           this.message = "";
+       }*/
+
+        public static List<BLL.CursusResultaat> SelectAllByCursistNummer(int cursistNummer)
+        {
+            List<BLL.CursusResultaat> resultaten = new List<BLL.CursusResultaat>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "SelectAllPlaatsingResultaatByCursistNummer";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.CursusResultaat resultaat = new BLL.CursusResultaat();
+                            resultaat.CursusNummer = Convert.ToInt32(result["Cursusnummer"].ToString());
+                            resultaat.CursusNaam = result["Module"].ToString();
+                            double punt = 0;
+                            Double.TryParse(result["PuntenTotaal"].ToString(), out punt);
+                            resultaat.PuntenTotaal = punt;
+                            punt = 0;
+                            Double.TryParse(result["PuntenPermanenteEvaluatie"].ToString(), out punt);
+                            resultaat.PuntenPermanenteEvaluatie = punt;
+                            punt = 0;
+                            Double.TryParse(result["PuntenEersteZit"].ToString(), out punt);
+                            resultaat.PuntenEersteZit = punt;
+                            punt = 0;
+                            Double.TryParse(result["PuntenTweedeZit"].ToString(), out punt);
+                            resultaat.PuntenTweedeZit = punt;
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
     public class Cursist : MobileCVO.DAL.IDal<BLL.Cursist>
     {
         private string message;

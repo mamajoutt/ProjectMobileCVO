@@ -15,5 +15,13 @@ namespace Administratix
                 return dal.SelectOne(cursistNummer);
             }
         }
+
+        public class CursusResultaat
+        {
+            public static List<BLL.CursusResultaat> CursusResultaten(int cursistNummer)
+            {
+                return DAL.CursusResultaat.SelectAllByCursistNummer(cursistNummer);
+            }
+        }
     }
 }

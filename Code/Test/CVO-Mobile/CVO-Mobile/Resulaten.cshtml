@@ -1,0 +1,98 @@
+﻿@{
+    /* Coordinating controller */
+    string message = "Alles gaat goed.";
+
+    List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
+    string action = "none";
+    bool result = false;
+    if (IsPost)
+    {
+        action = Request["action"];
+        if (Request["search"] != null)
+        {
+            action = "search";
+        }
+        switch (action)
+        {
+            case "search":
+                resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["cursusResultaat-CursistNummer"]));
+                break;
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <header>
+        <div class="control-panel">
+            <a href="Default.cshtml">
+                <span class="icon-menu2"></span>
+                <span class="screen-reader-text">Home</span>
+            </a>
+        </div>
+        <h1>Administratix</h1>
+        <h1 id="Soort">Lesrooster</h1>
+    </header>
+    <main>
+        <aside>
+            <form id="search" action="" method="post">
+                <input type="text" name="cursusResultaat-CursistNummer" id="cursusResultaat-CursistNummer" /> <br />
+                <br />
+                <button type="submit" name="action" value="search">Zoek lessenrooster</button>
+                <button type="submit" name="action" value="cancel">Annuleren</button>
+            </form>
+        </aside>
+        <!-- View controller -->
+        <table>
+            <tr>
+                <th>
+                    Cursus
+                </th>
+                <th>
+                    Totaal
+                </th>
+                <th>
+                    PE
+                </th>
+                <th>
+                    Eerste Zit
+                </th>
+                <th>
+                    Tweede Zit
+                </th>
+            </tr>
+
+            @foreach (Administratix.BLL.CursusResultaat resultaat in resultaten)
+            {
+                <tr>
+                    <td>
+                        @resultaat.CursusNaam
+                    </td>
+                    <td>
+                        @resultaat.PuntenTotaal
+                    </td>
+                    <td>
+                        @resultaat.PuntenPermanenteEvaluatie
+                    </td>
+                    <td>
+                        @resultaat.PuntenEersteZit
+                    </td>
+                    <td>
+                        @resultaat.PuntenTweedeZit
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </main>
+    <footer>
+        @message
+    </footer>
+</body>
+</html>

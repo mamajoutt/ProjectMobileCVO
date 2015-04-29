@@ -5,6 +5,16 @@ using System.Web;
 
 namespace Administratix.BLL
 {
+    public class CursusResultaat
+    {
+        public int CursusNummer { get; set; }
+        public string CursusNaam { get; set; }
+        public double PuntenTotaal { get; set; }
+        public double PuntenPermanenteEvaluatie { get; set; }
+        public double PuntenEersteZit { get; set; }
+        public double PuntenTweedeZit { get; set; }
+    }
+
     /// <summary> 
     /// Class definition Cursist 
     /// </summary> 
