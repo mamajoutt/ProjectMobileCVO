@@ -245,17 +245,26 @@ namespace Moodle.DAL
             pCourse.P("wsfunction", "core_enrol_get_users_courses");
             pCourse.P("moodlewsrestformat", "json");
             pCourse.P("userid", "" + userId);
-            JArray jCourses = JArray.Parse(pCourse.Execute());
-            //Console.WriteLine("Courses: " + jCourses);
 
-            foreach (JObject c in jCourses)
+            try
             {
-                BLL.Course course = new BLL.Course(c);
-                courses.Add(course);
-                //Console.WriteLine(course.Id + " " + course.ShortName + " " + course.FullName);
+                JArray jCourses = JArray.Parse(pCourse.Execute());
+                foreach (JObject c in jCourses)
+                {
+                    BLL.Course course = new BLL.Course(c);
+                    courses.Add(course);
+                    //Console.WriteLine(course.Id + " " + course.ShortName + " " + course.FullName);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine(e.Message);
             }
 
-            Console.WriteLine();
+            
+            //Console.WriteLine("Courses: " + jCourses);
+
+            
 
             return courses;
         }

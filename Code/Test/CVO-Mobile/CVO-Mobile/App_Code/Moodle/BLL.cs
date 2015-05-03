@@ -8,10 +8,22 @@ using Newtonsoft.Json.Linq;
 namespace Moodle.BLL
 {
 
+    public class Deadline
+    {
+        public DateTime Date { get; set; }
+        public List<Moodle.BLL.Assignment> Assignments { get; set; }
+
+        public Deadline()
+        {
+            Assignments = new List<Assignment>();
+        }
+    }
+
     public class Assignment
     {
         public int Id { get; set; }
-        public int CourseId { get; set; }  
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
 		public string Name { get; set; }  
         public DateTime DueDate { get; set; }
         public DateTime AllowSubmissionsFromDate { get; set; }
@@ -44,7 +56,7 @@ namespace Moodle.BLL
         public int Id { get; set; }
         public string ShortName { get; set; }
         public string FullName { get; set; }
-        public List<Moodle.BLL.Assignment> AssignMents { get; set; }
+        public List<Moodle.BLL.Assignment> Assignments { get; set; }
 
         public Course(JObject jSon)
         {

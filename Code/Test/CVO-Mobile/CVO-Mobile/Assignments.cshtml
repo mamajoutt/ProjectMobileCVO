@@ -5,6 +5,8 @@
     string action = "none";
 
     List<Moodle.BLL.Course> _enrolledCourses = new List<Moodle.BLL.Course>();
+    List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
+    Moodle.BLL.Deadline _deadlineOnDate = new Moodle.BLL.Deadline();
 
     if (IsPost)
     {
@@ -18,31 +20,44 @@
             token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
             cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, email);
 
-            // Get all courses the student is enrolled in
-            _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
-
-            foreach (Moodle.BLL.Course _course in _enrolledCourses)
+            if (cursistId != -1)
             {
-                // Get all assignments of a course
-                _course.AssignMents = Moodle.DAL.Assignment.GetAllAssingmentInCourse(url, token, _course.Id);
 
-                
-                foreach (Moodle.BLL.Assignment _assing in _course.AssignMents)
+                // Get all courses the student is enrolled in
+                _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
+
+                foreach (Moodle.BLL.Course _course in _enrolledCourses)
                 {
-                    
-                    // Get the score of the student for the assignment
-                    double score = Moodle.Model.GetGradeOfStudentForAssignment(url, token, _assing.Id, cursistId);
-                    if (score == -1)
+                    // Get all assignments of a course
+                    _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(url, token, _course.Id);
+
+
+                    foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
                     {
-                        _assing.UserScore = "--";
-                    }
+                        // Add name of course for dealines
+                        _assing.CourseName = _course.FullName;
+
+                        // Get the score of the student for the assignment
+                        double score = Moodle.Model.GetGradeOfStudentForAssignment(url, token, _assing.Id, cursistId);
+                        if (score == -1)
+                        {
+                            _assing.UserScore = "--";
+                        }
                         _assing.UserScore = "" + score;
                     }
                 }
+
+
+                _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
+                _deadlineOnDate = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1).First();
             }
         }
 
+
+
     }
+
+}
 
 <!DOCTYPE html>
 
@@ -75,37 +90,82 @@
     <div>
         Token: @token
     </div>
-    @if (@cursistId == -1)
+    @if (action == "viewing")
     {
-        <div>
-            Geen cursist gevonden met het volgende email adress: @email
-        </div>
-    }
-    else
-    {
-        <div>
-            CursistId: @cursistId
-        </div>
-    }
-    <div>
-        @foreach (Moodle.BLL.Course course in _enrolledCourses)
-        {
-            <div class="moodleCourse">
-                @course.FullName
 
-                @foreach (Moodle.BLL.Assignment assign in course.AssignMents)
-                {
-                    <div class="moodleAssignment">
-                        @assign.Name<br />
-                        Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
-                        
-                            <div class="moodleGrade">
-                                Score: @assign.UserScore / @assign.MaxGrade
-                            </div>
-                    </div>
-                }
+
+
+        if (@cursistId == -1)
+        {
+            <div>
+                Geen cursist gevonden met het volgende email adress: @email
             </div>
         }
-    </div>
-</body>
-</html>
+        else
+        {
+            <div>
+                CursistId: @cursistId
+            </div>
+
+    
+
+            <div>
+                <div class="moodleCourse">
+                    Deadlines voor specifieke dag (13/5)
+
+                    <div class="moodleAssignment">
+                        @String.Format("{0:d/M/yyyy}", _deadlineOnDate.Date.Date)
+                        @foreach (Moodle.BLL.Assignment assignment in _deadlineOnDate.Assignments)
+                    {
+                            <div class="moodleGrade">
+                                @assignment.CourseName : @assignment.Name<br />
+                            </div>
+                    }
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="moodleCourse">
+                    Deadlines voor de komende 2 weken
+                    @foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
+                {
+                        <div class="moodleAssignment">
+                            @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
+                            @foreach (Moodle.BLL.Assignment assignment in deadline.Assignments)
+                        {
+                                <div class="moodleGrade">
+                                    @assignment.CourseName : @assignment.Name<br />
+                                </div>
+                        }
+                        </div>
+                }
+                </div>
+            </div>
+
+            <div>
+                @foreach (Moodle.BLL.Course course in _enrolledCourses)
+            {
+                    <div class="moodleCourse">
+                        @course.FullName
+
+                        @foreach (Moodle.BLL.Assignment assign in course.Assignments)
+                    {
+                            <div class="moodleAssignment">
+                                @assign.Name<br />
+                                Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
+
+                                <div class="moodleGrade">
+                                    Score: @assign.UserScore / @assign.MaxGrade
+                                </div>
+                            </div>
+                    }
+                    </div>
+            }
+
+                
+                
+            </div>
+    }}
+        </body>
+    </html>
