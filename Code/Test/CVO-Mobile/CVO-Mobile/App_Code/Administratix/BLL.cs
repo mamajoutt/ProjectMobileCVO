@@ -161,7 +161,7 @@ namespace Administratix.BLL
     /// </summary> 
     public class LesDavinci
     {
-        public int Id { get; set; }
+        public string Cursusnummer { get; set; }
         public string Dag { get; set; }
         public string Datum { get; set; }
         public int IdLesplaats { get; set; }

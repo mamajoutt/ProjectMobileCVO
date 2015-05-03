@@ -2,7 +2,7 @@
     /* Coordinating controller */
     string message = "Alles gaat goed.";
 
-    Administratix.BLL.LesDavinci lesrooster = new Administratix.BLL.LesDavinci();
+    List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
     string action = "none";
     bool result = false;
     if(IsPost)
@@ -15,7 +15,7 @@
         switch(action)
         {
             case "search":
-                lesrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(Request["lesrooster-CursistNummer"]));
+                lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(Request["lessenRooster-CursistNummer"]));
                 break;
         }
     }
@@ -42,13 +42,50 @@
     <main>
         <aside>
             <form id="search" action="" method="post">
-                <input type="text" name="lesrooster-CursistNummer" id="lesrooster-CursistNummer" /> <br />
+                <input type="text" name="lessenRooster-CursistNummer" id="lessenRooster-CursistNummer" /> <br />
                 <br />
-                    <button type="submit" name="action" value="search">Zoek lessenrooster</button>
+                    <button type="submit" name="action" value="search">Lessenrooster opvragen</button>
                     <button type="submit" name="action" value="cancel">Annuleren</button>
             </form>
         </aside>
         <!-- View controller -->
+        <form id="viewlessenroosteer" action="" method="post">
+            @{
+                if(lessenrooster.Count <= 0)
+                {
+                    <p>Geen lessenrooster gevonden.</p>
+                }
+                else
+                {
+                    <table>
+                        <tr>
+                            <th>Cursusnummer</th>
+                            <th>Weekdag</th>
+                            <th>Datum</th>
+                            <th>Module</th>
+                            <th>Docent</th>
+                            <th>Lokaal</th>
+                            <th>Campus</th>
+                            <th>Van</th>
+                            <th>Tot</th>
+                        </tr>
+                    @foreach(Administratix.BLL.LesDavinci les in lessenrooster ){
+                        <tr>
+                            <td>@les.Cursusnummer</td>
+                            <td>@les.Dag</td>
+                            <td>@les.Datum</td>
+                            <td>@les.Module</td>
+                            <td>@les.Docent</td>
+                            <td>@les.Lokaal</td>
+                            <td>@les.Campus</td>
+                            <td>@les.Aanvangsdatum</td>
+                            <td>@les.Einddatum</td>
+                        </tr>
+                    }
+                    </table>
+                }
+            }
+        </form>
     </main>
     <footer>
         @message

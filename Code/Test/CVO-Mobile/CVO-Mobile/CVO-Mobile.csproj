@@ -86,7 +86,7 @@
     </Content>
     <Content Include="Assignments.cshtml" />
     <Content Include="LesRooster.cshtml" />
-    <Content Include="Resulaten.cshtml" />
+    <Content Include="Resultaten.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

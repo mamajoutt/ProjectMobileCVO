@@ -9,10 +9,9 @@ namespace Administratix
     {
         public class LesDavinci
         {
-            public static Administratix.BLL.LesDavinci LesroosterTonen(int cursistNummer)
+            public static List<BLL.LesDavinci> LesroosterTonen(int cursistNummer)
             {
-                Administratix.DAL.LesDavinci dal = new DAL.LesDavinci();
-                return dal.SelectOne(cursistNummer);
+                return DAL.LesDavinci.SelectAllByCursistNummer(cursistNummer);
             }
         }
 
