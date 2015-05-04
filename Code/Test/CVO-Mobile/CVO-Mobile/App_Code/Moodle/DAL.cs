@@ -14,15 +14,17 @@ namespace Moodle.DAL
 
     
 
-    class Package
+    public class MoodlePackage
     {
-        string url;
+        public static string MoodleURL { set; get; }
+        //string url = "moodle-cvomobile.rhcloud.com";
+        string service = "";
         List<KeyValuePair<string, string>> parameters;
 
-        // Stel Url in
-        public Package(String url)
+        // Stel service in
+        public MoodlePackage(String service)
         {
-            this.url = url;
+            this.service = service;
             parameters = new List<KeyValuePair<string, string>>();
         }
 
@@ -32,9 +34,11 @@ namespace Moodle.DAL
             parameters.Add(new KeyValuePair<string, string>(key, value));
         }
 
-
-        // Voer [Web Service Request] uit
-        public String Execute()
+        /// <summary>
+        /// Send package.
+        /// </summary>
+        /// <returns>JSON string.</returns>
+        public String Send()
         {
             string output = "";
             string param_string = "";
@@ -43,9 +47,8 @@ namespace Moodle.DAL
                 param_string += dx.Key + "=" + dx.Value + "&";
 
             byte[] buffer = Encoding.ASCII.GetBytes(param_string);
-            string lex = "http://" + url + "?" + param_string;
+            string lex = "http://" + MoodleURL + service + "?" + param_string;
 
-            //Console.WriteLine(lex);
 
             HttpWebRequest WebReq = (HttpWebRequest)WebRequest.Create(lex);
             WebReq.Method = WebRequestMethods.Http.Post;
@@ -59,8 +62,6 @@ namespace Moodle.DAL
             using (StreamReader reader = new StreamReader(WebResp.GetResponseStream()))
                 output = reader.ReadToEnd();
 
-            //Console.WriteLine(output);
-
             return output;
 
         }
@@ -69,12 +70,18 @@ namespace Moodle.DAL
 
     public class Assignment
     {
-        public static List<Moodle.BLL.Assignment> GetAllAssingmentInCourse(string url, string token, int courseId)
+        /// <summary>
+        /// Request a list of assingments in a course from Moodle.
+        /// </summary>
+        /// <param name="token">Moodle token.</param>
+        /// <param name="courseId">Id of course</param>
+        /// <returns>List of assignments in a course</returns>
+        public static List<Moodle.BLL.Assignment> GetAllAssingmentInCourse(string token, int courseId)
         {
             List<BLL.Assignment> assignments = new List<BLL.Assignment>();
 
 
-            Package pAssignment = new Package(url + "/webservice/rest/server.php");
+            MoodlePackage pAssignment = new MoodlePackage("/webservice/rest/server.php");
             pAssignment.P("wstoken", token);
             pAssignment.P("wsfunction", "mod_assign_get_assignments");
             pAssignment.P("moodlewsrestformat", "json");
@@ -83,7 +90,7 @@ namespace Moodle.DAL
 
             try
             {
-                jCourses = JObject.Parse(pAssignment.Execute());
+                jCourses = JObject.Parse(pAssignment.Send());
 
                 //If warning isn't empty, throw error with warning
                 if (!jCourses["warnings"].ToString().Equals("[]"))
@@ -116,11 +123,18 @@ namespace Moodle.DAL
 
     public class Token
     {
-        public static string RequestTokenForService(string url, string accountName, string password, string service)
+        /// <summary>
+        /// Request a web service token from Moodle.
+        /// </summary>
+        /// <param name="accountName">Acount name of service account.</param>
+        /// <param name="password">Password of service account.</param>
+        /// <param name="service">Name of service.</param>
+        /// <returns>Token string.</returns>
+        public static string RequestTokenForService(string accountName, string password, string service)
         {
             string token = "";
 
-            Package pToken = new Moodle.DAL.Package(url + "/login/token.php");
+            MoodlePackage pToken = new Moodle.DAL.MoodlePackage("/login/token.php");
             pToken.P("username", accountName);
             pToken.P("password", password);
             pToken.P("service", service);
@@ -128,7 +142,7 @@ namespace Moodle.DAL
             JObject jToken = new JObject();
             try
             {
-                jToken = JObject.Parse(pToken.Execute());
+                jToken = JObject.Parse(pToken.Send());
                 //jCourses.TryGetValue("warnings", out jWarning);
 
                 //Console.WriteLine(jCourses);
@@ -146,7 +160,7 @@ namespace Moodle.DAL
                 Console.WriteLine(e.Message);
             }
 
-            //token = (String)JsonParser.FromJson(pToken.Execute())["token"];
+            //token = (String)JsonParser.FromJson(pToken.Send())["token"];
 
             return token;
         }
@@ -154,11 +168,18 @@ namespace Moodle.DAL
 
     public class Grade
     {
-        public static double GetGradeOfStudentForAssignment(string url, string token, int studentId, int assignmentId)
+        /// <summary>
+        /// Get the grade of a student with id for an assignment with id.
+        /// </summary>
+        /// <param name="token">Moodle token.</param>
+        /// <param name="assignmentId">Id of assignment.</param>
+        /// <param name="studentId">Id of student.</param>
+        /// <returns>Decimal grade for assignment.</returns>
+        public static double GetGradeOfStudentForAssignment(string token, int studentId, int assignmentId)
         {
             double grade = -1;
 
-            Package pGrade = new Package(url + "/webservice/rest/server.php");
+            MoodlePackage pGrade = new MoodlePackage("/webservice/rest/server.php");
             pGrade.P("wstoken", token);
             pGrade.P("wsfunction", "mod_assign_get_grades");
             pGrade.P("moodlewsrestformat", "json");
@@ -168,9 +189,7 @@ namespace Moodle.DAL
 
             try
             {
-                jAssignments = JObject.Parse(pGrade.Execute());
-                //JObject test = (JObject)jAssignments["warnings"];
-
+                jAssignments = JObject.Parse(pGrade.Send());
 
                 if (!jAssignments["assignments"].HasValues)
                 {
@@ -178,7 +197,6 @@ namespace Moodle.DAL
                 }
 
                 JObject jGrades = (JObject)jAssignments["assignments"][0];
-                //Console.WriteLine(assignments);
 
 
                 foreach (JObject g in jGrades["grades"])
@@ -186,7 +204,9 @@ namespace Moodle.DAL
                     if (Convert.ToInt32((string)g["userid"]) == studentId)
                     {
                         string score = (string)g["grade"];
+                        // Turn database string into double (12.34000 => 1234000)
                         grade = Convert.ToDouble(score);
+                        // Devide to get actual grade (1234000 => 12.34)
                         grade /= 100000;
 
                         return grade;
@@ -207,11 +227,17 @@ namespace Moodle.DAL
 
     public class User
     {
-        public static int GetUserIdByEmail(string url, string token, string email)
+        /// <summary>
+        /// Get id of Student by email adress.
+        /// </summary>
+        /// <param name="token">Moodle token.</param>
+        /// <param name="email">Email adress of student.</param>
+        /// <returns>Id of student.</returns>
+        public static int GetUserIdByEmail(string token, string email)
         {
             int id = -1;
 
-            Moodle.DAL.Package puser = new Moodle.DAL.Package(url + "/webservice/rest/server.php");
+            Moodle.DAL.MoodlePackage puser = new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
             puser.P("wstoken", token);
             puser.P("wsfunction", "core_user_get_users_by_field");
             puser.P("moodlewsrestformat", "json");
@@ -220,7 +246,7 @@ namespace Moodle.DAL
 
             try
             {
-                JArray jUser = JArray.Parse(puser.Execute());
+                JArray jUser = JArray.Parse(puser.Send());
                 id = Convert.ToInt32(jUser[0]["id"]);
 
             }
@@ -235,12 +261,18 @@ namespace Moodle.DAL
 
     public class Course
     {
-        public static List<BLL.Course> GetUserEnrolledCourses(string url, string token, int userId)
+        /// <summary>
+        /// Get a list of enrolled courses by student id.
+        /// </summary>
+        /// <param name="token">Moodle token.</param>
+        /// <param name="userId">Id of student.</param>
+        /// <returns>List of enrolled courses.</returns>
+        public static List<BLL.Course> GetUserEnrolledCourses(string token, int userId)
         {
             List<BLL.Course> courses = new List<BLL.Course>();
 
-            Moodle.DAL.Package pCourse =
-                new Moodle.DAL.Package(url + "/webservice/rest/server.php");
+            Moodle.DAL.MoodlePackage pCourse =
+                new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
             pCourse.P("wstoken", token);
             pCourse.P("wsfunction", "core_enrol_get_users_courses");
             pCourse.P("moodlewsrestformat", "json");
@@ -248,23 +280,17 @@ namespace Moodle.DAL
 
             try
             {
-                JArray jCourses = JArray.Parse(pCourse.Execute());
+                JArray jCourses = JArray.Parse(pCourse.Send());
                 foreach (JObject c in jCourses)
                 {
                     BLL.Course course = new BLL.Course(c);
                     courses.Add(course);
-                    //Console.WriteLine(course.Id + " " + course.ShortName + " " + course.FullName);
                 }
             }
             catch (Exception e)
             {
                 Console.Out.WriteLine(e.Message);
             }
-
-            
-            //Console.WriteLine("Courses: " + jCourses);
-
-            
 
             return courses;
         }

@@ -3,6 +3,8 @@
     int cursistId = -1;
     string email = "";
     string action = "none";
+    TimeSpan requestTime = new TimeSpan();
+    Moodle.DAL.MoodlePackage.MoodleURL = "moodle-cvomobile.rhcloud.com";
 
     List<Moodle.BLL.Course> _enrolledCourses = new List<Moodle.BLL.Course>();
     List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
@@ -14,22 +16,23 @@
 
         if (action.Equals("viewing"))
         {
+            DateTime start = DateTime.Now;
+            
             email = Request["search-email"];
-            string url = "moodle-cvomobile.rhcloud.com";
 
-            token = Moodle.DAL.Token.RequestTokenForService(url, "cvomobile", "Boerderijm1n#s", "mobile");
-            cursistId = Moodle.DAL.User.GetUserIdByEmail(url, token, email);
+            token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
+            cursistId = Moodle.DAL.User.GetUserIdByEmail(token, email);
 
             if (cursistId != -1)
             {
 
                 // Get all courses the student is enrolled in
-                _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(url, token, cursistId);
-
+                _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(token, cursistId);
+                
                 foreach (Moodle.BLL.Course _course in _enrolledCourses)
                 {
                     // Get all assignments of a course
-                    _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(url, token, _course.Id);
+                    _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(token, _course.Id);
 
 
                     foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
@@ -38,7 +41,7 @@
                         _assing.CourseName = _course.FullName;
 
                         // Get the score of the student for the assignment
-                        double score = Moodle.Model.GetGradeOfStudentForAssignment(url, token, _assing.Id, cursistId);
+                        double score = Moodle.Model.GetGradeOfStudentForAssignment(token, _assing.Id, cursistId);
                         if (score == -1)
                         {
                             _assing.UserScore = "--";
@@ -47,14 +50,14 @@
                     }
                 }
 
-
                 _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
                 _deadlineOnDate = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1).First();
             }
+            DateTime end = DateTime.Now;
+
+            requestTime = end - start;
         }
-
-
-
+        
     }
 
 }
@@ -92,7 +95,9 @@
     </div>
     @if (action == "viewing")
     {
-
+        <div>
+            requestTime: @requestTime
+        </div>
 
 
         if (@cursistId == -1)
