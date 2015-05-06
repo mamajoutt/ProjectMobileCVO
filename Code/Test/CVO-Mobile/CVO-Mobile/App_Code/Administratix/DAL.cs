@@ -20,6 +20,324 @@ namespace MobileCVO.DAL
 
 namespace Administratix.DAL
 {
+
+    public class TweedezitResultaat 
+    {
+
+        public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int cursistNummer)
+        {
+            List<BLL.TweedezitResultaat> resultaten = new List<BLL.TweedezitResultaat>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "Select2deZitByCursistNummer";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.TweedezitResultaat resultaat = new BLL.TweedezitResultaat();
+                            resultaat.Module = result["Module"].ToString();
+                            resultaat.Datum= Convert.ToDateTime(result["Datum"].ToString());
+                            resultaat.Lokaal = result["Lokaal"].ToString();
+                            resultaat.Van = result["Van"].ToString();
+                            resultaat.Tot = result["Tot"].ToString();
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
+    public class StatusTraject 
+    {
+
+        public static List<BLL.StatusTraject> SelectStatusByCursistNummer(int cursistNummer)
+        {
+            List<BLL.StatusTraject> resultaten = new List<BLL.StatusTraject>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "SelectStatusTrajectByCursistNummer ";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.StatusTraject resultaat = new BLL.StatusTraject();
+                            resultaat.Module = result["Module"].ToString();
+                            resultaat.AantalPlaatsen = Convert.ToInt32(result["AantalPlaatsen"].ToString());
+                            resultaat.Cursusnummer = Convert.ToInt32(result["Cursusnummer"].ToString());
+                            resultaat.Inschrijfbaar = Convert.ToBoolean(result["Inschrijfbaar"].ToString());
+                            resultaat.Start = result["Start"].ToString();
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
+    public class TrajectOverzicht
+    {
+
+        public static List<BLL.TrajectOverzicht> SelectTrajectByCursistNummer(int cursistNummer)
+        {
+            List<BLL.TrajectOverzicht> resultaten = new List<BLL.TrajectOverzicht>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "SelectTrajectByCursistNummer";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.TrajectOverzicht resultaat = new BLL.TrajectOverzicht();
+                            resultaat.Module = result["Module"].ToString();
+                            resultaat.Lestijden = Convert.ToInt32(result["Lestijden"].ToString());
+                            resultaat.Code = result["Code"].ToString();
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
+    public class DelibiratieDate
+    {
+
+        public static List<BLL.DelibiratieDate> SelectDeliberatieDateByCursistNummer(int cursistNummer)
+        {
+            List<BLL.DelibiratieDate> resultaten = new List<BLL.DelibiratieDate>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "SelectDeliberatieDateByCursistNummer ";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.DelibiratieDate resultaat = new BLL.DelibiratieDate();
+                            resultaat.Module = result["Module"].ToString();
+                            resultaat.Cursusnummer = Convert.ToInt32(result["Cursusnummer"].ToString());
+                            resultaat.DeliberatieDatum = Convert.ToDateTime(result["Code"].ToString());
+                            resultaat.TweedeZitDatum = Convert.ToDateTime(result["Code"].ToString());
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
+    public class Evenement
+    {
+
+        public static List<BLL.Evenement> Select2deZitByCursistNummer(int cursistNummer)
+        {
+            List<BLL.Evenement> resultaten = new List<BLL.Evenement>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "SelectEvenementByCursistNummer";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.Evenement resultaat = new BLL.Evenement();
+                            resultaat.Locatie = result["Locatie"].ToString();
+                            resultaat.Datum = Convert.ToDateTime(result["Datum"].ToString());
+                            resultaat.Evenement = result["Evenement"].ToString();
+                            resultaat.Van = result["Van"].ToString();
+                            resultaat.Tot = result["Tot"].ToString();
+
+                            resultaten.Add(resultaat);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return resultaten;
+        }
+    }
+
     public class CursusResultaat //: MobileCVO.DAL.IDal<BLL.CursusResultaat>
     {
         /*private string message;

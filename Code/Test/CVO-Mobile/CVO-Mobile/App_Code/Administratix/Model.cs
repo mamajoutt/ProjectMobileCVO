@@ -22,5 +22,47 @@ namespace Administratix
                 return DAL.CursusResultaat.SelectAllByCursistNummer(cursistNummer);
             }
         }
+
+        public class TweedezitResultaat
+        {
+            public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int cursistNummer)
+            {
+                return DAL.TweedezitResultaat.Select2deZitByCursistNummer(cursistNummer);
+            }
+        }
+
+        public class StatusTraject
+        {
+            public static List<BLL.StatusTraject> SelectStatusByCursistNummer(int cursistNummer)
+            {
+                return DAL.StatusTraject.SelectStatusByCursistNummer(cursistNummer);
+            }
+        }
+
+        public class TrajectOverzicht
+        {
+            public static List<BLL.TrajectOverzicht> SelectTrajectByCursistNummer(int cursistNummer)
+            {
+                return DAL.TrajectOverzicht.SelectTrajectByCursistNummer(cursistNummer);
+            }
+        }
+
+        public class DelibiratieDate
+        {
+            public static List<BLL.DelibiratieDate> SelectDeliberatieDateByCursistNummer(int cursistNummer)
+            {
+                return DAL.DelibiratieDate.SelectDeliberatieDateByCursistNummer(cursistNummer);
+            }
+        }
+
+        public class Evenement
+        {
+            public static List<BLL.Evenement> Select2deZitByCursistNummer(int cursistNummer)
+            {
+                return DAL.Evenement.Select2deZitByCursistNummer(cursistNummer);
+            }
+        }
+
+
     }
 }

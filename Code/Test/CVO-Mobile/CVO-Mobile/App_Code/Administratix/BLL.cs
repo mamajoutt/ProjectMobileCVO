@@ -15,6 +15,56 @@ namespace Administratix.BLL
         public double PuntenTweedeZit { get; set; }
     }
 
+
+    public class TweedezitResultaat
+    {
+        public string Module { get; set; }
+        public DateTime Datum { get; set; }
+        public string Lokaal { get; set; }
+        public string Van { get; set; }
+        public string Tot { get; set; }
+    }
+
+    public class StatusTraject
+    {
+        public int Cursusnummer { get; set; }
+        public string Module { get; set; }
+        public string Start { get; set; }
+        public int AantalPlaatsen { get; set; }
+        public bool Inschrijfbaar { get; set; }  
+    }
+
+    public class TrajectOverzicht
+    {
+
+        public string Code { get; set; }
+        public string Module { get; set; }
+        public int Lestijden { get; set; }
+    }
+
+    public class DelibiratieDate
+    {
+        public int Cursusnummer { get; set; }
+        public string Module { get; set; }
+        public DateTime DeliberatieDatum { get; set; }
+        public DateTime TweedeZitDatum { get; set; }
+    }
+
+    public class Evenement
+    {
+        public string Evenement { get; set; }
+        public DateTime Datum { get; set; }
+        public string Locatie { get; set; }
+        public string Van { get; set; }
+        public string Tot { get; set; }
+
+    }
+
+
+
+
+
+
     /// <summary> 
     /// Class definition Cursist 
     /// </summary> 
@@ -74,16 +124,6 @@ namespace Administratix.BLL
 
     }
 
-    /// <summary> 
-    /// Class definition Evenement 
-    /// </summary> 
-    public class Evenement
-    {
-        public int Id { get; set; }
-        public string EvenementNaam { get; set; }
-        public DateTime Datum { get; set; }
-
-    }
 
     /// <summary> 
     /// Class definition Module 
