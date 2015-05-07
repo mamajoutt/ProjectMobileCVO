@@ -46,13 +46,13 @@ namespace Administratix.BLL
     {
         public int Cursusnummer { get; set; }
         public string Module { get; set; }
-        public DateTime DeliberatieDatum { get; set; }
+        public string DeliberatieDatum { get; set; }
         public DateTime TweedeZitDatum { get; set; }
     }
 
     public class Evenement
     {
-        public string Evenement { get; set; }
+        public string EvenementName { get; set; }
         public DateTime Datum { get; set; }
         public string Locatie { get; set; }
         public string Van { get; set; }

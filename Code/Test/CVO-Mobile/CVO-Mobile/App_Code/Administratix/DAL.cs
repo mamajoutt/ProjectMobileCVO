@@ -99,7 +99,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "SelectStatusTrajectByCursistNummer ";
+            string sqlString = "grp2_SelectStatusTrajectByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
@@ -225,7 +225,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "SelectDeliberatieDateByCursistNummer ";
+            string sqlString = "grp2_SelectDeliberatieDateByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
@@ -252,8 +252,8 @@ namespace Administratix.DAL
                             BLL.DelibiratieDate resultaat = new BLL.DelibiratieDate();
                             resultaat.Module = result["Module"].ToString();
                             resultaat.Cursusnummer = Convert.ToInt32(result["Cursusnummer"].ToString());
-                            resultaat.DeliberatieDatum = Convert.ToDateTime(result["Code"].ToString());
-                            resultaat.TweedeZitDatum = Convert.ToDateTime(result["Code"].ToString());
+                            resultaat.DeliberatieDatum = result["DeliberatieDatum"].ToString();
+                            resultaat.TweedeZitDatum = Convert.ToDateTime(result["TweedeZitDatum"].ToString());
 
                             resultaten.Add(resultaat);
                         }
@@ -315,7 +315,7 @@ namespace Administratix.DAL
                             BLL.Evenement resultaat = new BLL.Evenement();
                             resultaat.Locatie = result["Locatie"].ToString();
                             resultaat.Datum = Convert.ToDateTime(result["Datum"].ToString());
-                            resultaat.Evenement = result["Evenement"].ToString();
+                            resultaat.EvenementName = result["Evenement"].ToString();
                             resultaat.Van = result["Van"].ToString();
                             resultaat.Tot = result["Tot"].ToString();
 

@@ -87,6 +87,9 @@
     <Content Include="Assignments.cshtml" />
     <Content Include="LesRooster.cshtml" />
     <Content Include="Resultaten.cshtml" />
+    <Content Include="TweedezitResultaat.cshtml" />
+    <Content Include="StatusTraject.cshtml" />
+    <Content Include="DelibiratieDate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
