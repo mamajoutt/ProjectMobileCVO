@@ -424,7 +424,6 @@ namespace Administratix.DAL
         }
     }
 
-
     public class LesDavinci //: MobileCVO.DAL.IDal<BLL.LesDavinci>
     {
         /*private string message;
