@@ -12,6 +12,7 @@ namespace Administratix.BLL
     public class CursusResultaat
     {
         public int CursusNummer { get; set; }
+        public int IdModuleVariant { get; set; }
         public string CursusNaam { get; set; }
         public double PuntenTotaal { get; set; }
         public double PuntenPermanenteEvaluatie { get; set; }
@@ -38,6 +39,7 @@ namespace Administratix.BLL
     /// </summary> 
     public class StatusTraject
     {
+        
         public int Cursusnummer { get; set; }
         public string Module { get; set; }
         public string Start { get; set; }
@@ -47,14 +49,17 @@ namespace Administratix.BLL
 
     /// <summary> 
     /// Class definition Traject 
-    /// Used in DAL.TrajectOverzicht
+    /// Used in DAL.Module
     /// </summary> 
-    public class TrajectOverzicht
+    public class Module
     {
-
+        public int Id { get; set; }
         public string Code { get; set; }
-        public string Module { get; set; }
+        public bool CrursistIsIngeschreven { get; set; }
+        public double PuntenTotaal { get; set; }
+        public string Naam { get; set; }
         public int Lestijden { get; set; }
+
     }
 
     /// <summary> 
