@@ -3,6 +3,8 @@
     string message = "Alles gaat goed.";
 
     List<Administratix.BLL.StatusTraject> Resultaat = new List<Administratix.BLL.StatusTraject>();
+    List<Administratix.BLL.Module> trajectModules = new List<Administratix.BLL.Module>();
+    List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
     string action = "none";
     bool result = false;
     if (IsPost)
@@ -15,7 +17,11 @@
         switch (action)
         {
             case "search":
-                Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+                trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+                resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+                trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
+                
+                //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 break;
         }
     }
@@ -51,28 +57,37 @@
         <!-- View controller -->
         <form id="ViewTweedezit" action="" method="post">
             @{
-                if (Resultaat.Count <= 0)
+                if (trajectModules.Count <= 0)
                 {
-                    <p>Geen Traject gevonden.</p>
+                    <p>Je bent nog niet ingeschreven in een traject.</p>
                 }
                 else
                 {
                     <table>
                         <tr>
-                            <th>Module</th>
-                            <th>Cursusnummer</th>
-                            <th>AantalPlaatsen</th>
-                            <th>Start</th>
-                            <th>Inschrijfbaar</th>
+                            <th>Id</th>
+                            <th>status</th>
+                            <th>Naam</th>
                         </tr>
-                        @foreach (Administratix.BLL.StatusTraject res in Resultaat)
+                        @foreach (Administratix.BLL.Module module in trajectModules)
                         {
                             <tr>
-                                <td>@res.Module</td>
-                                <td>@res.Cursusnummer</td>
-                                <td>@res.AantalPlaatsen</td>
-                                <td>@res.Start</td>
-                                <td>@res.Inschrijfbaar</td>
+                                <td>@module.Id</td>
+                                <td>
+                                    @if (module.CrursistIsIngeschreven)
+                                    {
+                                        if (module.PuntenTotaal > 0)
+                                        {
+                                            @:Afgerond
+                                        }
+                                        else
+                                        {
+                                            @:Ingeschreven
+                                        }
+                                    }
+                                
+                                </td>
+                                <td>@module.Naam</td>
                             </tr>
                         }
                     </table>

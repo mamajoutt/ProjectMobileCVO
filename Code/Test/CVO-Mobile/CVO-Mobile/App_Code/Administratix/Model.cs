@@ -41,9 +41,26 @@ namespace Administratix
 
         public class TrajectOverzicht
         {
-            public static List<BLL.TrajectOverzicht> SelectTrajectByCursistNummer(int cursistNummer)
+            public static List<BLL.Module> SelectTrajectModulesByCursistNummer(int cursistNummer)
             {
-                return DAL.TrajectOverzicht.SelectTrajectByCursistNummer(cursistNummer);
+                return DAL.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursistNummer);
+            }
+
+            public static List<BLL.Module> CombineerModuleResultatenMetTrajectModules(List<BLL.Module> trajectModules, List<BLL.CursusResultaat> moduleResultaten)
+            {
+                foreach (BLL.Module module in trajectModules)
+                {
+                    foreach (BLL.CursusResultaat resultaat in moduleResultaten)
+                    {
+                        if (resultaat.IdModuleVariant == module.Id)
+                        {
+                            module.CrursistIsIngeschreven = true;
+                            module.PuntenTotaal = resultaat.PuntenTotaal;
+                        }
+                    }
+                }
+
+                return trajectModules;
             }
         }
 
@@ -62,7 +79,5 @@ namespace Administratix
                 return DAL.Evenement.Select2deZitByCursistNummer(cursistNummer);
             }
         }
-
-
     }
 }
