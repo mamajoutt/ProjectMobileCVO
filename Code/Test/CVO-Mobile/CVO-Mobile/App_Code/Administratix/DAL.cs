@@ -35,7 +35,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectTweedeZitByCursistNummer";
+            string sqlString = "Select2deZitByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
@@ -65,8 +65,7 @@ namespace Administratix.DAL
                             resultaat.Lokaal = result["Lokaal"].ToString();
                             resultaat.Van = result["Van"].ToString();
                             resultaat.Tot = result["Tot"].ToString();
-                            resultaat.Punten = Convert.ToDouble(result["Punten"].ToString());
-                            resultaat.Ingeschreven = Convert.ToBoolean(result["Ingeschreven"].ToString());
+
                             resultaten.Add(resultaat);
                         }
 
