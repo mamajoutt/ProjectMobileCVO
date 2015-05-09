@@ -31,6 +31,9 @@ namespace Administratix.BLL
         public string Lokaal { get; set; }
         public string Van { get; set; }
         public string Tot { get; set; }
+        public bool Ingeschreven { get; set; }
+        public double Punten { get; set; }
+
     }
 
     /// <summary> 

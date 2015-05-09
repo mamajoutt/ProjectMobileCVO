@@ -35,7 +35,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "Select2deZitByCursistNummer";
+            string sqlString = "grp2_SelectTweedeZitByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
@@ -60,11 +60,13 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.TweedezitResultaat resultaat = new BLL.TweedezitResultaat();
-                            resultaat.Module = result["Naam"].ToString();
+                            resultaat.Module = result["Module"].ToString();
                             resultaat.Datum= Convert.ToDateTime(result["Datum"].ToString());
                             resultaat.Lokaal = result["Lokaal"].ToString();
                             resultaat.Van = result["Van"].ToString();
                             resultaat.Tot = result["Tot"].ToString();
+                            resultaat.Punten = Convert.ToDouble(result["Punten"].ToString());
+                            resultaat.Ingeschreven = Convert.ToBoolean(result["Ingeschreven"].ToString());
 
                             resultaten.Add(resultaat);
                         }
