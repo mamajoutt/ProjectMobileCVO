@@ -25,9 +25,13 @@ namespace Administratix
 
         public class TweedezitResultaat
         {
-            public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int cursistNummer)
+            public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int CursistNummer)
             {
-                return DAL.TweedezitResultaat.Select2deZitByCursistNummer(cursistNummer);
+                return DAL.TweedezitResultaat.Select2deZitByCursistNummer(CursistNummer);
+            }
+            public static int UpdateTweedeZit(int CursistNummer, string CursusNummer)
+            {
+                return DAL.TweedezitResultaat.UpdateTweedeZit(CursistNummer, CursusNummer);
             }
         }
 

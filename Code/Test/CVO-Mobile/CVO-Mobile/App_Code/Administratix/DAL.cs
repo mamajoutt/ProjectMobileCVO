@@ -24,7 +24,7 @@ namespace Administratix.DAL
     public class TweedezitResultaat 
     {
 
-        public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int cursistNummer)
+        public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int CursistNummer)
         {
             List<BLL.TweedezitResultaat> resultaten = new List<BLL.TweedezitResultaat>();
 
@@ -38,7 +38,7 @@ namespace Administratix.DAL
             string sqlString = "grp2_SelectTweedeZitByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
-               SqlDbType.Int)).Value = cursistNummer;
+               SqlDbType.Int)).Value = CursistNummer;
 
             command.CommandType = CommandType.StoredProcedure;
 
@@ -84,6 +84,56 @@ namespace Administratix.DAL
             }
 
             return resultaten;
+        }
+        public static int UpdateTweedeZit(int CursistNummer, string CursusNummer)
+        {
+            int result = 0;
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "grp2_UpdateTweedeZit";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = CursistNummer;
+            command.Parameters.Add(new SqlParameter("@CursusNummer",
+               SqlDbType.NVarChar)).Value = CursusNummer;
+
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = sqlString;
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            int row = 0;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+                row = command.ExecuteNonQuery();
+                if(row == 1)
+                {
+                    result = 1;
+                }
+                else
+                {
+                    result = 2;
+                }
+
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+                result = 3;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return result;
         }
     }
 
