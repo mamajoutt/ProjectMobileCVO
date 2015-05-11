@@ -4,14 +4,14 @@
 use Administratix_cursist
 go
 
-if exists (select 1 from sysobjects where name = 'SelectAllLesDavinciByCursistNummer' AND type = 'P') -- P = procedure
+if exists (select 1 from sysobjects where name = 'grp2_SelectAllLesDavinciByCursistNummer' AND type = 'P') -- P = procedure
 
 begin
-	drop proc SelectAllLesDavinciByCursistNummer
+	drop proc grp2_SelectAllLesDavinciByCursistNummer
 end
 go
 
-create procedure SelectAllLesDavinciByCursistNummer
+create procedure grp2_SelectAllLesDavinciByCursistNummer
 (
 	@CursistNummer int
 )
