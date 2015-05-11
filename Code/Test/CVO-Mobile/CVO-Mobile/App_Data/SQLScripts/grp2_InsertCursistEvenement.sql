@@ -11,6 +11,7 @@ if exists (select 1 from sysobjects where name = 'grp2_InsertCursistEvenement' A
 begin
 	drop proc grp2_InsertCursistEvenement
 end
+go
 
 -- aanmaken van de procedure
 create procedure grp2_InsertCursistEvenement
