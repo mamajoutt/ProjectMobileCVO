@@ -330,9 +330,9 @@ namespace Administratix.DAL
     public class Evenement
     {
 
-        public static List<BLL.Evenement> Select2deZitByCursistNummer(int cursistNummer)
+        public static List<BLL.Evenement> SelectAllEvenement()
         {
-            List<BLL.Evenement> resultaten = new List<BLL.Evenement>();
+            List<BLL.Evenement> evenementenLijst = new List<BLL.Evenement>();
 
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
@@ -341,10 +341,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "SelectEvenementByCursistNummer";
-
-            command.Parameters.Add(new SqlParameter("@CursistNummer",
-               SqlDbType.Int)).Value = cursistNummer;
+            string sqlString = "grp2_SelectAllEvenement";
 
             command.CommandType = CommandType.StoredProcedure;
 
@@ -365,14 +362,14 @@ namespace Administratix.DAL
                     {
                         while (result.Read())
                         {
-                            BLL.Evenement resultaat = new BLL.Evenement();
-                            resultaat.Locatie = result["Locatie"].ToString();
-                            resultaat.Datum = Convert.ToDateTime(result["Datum"].ToString());
-                            resultaat.EvenementName = result["Evenement"].ToString();
-                            resultaat.Van = result["Van"].ToString();
-                            resultaat.Tot = result["Tot"].ToString();
+                            BLL.Evenement evenement = new BLL.Evenement();
+                            evenement.Naam = result["Naam"].ToString();
+                            evenement.Datum = Convert.ToDateTime(result["Datum"].ToString());
+                            evenement.Locatie = result["Locatie"].ToString();
+                            evenement.Start = result["StartUur"].ToString();
+                            evenement.Eind = result["EindUur"].ToString();
 
-                            resultaten.Add(resultaat);
+                            evenementenLijst.Add(evenement);
                         }
 
                     }
@@ -387,7 +384,7 @@ namespace Administratix.DAL
                 connection.Close();
             }
 
-            return resultaten;
+            return evenementenLijst;
         }
     }
 
@@ -507,7 +504,7 @@ namespace Administratix.DAL
             SqlCommand command = new SqlCommand();
             // in de CommandText eigenschap stoppen de naam
             // van de stored procedure
-            string sqlString = "SelectAllLesDavinciByCursistNummer";
+            string sqlString = "grp2_SelectAllLesDavinciByCursistNummer";
 
             // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",

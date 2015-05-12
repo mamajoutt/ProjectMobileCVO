@@ -83,11 +83,11 @@ namespace Administratix.BLL
     /// </summary> 
     public class Evenement
     {
-        public string EvenementName { get; set; }
+        public string Naam { get; set; }
         public DateTime Datum { get; set; }
         public string Locatie { get; set; }
-        public string Van { get; set; }
-        public string Tot { get; set; }
+        public string Start { get; set; }
+        public string Eind { get; set; }
 
     }
 

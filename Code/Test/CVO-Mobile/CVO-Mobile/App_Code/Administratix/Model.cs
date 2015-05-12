@@ -15,6 +15,14 @@ namespace Administratix
             }
         }
 
+        public class Evenement
+        {
+            public static List<BLL.Evenement> EvenementenTonen()
+            {
+                return DAL.Evenement.SelectAllEvenement();
+            }
+        }
+
         public class CursusResultaat
         {
             public static List<BLL.CursusResultaat> CursusResultaten(int cursistNummer)

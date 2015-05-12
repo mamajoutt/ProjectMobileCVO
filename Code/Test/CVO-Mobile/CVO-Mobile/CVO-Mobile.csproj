@@ -91,6 +91,7 @@
     <Content Include="StatusTraject.cshtml" />
     <Content Include="DelibiratieDate.cshtml" />
     <Content Include="Upate TweedeZit.cshtml" />
+    <None Include="Evenementen.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
