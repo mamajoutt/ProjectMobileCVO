@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@Page.title</title>
+    <link href="~/Style/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    @RenderPage("~/Shared/_Header.cshtml")
+    @RenderPage("~/Shared/_Nav.cshtml")
+    <div id="main">
+        @RenderBody()
+    </div>
+    @RenderPage("~/Shared/_Footer.cshtml")
+</body>
+</html>

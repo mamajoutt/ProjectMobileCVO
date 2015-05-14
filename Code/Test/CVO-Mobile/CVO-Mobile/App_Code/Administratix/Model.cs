@@ -15,13 +15,13 @@ namespace Administratix
             }
         }
 
-        public class Evenement
-        {
-            public static List<BLL.Evenement> EvenementenTonen()
-            {
-                return DAL.Evenement.SelectAllEvenement();
-            }
-        }
+        //public class Evenement
+        //{
+        //    public static List<BLL.Evenement> EvenementenTonen()
+        //    {
+        //        return DAL.Evenement.SelectAllEvenement();
+        //    }
+        //}
 
         public class CursusResultaat
         {
@@ -86,9 +86,9 @@ namespace Administratix
 
         public class Evenement
         {
-            public static List<BLL.Evenement> Select2deZitByCursistNummer(int cursistNummer)
+            public static List<BLL.Evenement> SelectAllEvenement()
             {
-                return DAL.Evenement.Select2deZitByCursistNummer(cursistNummer);
+                return DAL.Evenement.SelectAllEvenement();
             }
         }
     }
