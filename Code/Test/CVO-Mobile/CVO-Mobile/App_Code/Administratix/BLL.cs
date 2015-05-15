@@ -62,7 +62,12 @@ namespace Administratix.BLL
         public double PuntenTotaal { get; set; }
         public string Naam { get; set; }
         public int Lestijden { get; set; }
+        public List<Module> VoorkennisModules { get; set; }
 
+        public Module()
+        {
+            VoorkennisModules = new List<Module>();
+        }
     }
 
     /// <summary> 

@@ -204,6 +204,64 @@ namespace Administratix.DAL
     public class TrajectOverzicht
     {
 
+        public static List<KeyValuePair<int, int>> SelectVoorkennisIdsByOpleidingsvariantId(int id)
+        {
+            List<KeyValuePair<int, int>> idPairs = new List<KeyValuePair<int, int>>();
+
+            //List<BLL.CursusResultaat> resultaten = new List<BLL.CursusResultaat>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "grp2_SelectTrajectVoorkennisByOpleidingsvariantId";
+
+            command.Parameters.Add(new SqlParameter("@OpleidingsvariantId",
+               SqlDbType.Int)).Value = id;
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            int modulevariantId = Convert.ToInt32(result["ModulevariantId"].ToString());
+                            int voorkenisModulevariantId = Convert.ToInt32(result["VoorkennisModulevariantId"].ToString());
+
+                            idPairs.Add(new KeyValuePair<int, int>(modulevariantId, voorkenisModulevariantId));
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return idPairs;
+        }
+
         public static List<BLL.Module> SelectTrajectModulesByCursistNummer(int cursistNummer)
         {
             List<BLL.Module> modules = new List<BLL.Module>();

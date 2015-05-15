@@ -5,6 +5,7 @@
     List<Administratix.BLL.StatusTraject> Resultaat = new List<Administratix.BLL.StatusTraject>();
     List<Administratix.BLL.Module> trajectModules = new List<Administratix.BLL.Module>();
     List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
+    List<KeyValuePair<int, int>> voorkennisPairs = new List<KeyValuePair<int, int>>();
     string action = "none";
     bool result = false;
     if (IsPost)
@@ -20,7 +21,8 @@
                 trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
-                
+                voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
+                trajectModules = Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
                 //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 break;
         }
@@ -63,37 +65,62 @@
                 }
                 else
                 {
-                    <table>
+                    @*<table>
                         <tr>
-                            <th>Id</th>
-                            <th>status</th>
-                            <th>Naam</th>
+                            <th>ModulevariantId</th>
+                            <th>VoorkennisModulevariantId</th>
                         </tr>
-                        @foreach (Administratix.BLL.Module module in trajectModules)
+                        @foreach (KeyValuePair<int, int> pair in voorkennisPairs)
                         {
                             <tr>
-                                <td>@module.Id</td>
+                                <td>@pair.Key</td>
                                 <td>
-                                    @if (module.CrursistIsIngeschreven)
-                                    {
-                                        if (module.PuntenTotaal > 0)
-                                        {
-                                            @:Afgerond
-                                        }
-                                        else
-                                        {
-                                            @:Ingeschreven
-                                        }
-                                    }
-                                
+
                                 </td>
-                                <td>@module.Naam</td>
+                                <td>@pair.Value</td>
                             </tr>
                         }
-                    </table>
-                }
-            }
-        </form>
+                    </table>*@
+
+                        <table border="1">
+                            <tr>
+                                <th>Id</th>
+                                <th>status</th>
+                                <th>Naam</th>
+                                <th>Voorkennis</th>
+                            </tr>
+                            @foreach (Administratix.BLL.Module module in trajectModules)
+                        {
+                                <tr>
+                                    <td valign="top">@module.Id</td>
+                                    <td valign="top">
+                                        @if (module.CrursistIsIngeschreven)
+                                        {
+                                            if (module.PuntenTotaal > 0)
+                                            {
+                                                @:Afgerond
+                                        }
+                                            else
+                                            {
+                                                @:Ingeschreven
+                                        }
+                                        }
+
+                                    </td>
+                                    <td valign="top">@module.Naam</td>
+                                    <td valign="top">
+                                        @foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
+                                        {
+                                            @voorkennis.Naam<br />
+                                        }
+
+                                    </td>
+                                </tr>
+                        }
+                        </table>
+                        }
+                        }
+</form>
     </main>
     <footer>
         @message

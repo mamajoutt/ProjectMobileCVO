@@ -53,6 +53,11 @@ namespace Administratix
 
         public class TrajectOverzicht
         {
+            public static List<KeyValuePair<int, int>> SelectVoorkennisIdsByOpleidingsvariantId(int id)
+            {
+                return DAL.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(id);
+            }
+
             public static List<BLL.Module> SelectTrajectModulesByCursistNummer(int cursistNummer)
             {
                 return DAL.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursistNummer);
@@ -73,6 +78,34 @@ namespace Administratix
                 }
 
                 return trajectModules;
+            }
+
+            public static List<BLL.Module> ModulesAddVoorkennis(List<BLL.Module> trajectModules, List<KeyValuePair<int, int>> voorkennisPairs)
+            {
+                List<BLL.Module> modules = new List<BLL.Module>(trajectModules);
+
+                foreach (KeyValuePair<int, int> pair in voorkennisPairs)
+                {
+                    BLL.Module trajectModule = GetModuleFromListById(trajectModules, pair.Key);
+                    BLL.Module voorkennisModule = GetModuleFromListById(modules, pair.Value);
+                    trajectModule.VoorkennisModules.Add(voorkennisModule);
+                }
+
+                return modules;
+            }
+
+            private static BLL.Module GetModuleFromListById(List<BLL.Module> modules, int id)
+            {
+                BLL.Module module = new BLL.Module();
+                foreach (BLL.Module m in modules)
+                {
+                    if (m.Id == id)
+                    {
+                        module = m;
+                    }
+                }
+                return module;
+
             }
         }
 
