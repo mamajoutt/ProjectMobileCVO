@@ -69,16 +69,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\TempTest.css" />
-    <Content Include="Pictures\1429563973_calendar.png" />
-    <Content Include="Pictures\1429563998_graduation_cap.png" />
-    <Content Include="Pictures\1429564179_mouse.png" />
-    <Content Include="Pictures\logocvoantwerpen1.png" />
-    <Content Include="Pictures\PicCVOAntwerpen.png" />
-    <Content Include="Pictures\PicLinks.png" />
-    <Content Include="Pictures\PicMenu.png" />
-    <Content Include="Pictures\PicPijlRechts.png" />
-    <Content Include="Pictures\rsz_update_mobilecvo_logos.jpg" />
-    <Content Include="Style\Site.css" />
+    <Content Include="Images\contact.png" />
+    <Content Include="Images\home.png" />
+    <Content Include="Images\kalender.png" />
+    <Content Include="Images\Logo_CVOAntwerpen.png" />
+    <Content Include="Images\Logo_mobileCVO.jpg" />
+    <Content Include="Images\nav_left.png" />
+    <Content Include="Images\nav_right.png" />
+    <Content Include="Images\traject.png" />
+    <Content Include="Styles\App.css" />
+    <Content Include="Styles\MoodleTest.css" />
+    <Content Include="Styles\Site.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -102,11 +103,11 @@
     <Content Include="DelibiratieDate.cshtml" />
     <Content Include="Upate TweedeZit.cshtml" />
     <None Include="Evenementen.cshtml" />
+    <Content Include="MasterPageTestPage.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />
     <Content Include="Shared\_Header.cshtml" />
     <Content Include="Shared\_Layout.cshtml" />
     <Content Include="Shared\_Nav.cshtml" />
-    <Content Include="MasterPageTestPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
