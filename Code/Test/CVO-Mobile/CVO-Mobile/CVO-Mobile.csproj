@@ -106,6 +106,7 @@
     <Content Include="DelibiratieDate.cshtml" />
     <Content Include="Upate TweedeZit.cshtml" />
     <Content Include="Deelpagina%27s\TrajectOverzicht.cshtml" />
+    <Content Include="Deelpagina%27s\Deadlines.cshtml" />
     <None Include="Evenementen.cshtml" />
     <Content Include="MasterPageTestPage.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />

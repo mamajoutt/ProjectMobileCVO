@@ -124,5 +124,13 @@ namespace Administratix
                 return DAL.Evenement.SelectAllEvenement();
             }
         }
+
+        public class Cursist
+        {
+            public static string GetEmailByCursistNummer(int cursistNummer)
+            {
+                return DAL.Cursist.GetEmailByCursistNummer(cursistNummer);
+            }
+        }
     }
 }

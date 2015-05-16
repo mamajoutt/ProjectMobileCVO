@@ -17,9 +17,11 @@
         if (action.Equals("viewing"))
         {
             DateTime start = DateTime.Now;
-            
-            email = Request["search-email"];
 
+            int cursistNummer = Convert.ToInt32(Request["search-cursistnummer"]);
+
+            email = Administratix.Model.Cursist.GetEmailByCursistNummer(cursistNummer);
+            
             token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
             cursistId = Moodle.DAL.User.GetUserIdByEmail(token, email);
 
@@ -77,9 +79,9 @@
             <legend>Bekijk je deadlines en punten</legend>
             <div>
                 <label for="name-insert">
-                    Email adres
+                    Cursistnummer
                 </label>
-                <input type="text" name="search-email" id="author-FirstName" />
+                <input type="text" name="search-cursistnummer" id="cursist-Cursistnummer" />
             </div>
             <div>
                 <button type="submit" name="action" value="viewing">Zoek</button>

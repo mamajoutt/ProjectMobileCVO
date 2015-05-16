@@ -620,4 +620,64 @@ namespace Administratix.DAL
             return lessenrooster;
         }
     }
+
+    public class Cursist //: MobileCVO.DAL.IDal<BLL.LesDavinci>
+    {
+        public static string GetEmailByCursistNummer(int cursistNummer)
+        {
+            string email = "";
+            // geen plain vanilla sql statement meegeven,
+            // parameters gebruiken
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+            // Sqlcommand object
+            SqlCommand command = new SqlCommand();
+            // in de CommandText eigenschap stoppen de naam
+            // van de stored procedure
+            string sqlString = "grp2_GetCusistEmailByCursistNummer";
+
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+            // zeg aan het command object dat het een tored procedure
+            // zal krijgen en geen SQL Statement
+            command.CommandType = CommandType.StoredProcedure;
+            // stop het sql statement in het command object
+            command.CommandText = sqlString;
+            // geeft het connection object door aan het command object
+            command.Connection = connection;
+            //this.message = "Niets te melden";
+            // we gaan ervan uit dat het mislukt
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                //this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            email = result["Email"].ToString(); 
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return email;
+        }
+    }
 }
