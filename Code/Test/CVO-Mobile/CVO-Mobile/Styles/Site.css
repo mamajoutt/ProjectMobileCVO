@@ -159,3 +159,37 @@ margin-left:8%;
     margin-right:2px;    
     margin-top:0px;
 }
+
+table, td {
+    padding: 5px;
+    vertical-align: top;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #DB5C3D;
+    font-weight: bold;
+    border: 1px solid #DB5C3D;
+    color: #FFF;
+}
+
+.img_StatusGroen {
+    background-image: url('../Images/Circle_Green.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusOranje {
+    background-image: url('../Images/Circle_Orange.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusRood {
+    background-image: url('../Images/Circle_Red.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}

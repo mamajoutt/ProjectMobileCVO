@@ -69,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\TempTest.css" />
+    <Content Include="Images\Circle_Green.png" />
+    <Content Include="Images\Circle_Orange.png" />
+    <Content Include="Images\Circle_Red.png" />
     <Content Include="Images\contact.png" />
     <Content Include="Images\home.png" />
     <Content Include="Images\kalender.png" />
@@ -99,9 +102,10 @@
     <Content Include="LesRooster.cshtml" />
     <Content Include="Resultaten.cshtml" />
     <Content Include="TweedezitResultaat.cshtml" />
-    <Content Include="StatusTraject.cshtml" />
+    <Content Include="View_StatusTraject.cshtml" />
     <Content Include="DelibiratieDate.cshtml" />
     <Content Include="Upate TweedeZit.cshtml" />
+    <Content Include="Deelpagina%27s\TrajectOverzicht.cshtml" />
     <None Include="Evenementen.cshtml" />
     <Content Include="MasterPageTestPage.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />
