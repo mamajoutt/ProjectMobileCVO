@@ -361,7 +361,7 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.DelibiratieDate resultaat = new BLL.DelibiratieDate();
-                            resultaat.Module = result["Naam"].ToString();
+                            resultaat.Module = result["Module"].ToString();
                             resultaat.Cursusnummer = Convert.ToInt32(result["Cursusnummer"].ToString());
                             resultaat.DeliberatieDatum = result["DeliberatieDatum"].ToString();
                             resultaat.TweedeZitDatum = Convert.ToDateTime(result["TweedeZitDatum"].ToString());
@@ -599,7 +599,7 @@ namespace Administratix.DAL
                             les.IdLokaal = (int)result["IdLokaal"];
                             les.Lokaal = result["Lokaal"].ToString();
                             les.IdIngerichteModulevariant = (int)result["IdIngerichteModulevariant"];
-                            les.Module = result["Naam"].ToString();
+                            les.Module = result["Module"].ToString();
                             les.Aanvangsdatum = result["Van"].ToString();
                             les.Einddatum = result["Tot"].ToString();
                             lessenrooster.Add(les);
