@@ -17,7 +17,7 @@ as
 begin
 select 
 	Id
-	,Evenement
+	,Naam
 	,CONVERT(nvarchar, Evenement.Datum, 5) as Datum
 	,Locatie
 	,CONVERT(nvarchar(5), Evenement.StartUur, 108) as StartUur
