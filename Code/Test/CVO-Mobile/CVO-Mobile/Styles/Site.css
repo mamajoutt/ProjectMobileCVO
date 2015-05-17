@@ -209,3 +209,31 @@ th {
     font-weight: normal;
     padding-left: 10px;
 }
+
+.containerBig{
+    width:100%;
+    border: thin solid #DB5C3D;
+}
+
+.containerSmall{
+    flex-direction: column;
+    display: flex;
+    width: 300px;
+    flex-grow: 0;
+    border: thin solid #DB5C3D;
+}
+
+.containerOfAllThingsTiny{
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: row;
+    display: flex;
+}
+
+.containerTitle {
+    display : flexbox;
+    background-color: #DB5C3D;
+    padding: 7px;
+    font-size: large;
+    color: #FFF
+}

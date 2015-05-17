@@ -473,7 +473,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectAllPlaatsingResultaatByCursistNummer";
+            string sqlString = "grp2_SelectPlaatsingResultaatByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
@@ -636,7 +636,7 @@ namespace Administratix.DAL
             SqlCommand command = new SqlCommand();
             // in de CommandText eigenschap stoppen de naam
             // van de stored procedure
-            string sqlString = "grp2_GetCusistEmailByCursistNummer";
+            string sqlString = "grp2_SelectCursistEmailByCursistNummer";
 
             // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",

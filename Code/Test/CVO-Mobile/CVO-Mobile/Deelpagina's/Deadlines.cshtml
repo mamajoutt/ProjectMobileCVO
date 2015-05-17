@@ -86,11 +86,21 @@
 <div>
     Token: @token
 </div>
+
+<div class="containerBig">
+    <div class="containerTitle">
+        This is a title
+    </div>
+    This is a message
+</div>
+
 @if (action == "viewing")
 {
     <div>
         requestTime: @requestTime
     </div>
+
+    
 
 
     if (@cursistId == -1)
@@ -124,45 +134,45 @@
         </div>
 
         <div>
-            <div class="moodleCourse">
-                Deadlines voor de komende 2 weken
-                @foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
-                {
-                    <div class="moodleAssignment">
-                        @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
-                        @foreach (Moodle.BLL.Assignment assignment in deadline.Assignments)
-                        {
-                            <div class="moodleGrade">
-                                @assignment.CourseName : @assignment.Name<br />
-                            </div>
-                        }
+                <div class="containerBig">
+                    <div class="containerTitle">
+                        Deadlines voor de komende 2 weken
                     </div>
-                }
-            </div>
-        </div>
-
-        <div>
-            @foreach (Moodle.BLL.Course course in _enrolledCourses)
-            {
-                <div class="moodleCourse">
-                    @course.FullName
-
-                    @foreach (Moodle.BLL.Assignment assign in course.Assignments)
+                    @foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
                     {
                         <div class="moodleAssignment">
-                            @assign.Name<br />
-                            Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
-
-                            <div class="moodleGrade">
-                                Score: @assign.UserScore / @assign.MaxGrade
-                            </div>
+                            @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
+                            @foreach (Moodle.BLL.Assignment assignment in deadline.Assignments)
+                            {
+                                <div class="moodleGrade">
+                                    @assignment.CourseName : @assignment.Name<br />
+                                </div>
+                            }
                         </div>
                     }
                 </div>
+                </div>
+    <div class="containerOfAllThingsTiny">
+        @foreach (Moodle.BLL.Course course in _enrolledCourses)
+        {
+        <div class="containerSmall">
+            <div class="containerTitle">
+                @course.FullName
+            </div>
+            @foreach (Moodle.BLL.Assignment assign in course.Assignments)
+            {
+                <div class="moodleAssignment">
+                    @assign.Name<br />
+                    Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
+
+                    <div class="moodleGrade">
+                        Score: @assign.UserScore / @assign.MaxGrade
+                    </div>
+                </div>
             }
-
-
-
         </div>
+        }
+    </div>
+
     }
 }
