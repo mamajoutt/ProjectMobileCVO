@@ -79,6 +79,8 @@
     <Content Include="Images\Logo_mobileCVO.jpg" />
     <Content Include="Images\nav_left.png" />
     <Content Include="Images\nav_right.png" />
+    <Content Include="Images\Note_Green.png" />
+    <Content Include="Images\Note_Red.png" />
     <Content Include="Images\traject.png" />
     <Content Include="Styles\App.css" />
     <Content Include="Styles\MoodleTest.css" />

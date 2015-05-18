@@ -19,11 +19,17 @@
         switch (action)
         {
             case "search":
+                // Haal trajectmodules op
                 trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+                // Haal cursist resultaten op
                 resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+                // Voeg punten toe een trajectmodules
                 trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
+                // Haal nodige voorkenis op, 140 == Informatica
                 voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
-                trajectModules = Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
+                // Voeg nodige voorkennis toe aan trqjectmodules
+                Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
+                
                 //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 break;
         }
@@ -37,6 +43,29 @@
         </form>
     </aside>
     <!-- View controller -->
+    <div class="containerLegende">
+        <div class="containerTitle">
+            Legende
+        </div>
+        <div class="legendeItems">
+            <div class="legendeItem">
+                <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoede voorkennis.
+            </div>
+            <div class="legendeItem">
+                <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.
+            </div>
+            <div class="legendeItem">
+                <img class="img_StatusCirkelGroen" /> Ingeschreven, geslaagd.
+            </div>
+            <div class="legendeItem">
+                <img class="img_StatusCirkelOranje" /> Ingeschreven, nog geen resultaat.
+            </div>
+            <div class="legendeItem">
+                <img class="img_StatusCirkelRood" /> Ingeschreven, niet geslaagd.
+            </div>
+        </div>
+    </div>
+
         @{
             if (trajectModules.Count <= 0)
             {
@@ -52,52 +81,88 @@
                     @foreach (Administratix.BLL.Module module in trajectModules)
                     {
                         <tr>
-                            <td>@if (module.CrursistIsIngeschreven)
-                            {
-                                if (module.PuntenTotaal > 0)
+                            <td>
+                                @if (module.CrursistIsIngeschreven)
                                 {
-                                    //@:Afgerond
-                                    <img class="img_StatusGroen" />
+                                    // Cursist is ingeschreven, geef punte status weer
+                                    if (module.PuntenTotaal > 0)
+                                    {
+                                        // Cursist heeft punten
+                                        if (module.CursistIsGeslaagd)
+                                        {
+                                            <img class="img_StatusCirkelGroen" />
+                                        }
+                                        else
+                                        {
+                                            <img class="img_StatusCirkelRood" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Cursist heeft nog geen punten
+                                        <img class="img_StatusCirkelOranje" />
+                                    }
                                 }
                                 else
                                 {
-                                    //@:Ingeschreven
-                                    <img class="img_StatusOranje" />
+                                    // Cursist is niet ingeschreven, geen inschrijf status weer
+                                    if (module.CursistHeeftVoorkennis)
+                                    {
+                                        <img class="img_StatusNoteGroen" />
+                                    }
+                                    else
+                                    {
+                                        <img class="img_StatusNoteRood" />
+                                    }
                                 }
-                            }
-                            else
+                            @module.Naam
+                        </td>
+                        <td>
+                            @foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
                             {
-                                <img class="img_StatusRood" />
-                            }
-                             @module.Naam</td>
-                            <td>
-                                @foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
-                                {
-                                    <div>
-                                        @if (voorkennis.CrursistIsIngeschreven)
+                                <div>
+
+                                    @if (voorkennis.CrursistIsIngeschreven)
+                                    {
+
+                                        if (voorkennis.PuntenTotaal > 0)
                                         {
-                                            if (voorkennis.PuntenTotaal > 0)
+                                            // Cursist heeft punten
+                                            if (voorkennis.CursistIsGeslaagd)
                                             {
-                                                //@:Afgerond
-                                                <img class="img_StatusGroen" />
+                                                <img class="img_StatusCirkelGroen" />
                                             }
                                             else
                                             {
-                                                //@:Ingeschreven
-                                                <img class="img_StatusOranje" />
+                                                <img class="img_StatusCirkelRood" />
                                             }
                                         }
                                         else
                                         {
-                                            <img class="img_StatusRood" />
+                                            // Cursist heeft nog geen punten
+                                            <img class="img_StatusCirkelOranje" />
+
                                         }
+                                    }
+                                    else
+                                    {
+                                        // Cursist is niet ingeschreven, geen inschrijf status weer
+                                        if (voorkennis.CursistHeeftVoorkennis)
+                                        {
+                                            <img class="img_StatusNoteGroen" />
+                                        }
+                                        else
+                                        {
+                                            <img class="img_StatusNoteRood" />
+                                        }
+                                    }
 
                                     @voorkennis.Naam
                                 </div>
-                                }
+                            }
 
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
                     }
                 </table>
             }

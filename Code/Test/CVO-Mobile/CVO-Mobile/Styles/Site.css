@@ -173,22 +173,36 @@ th {
     color: #FFF;
 }
 
-.img_StatusGroen {
+.img_StatusCirkelGroen {
     background-image: url('../Images/Circle_Green.png');
     width: 16px;
     height: 16px;
     display: inline-block;
 }
 
-.img_StatusOranje {
+.img_StatusCirkelOranje {
     background-image: url('../Images/Circle_Orange.png');
     width: 16px;
     height: 16px;
     display: inline-block;
 }
 
-.img_StatusRood {
+.img_StatusCirkelRood {
     background-image: url('../Images/Circle_Red.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusNoteRood {
+    background-image: url('../Images/Note_Red.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusNoteGroen {
+    background-image: url('../Images/Note_Green.png');
     width: 16px;
     height: 16px;
     display: inline-block;
@@ -236,4 +250,25 @@ th {
     padding: 7px;
     font-size: large;
     color: #FFF
+}
+
+.containerLegende{
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.legendeItems{
+
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.legendeItem{
+    min-width: 280px;
 }

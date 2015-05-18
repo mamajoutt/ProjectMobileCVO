@@ -73,6 +73,10 @@ namespace Administratix
                         {
                             module.CrursistIsIngeschreven = true;
                             module.PuntenTotaal = resultaat.PuntenTotaal;
+                            if (module.PuntenTotaal > 50)
+                            {
+                                module.CursistIsGeslaagd = true;
+                            }
                         }
                     }
                 }
@@ -80,18 +84,31 @@ namespace Administratix
                 return trajectModules;
             }
 
-            public static List<BLL.Module> ModulesAddVoorkennis(List<BLL.Module> trajectModules, List<KeyValuePair<int, int>> voorkennisPairs)
+            public static void ModulesAddVoorkennis(List<BLL.Module> trajectModules, List<KeyValuePair<int, int>> voorkennisPairs)
             {
-                List<BLL.Module> modules = new List<BLL.Module>(trajectModules);
-
                 foreach (KeyValuePair<int, int> pair in voorkennisPairs)
                 {
                     BLL.Module trajectModule = GetModuleFromListById(trajectModules, pair.Key);
-                    BLL.Module voorkennisModule = GetModuleFromListById(modules, pair.Value);
+                    BLL.Module voorkennisModule = GetModuleFromListById(trajectModules, pair.Value);
                     trajectModule.VoorkennisModules.Add(voorkennisModule);
                 }
 
-                return modules;
+                foreach (BLL.Module module in trajectModules)
+                {
+                    module.CursistHeeftVoorkennis = HeeftNodigeVoorkennis(module);
+                }
+            }
+
+            private static bool HeeftNodigeVoorkennis(BLL.Module module)
+            {
+                foreach (BLL.Module voorkennis in module.VoorkennisModules)
+                {
+                    if (!voorkennis.CrursistIsIngeschreven || !voorkennis.CursistIsGeslaagd)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
 
             private static BLL.Module GetModuleFromListById(List<BLL.Module> modules, int id)
@@ -107,6 +124,7 @@ namespace Administratix
                 return module;
 
             }
+
         }
 
         public class DelibiratieDate
