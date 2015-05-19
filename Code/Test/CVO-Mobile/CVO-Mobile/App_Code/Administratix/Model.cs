@@ -150,5 +150,13 @@ namespace Administratix
                 return DAL.Cursist.GetEmailByCursistNummer(cursistNummer);
             }
         }
+
+        public class Kalender
+        {
+            public static List<BLL.Kalender> SelectFeestdagen(string Date1,string Date2)
+            {
+                return DAL.Feestdagen.SelectFeesdagen(Date1,Date2);
+            }
+        }
     }
 }

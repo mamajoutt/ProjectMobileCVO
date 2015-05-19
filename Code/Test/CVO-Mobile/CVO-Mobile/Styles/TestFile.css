@@ -1,0 +1,24 @@
+﻿*{
+    margin:0px;
+    padding:0px;
+}
+
+nav li{
+    float:left;
+    list-style:none;
+    padding-right:2px;
+    display:inline;
+}
+
+nav ul ul li{
+    clear:both;
+}
+
+nav ul ul {
+	display: none;
+}
+
+nav ul li:hover > ul {
+	display: block;
+}
+

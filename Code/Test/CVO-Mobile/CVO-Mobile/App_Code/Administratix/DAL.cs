@@ -680,4 +680,57 @@ namespace Administratix.DAL
             return email;
         }
     }
+
+    public class Feestdagen
+    {
+        public static List<BLL.Kalender> SelectFeesdagen(string Date1, string Date2)
+        {
+            List<BLL.Kalender> lijstfeestdagen = new List<BLL.Kalender>();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
+            SqlCommand com = new SqlCommand();
+
+            String sqlString = "grp2_SelectFeestdagen";
+            com.Parameters.Add(new SqlParameter("@Date1",
+               SqlDbType.NVarChar)).Value = Date1;
+            com.Parameters.Add(new SqlParameter("@Date2",
+               SqlDbType.NVarChar)).Value = Date2;
+
+            com.CommandType = CommandType.StoredProcedure;
+            com.CommandText = sqlString;
+            com.Connection = con;
+            SqlDataReader result;
+
+            try
+            {
+                con.Open();
+                using (result = com.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.Kalender kalender = new BLL.Kalender();
+                            kalender.Datum = result["Datum"].ToString();
+                            kalender.IdSchooljaar = Convert.ToInt32(result["IdSchooljaar"].ToString());
+                            kalender.Omschrijving = result["Omschrijving"].ToString();
+
+                            lijstfeestdagen.Add(kalender);
+                        }
+                    }
+                }
+            }
+
+            catch (SqlException e)
+            {
+                //this.Message = e.Message;
+            }
+            finally
+            {
+                con.Close();
+            }
+            return lijstfeestdagen;
+        }
+    }
 }

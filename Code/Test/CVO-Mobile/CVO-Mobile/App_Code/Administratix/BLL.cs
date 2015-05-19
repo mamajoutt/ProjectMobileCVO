@@ -120,5 +120,13 @@ namespace Administratix.BLL
 
     }
 
+    public class Kalender
+    {
+        public int Id { get; set; }
+        public string Datum { get; set; }
+        public int IdSchooljaar { get; set; }
+        public string Omschrijving { get; set; }
+        //public int IdVerlofdagtype { get; set; }
+    }
 
 }

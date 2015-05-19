@@ -1,0 +1,86 @@
+﻿@{
+    string Message = "Alles gaat goed";
+
+    List<Administratix.BLL.Kalender> feestdagen = new List<Administratix.BLL.Kalender>();
+    string Action = "none";
+    bool Result = false;
+    if (IsPost)
+    {
+        Action = Request["Action"];
+        if (Request["search"] != null)
+        {
+            Action = "search";
+        }
+        switch (Action)
+        {
+            case "search":
+                feestdagen = Administratix.Model.Kalender.SelectFeestdagen(Request["Kalender-Date1"], Request["Kalender-Date2"]);
+                break;
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <header>
+        <div class="control-panel">
+            <a href="Default.cshtml">
+                <span class="icon-menu2"></span>
+                <span class="screen-reader-text">Home</span>
+            </a>
+        </div>
+        <h1>Administratix</h1>
+        <h1 id="Soort">Feestdagen</h1>
+    </header>
+    <main>
+        <aside>
+            <form id="search" action="" method="post">
+                <input type="text" name="Kalender-Date1" id="Kalender-Date1" /> <br />
+                <br />
+                <input type="text" name="Kalender-Date2" id="Kalender-Date2" /> <br />
+                <br />
+                <button type="submit" name="action" value="search">Feestdagen opvragen</button>
+                <button type="submit" name="action" value="cancel">Cancel</button>
+            </form>
+        </aside>
+        <!-- View controller -->
+        <form id="ViewTweedezit" action="" method="post">
+            @{
+                if (feestdagen.Count <= 0)
+                {
+                    <p>Fout</p>
+                }
+                else
+                {
+                    <table>
+                        <tr>
+                            <th>Datum</th>
+                            <th>IdSchooljaar</th>
+                            <th>Omschrijving</th>
+                        </tr>
+
+                        @foreach (Administratix.BLL.Kalender kal in feestdagen)
+                        {
+                            <tr>
+                                <td>@kal.Datum</td>
+                                <td>@kal.IdSchooljaar</td>
+                                <td>@kal.Omschrijving</td>
+                            </tr>
+                        }
+
+
+                    </table>
+                }
+            }
+        </form>
+    </main>
+    <footer>
+        @Message
+    </footer>
+</body>
+</html>
