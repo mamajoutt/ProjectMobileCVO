@@ -84,25 +84,10 @@
     </fieldset>
 </form>
 
-<div>
-    Action: @action
-</div>
-<div>
-    Token: @token
-</div>
-
-<div class="containerBig">
-    <div class="containerTitle">
-        This is a title
-    </div>
-    This is a message
-</div>
 
 @if (action == "viewing")
 {
-    <div>
-        requestTime: @requestTime
-    </div>
+
 
     
 
@@ -115,9 +100,6 @@
     }
     else
     {
-        <div>
-            CursistId: @cursistId
-        </div>
 
 
 
@@ -151,7 +133,14 @@
                     <div class="containerTitle">
                         Deadlines voor de komende 2 weken
                     </div>
-                    @foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
+
+                    @if (_upcommingDeadlines.Count == 0)
+                    {
+                        @:Je momenteel hebt geen deadlines in de komende 2 weken.
+                    }
+                    else { 
+
+                    foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
                     {
                         <div class="moodleAssignment">
                             @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
@@ -162,6 +151,7 @@
                                 </div>
                             }
                         </div>
+                    }
                     }
                 </div>
                 </div>

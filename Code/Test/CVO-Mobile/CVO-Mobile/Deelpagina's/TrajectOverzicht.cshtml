@@ -9,18 +9,22 @@
     List<KeyValuePair<int, int>> voorkennisPairs = new List<KeyValuePair<int, int>>();
     string action = "none";
     bool result = false;
-    if (IsPost)
-    {
-        action = Request["action"];
-        if (Request["search"] != null)
+    //if (IsPost)
+    //{
+    //    action = Request["action"];
+    //    if (Request["search"] != null)
+    //    {
+    //        action = "search";
+    //    }
+    //    switch (action)
+    //    {
+    //case "search":
+    //string cursistNr = Request["StatusTraject-CursistNummer"];
+    if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
         {
-            action = "search";
-        }
-        switch (action)
-        {
-            case "search":
+            string cursistNr = Session["cursistNummer"].ToString();
                 // Haal trajectmodules op
-                trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+            trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(cursistNr));
                 // Haal cursist resultaten op
                 resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
                 // Voeg punten toe een trajectmodules
@@ -29,11 +33,12 @@
                 voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
                 // Voeg nodige voorkennis toe aan trqjectmodules
                 Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
-                
+
                 //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
-                break;
-        }
+                
     }
+        @*}
+    }*@
 }
 
 <main>
@@ -49,7 +54,7 @@
         </div>
         <div class="legendeItems">
             <div class="legendeItem">
-                <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoede voorkennis.
+                <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoende voorkennis.
             </div>
             <div class="legendeItem">
                 <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.

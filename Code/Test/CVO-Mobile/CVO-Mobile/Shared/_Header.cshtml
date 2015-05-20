@@ -1,5 +1,27 @@
 ﻿@{
+
     Layout = null;
+
+    string action = "";
+
+    if (IsPost)
+    {
+        action = Request["action"];
+
+        if (action.Equals("login"))
+        {
+            Session["cursistNummer"] = Request["Login-CursistNummer"];
+        }
+        if (action.Equals("logout"))
+        {
+            Session["cursistNummer"] = null;
+        }
+
+
+
+    }
+
+
 }
 
 <!DOCTYPE html>
@@ -12,8 +34,23 @@
 <body>
     <div class="header">
         <img src="~/Images/Logo_CVOAntwerpen.png" />
-        <p>Cursist Nummer :<input type="text" /></p>
-        <button type="submit" name="action" value="Inloggen">Inloggen</button>
+        @if (Session["cursistNummer"] != null)
+        {
+            <form id="login" action="" method="post">
+                <button type="submit" name="action" value="logout">Log uit</button>
+            </form>
+            //Session["cursistNummer"].ToString();
+        }
+        else
+        {
+            <form id="login" action="" method="post">
+                <input type="text" name="Login-CursistNummer" id="Login-CursistNummer" />  <button type="submit" name="action" value="login">Inloggen</button>
+            </form>
+        }
+
+        @*<p>Cursist Nummer :<input type="text" /></p>*@
+        @*<button type="submit" name="action" value="Inloggen">Inloggen</button>*@
     </div>
 </body>
 </html>
+
