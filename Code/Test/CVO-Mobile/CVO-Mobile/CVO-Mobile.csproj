@@ -79,10 +79,13 @@
     <Content Include="Images\Logo_mobileCVO.jpg" />
     <Content Include="Images\nav_left.png" />
     <Content Include="Images\nav_right.png" />
+    <Content Include="Images\Note_Green.png" />
+    <Content Include="Images\Note_Red.png" />
     <Content Include="Images\traject.png" />
     <Content Include="Styles\App.css" />
     <Content Include="Styles\MoodleTest.css" />
     <Content Include="Styles\Site.css" />
+    <Content Include="Styles\TestFile.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +116,8 @@
     <Content Include="Shared\_Header.cshtml" />
     <Content Include="Shared\_Layout.cshtml" />
     <Content Include="Shared\_Nav.cshtml" />
+    <Content Include="TestPageDropDown.cshtml" />
+    <Content Include="Feestdagen.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -6,6 +6,9 @@
     
    
 }
+a:link,a:visited,a:hover,a:active {
+    text-decoration: none;
+}
 
 #main{
     clear:both;
@@ -53,7 +56,9 @@
     width:80px;
 }
 
-.Nav{
+
+/*Start nav code*/
+/*.Nav{
     clear:both;
     min-height:90px;
     box-sizing:border-box;
@@ -64,11 +69,6 @@
     font-size:38px;
     
 }
-
-/*.links img{
-background-color:green;
-margin-left:8%;
-}*/
 
 .links h2{
     margin-top:50px;
@@ -85,55 +85,84 @@ margin-left:8%;
     height:80px;
     margin-left:10%;
     
-}
-
-/*.Test{
-    width:80%;
-    position:absolute;
-}
-
-#Link1{
-    left:25%;
-}
-#Link2{
-    left:45%;
-}
-
-#Link3{
-    left:65%;
 }*/
 
-/*.Nav{
+.Nav{
     clear:both;
-    width:100%;
-    height:90px;
+    min-height:90px;
     box-sizing:border-box;
-    background-color:red;
 }
 
-.Navigation{
-    margin:10px;
-}
-
-.Icons h2{
-    margin-left:25%;
+.Nav img , ul h2,.spacing{
     float:left;
+    font-size:38px;
+    
 }
 
-.Nav .Navigation, .Nav .Icons, nav img{
-    float:left;
-}
-
-.Nav .Navigation img{
-    width:40px;
-    height:40px;
-}
+/*ul h2:not(.dropdown){
+    margin-top:50px;
+}*/
 
 .Nav img{
-    width:70px;
-    height:70px;
-}*/
+    width:40px;
+    height:40px;
+    margin:20px;
+}
 
+.Lists img{
+    width:80px;
+    height:80px;   
+}
+
+.Nav{
+    float:left;
+}
+
+nav li{
+    float:left;
+    list-style:none;
+    padding-right:2px;
+    display:inline;
+    margin-left:10%;
+}
+
+nav ul ul li{
+    clear:both;
+    white-space:nowrap;
+}
+
+nav ul ul {
+	display: none;
+}
+
+nav ul li:hover > ul {
+	display: block;
+    position:absolute;
+    margin-top:82px;
+   
+}
+
+nav ul li:hover > ul li a{
+    border:solid;
+    border-color:black;
+    border-width:0,5px;
+    background-color:#e66845;
+    width:150px;
+    height:20px;
+    margin-top:-1px;
+    margin-left:15px;
+    padding:5px;
+    display:block;
+    color:white;
+}
+
+nav ul li:hover > ul li a:hover {
+    background-color:#4388cc;
+    color:black;
+}
+
+
+/*Start footer code*/
 .footer{
     clear:both;
     position:fixed;
@@ -173,22 +202,36 @@ th {
     color: #FFF;
 }
 
-.img_StatusGroen {
+.img_StatusCirkelGroen {
     background-image: url('../Images/Circle_Green.png');
     width: 16px;
     height: 16px;
     display: inline-block;
 }
 
-.img_StatusOranje {
+.img_StatusCirkelOranje {
     background-image: url('../Images/Circle_Orange.png');
     width: 16px;
     height: 16px;
     display: inline-block;
 }
 
-.img_StatusRood {
+.img_StatusCirkelRood {
     background-image: url('../Images/Circle_Red.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusNoteRood {
+    background-image: url('../Images/Note_Red.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_StatusNoteGroen {
+    background-image: url('../Images/Note_Green.png');
     width: 16px;
     height: 16px;
     display: inline-block;
@@ -236,4 +279,25 @@ th {
     padding: 7px;
     font-size: large;
     color: #FFF
+}
+
+.containerLegende{
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.legendeItems{
+
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.legendeItem{
+    min-width: 280px;
 }

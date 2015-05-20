@@ -59,6 +59,8 @@ namespace Administratix.BLL
         public int Id { get; set; }
         public string Code { get; set; }
         public bool CrursistIsIngeschreven { get; set; }
+        public bool CursistIsGeslaagd { get; set; }
+        public bool CursistHeeftVoorkennis { get; set; }
         public double PuntenTotaal { get; set; }
         public string Naam { get; set; }
         public int Lestijden { get; set; }
@@ -118,5 +120,13 @@ namespace Administratix.BLL
 
     }
 
+    public class Kalender
+    {
+        public int Id { get; set; }
+        public string Datum { get; set; }
+        public int IdSchooljaar { get; set; }
+        public string Omschrijving { get; set; }
+        //public int IdVerlofdagtype { get; set; }
+    }
 
 }

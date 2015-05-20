@@ -55,7 +55,11 @@
                 }
 
                 _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
-                _deadlineOnDate = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1).First();
+                List<Moodle.BLL.Deadline> temp = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1);
+                if (temp.Count > 0) {
+                    _deadlineOnDate = temp.First();
+                }     
+                
             }
             DateTime end = DateTime.Now;
 
@@ -122,13 +126,22 @@
                 Deadlines voor specifieke dag (13/5)
 
                 <div class="moodleAssignment">
-                    @String.Format("{0:d/M/yyyy}", _deadlineOnDate.Date.Date)
-                    @foreach (Moodle.BLL.Assignment assignment in _deadlineOnDate.Assignments)
+                    @if (_deadlineOnDate.Date != DateTime.MinValue)
                     {
-                        <div class="moodleGrade">
-                            @assignment.CourseName : @assignment.Name<br />
-                        </div>
+                        String.Format("{0:d/M/yyyy}", _deadlineOnDate.Date.Date);
+                        foreach (Moodle.BLL.Assignment assignment in _deadlineOnDate.Assignments)
+                        {
+                            <div class="moodleGrade">
+                                @assignment.CourseName : @assignment.Name<br />
+                            </div>
+                        }
                     }
+                    else
+                    {
+                        @:Je hebt geen deadlines op deze datum
+                    }
+
+                    
                 </div>
             </div>
         </div>
