@@ -53,7 +53,11 @@
                 }
 
                 _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
-                _deadlineOnDate = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1).First();
+                List<Moodle.BLL.Deadline> temp = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1);
+                if (temp.Count > 0)
+                {
+                    _deadlineOnDate = temp.First();
+                }   
             }
             DateTime end = DateTime.Now;
 
