@@ -1,5 +1,29 @@
 ﻿@{
-    Layout = null;
+    /* Coordinating controller */
+    /* wat er altijd moet gebeuren is de lijst van de evenementen ophalen */
+    string message = "Alles gaat goed.";
+
+    List<Administratix.BLL.Evenement> evenementenLijst = Administratix.Model.Evenement.EvenementenTonen();
+    Administratix.BLL.Evenement evenement = new Administratix.BLL.Evenement();
+    string action = "none";
+    bool result = false;
+    if (IsPost)
+    {
+        action = Request["action"];
+        if (Request["viewing"] != null)
+        {
+            action = "viewing";
+        }
+        switch (action)
+        {
+            case "viewing":
+                evenement = Administratix.Model.Evenement.SelecteerEvenement(Convert.ToInt32(Request["viewing"]));
+                break;
+            case "inschrijven":
+                message = Administratix.Model.EvenementInschrijving.EvenementInschrijven(Request["cursistNummer-inschrijving"], Request["evenement-id"], Request["opmerkingen-inschrijving"]);
+                break;
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -7,11 +31,157 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title></title>
+    <title>Administratix - Events</title>
+    <link type="text/css" rel="stylesheet"
+          href="http://tower-pattern-3.anormapart.com/css/iconfont.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-    <div>
-    
-    </div>
+    <header>
+        <div class="control-panel">
+            <a href="Default.cshtml">
+                <span class="icon-menu2"></span>
+                <span class="screen-reader-text">Home</span>
+            </a>
+        </div>
+        <h1>Administratix</h1>
+        <h1 id="Soort">Events</h1>
+    </header>
+    <main>
+        <aside>
+            <form id="viewall" action="" method="post">
+                @{
+                    if (evenementenLijst.Count <= 0)
+                    {
+                        <p>Geen evenementen gevonden.</p>
+                    }
+                    else
+                    {
+                        <table>
+                            <tr>
+                                <th>Naam</th>
+                                <th>Datum</th>
+                                <th>Start</th>
+                                <th>Einde</th>
+                            </tr>
+                            @{
+                        foreach (Administratix.BLL.Evenement item in evenementenLijst)
+                        {
+                            <tr>
+                                <td>@item.Naam</td>
+                                <td>@item.Datum</td>
+                                <td>@item.Start</td>
+                                <td>@item.Eind</td>
+                                <td>
+                                    <button type="submit" name="viewing" class="fa fa-search" value="@item.Id"></button>
+                                </td>
+                            </tr>
+
+                        }
+                            }
+                        </table>
+                    }
+                }
+            </form>
+        </aside>
+        <!-- View controller -->
+        @{
+            switch (action)
+            {
+                case "viewing":
+                    <form id="viewing" method="post" action="">
+                        <fieldset>
+                            <legend>Details van evenement: <b>@evenement.Naam</b></legend>
+                            <div>
+                                <label for="naam-viewing">
+                                    Naam
+                                </label>
+                                <input type="text" name="naam-viewing" id="naam-viewing"
+                                       disabled value="@evenement.Naam" />
+                                <input type="hidden" name="evenement-id" id="evenement-id" value="@evenement.Id" />
+                                <label for="datum-viewing">
+                                    Datum
+                                </label>
+                                <input type="text" name="datum-viewing" id="datum-viewing"
+                                       disabled value="@evenement.Datum" />
+                                <label for="locatie-viewing">
+                                    Locatie
+                                </label>
+                                <input type="text" name="locatie-viewing" id="locatie-viewing"
+                                       disabled value="@evenement.Locatie" />
+                                <label for="startUur-viewing">
+                                    Start
+                                </label>
+                                <input type="text" name="startUur-viewing" id="startUur-viewing"
+                                       disabled value="@evenement.Start" />
+                                <label for="eindUur-viewing">
+                                    Einde
+                                </label>
+                                <input type="text" name="eindUur-viewing" id="eindUur-viewing"
+                                       disabled value="@evenement.Eind" />
+                            </div>
+                            <div>
+                                <button type="submit" name="action" value="inschrijving">Inschrijving</button>
+                                <button type="submit" name="action" value="cancel">Annuleren</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                    break;
+                case "inschrijving":
+                <form id="inschrijving" method="post" action="">
+                    <fieldset>
+                        <legend>Inschrijving voor evenement: <b>@evenement.Naam</b></legend>
+                        <div>
+                            <label for="naam-inschrijving">
+                                Naam
+                            </label>
+                            <input type="text" name="naam-inschrijving" id="naam-inschrijving"
+                                   disabled value="@evenement.Naam" />
+                            <input type="hidden" name="evenement-id" id="evenement-id" value="@evenement.Id" />
+                            <label for="datum-inschrijving">
+                                Datum
+                            </label>
+                            <input type="text" name="datum-inschrijving" id="datum-inschrijving"
+                                   disabled value="@evenement.Datum" />
+                            <label for="locatie-inschrijving">
+                                Locatie
+                            </label>
+                            <input type="text" name="locatie-inschrijving" id="locatie-inschrijving"
+                                   disabled value="@evenement.Locatie" />
+                            <label for="startUur-inschrijving">
+                                Start
+                            </label>
+                            <input type="text" name="startUur-inschrijving" id="startUur-inschrijving"
+                                   disabled value="@evenement.Start" />
+                            <label for="eindUur-inschrijving">
+                                Einde
+                            </label>
+                            <input type="text" name="eindUur-inschrijving" id="eindUur-inschrijving"
+                                   disabled value="@evenement.Eind" />
+                            <label for="cursistNummer-inschrijving">
+                                Cursistnummer
+                            </label>
+                            <input placeholder="Verplicht in te vullen!" type="text" required name="cursistNummer-inschrijving" id="cursistNummer-inschrijving"
+                                   value="" />
+                            <label for="opmerkingen-inschrijving">
+                                Opmerkingen
+                            </label>
+                            <textarea rows="4" cols="50" name="opmerkingen-inschrijving"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" name="action" value="inschrijven">Inschrijven</button>
+                            <button type="submit" name="action" value="cancel">Annuleren</button>
+                        </div>
+                    </fieldset>
+                 </form>
+                 break;
+            }
+}
+        
+    </main>
+    <footer>
+        @message
+    </footer>
 </body>
 </html>
+

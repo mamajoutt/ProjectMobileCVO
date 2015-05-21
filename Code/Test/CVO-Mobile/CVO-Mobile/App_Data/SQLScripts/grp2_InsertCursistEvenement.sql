@@ -16,10 +16,10 @@ go
 -- aanmaken van de procedure
 create procedure grp2_InsertCursistEvenement
 (
-	@Reservatiedatum datetime,
 	@IdCursist int,
 	@IdEvenement int,
 	@Opmerkingen nvarchar(255),
+	@Reservatiedatum datetime,
 	-- out omdat de waarde naar de calling
 	-- programma geretourneerd moet worden
 	@Id int out
@@ -47,7 +47,7 @@ insert into grp2_EvenementInschrijving
 values
 (
 	@Reservatiedatum,
-	@IdCursist,
+	(select Id from Cursist where CursistNummer = @IdCursist),
 	@IdEvenement,
 	@Opmerkingen
 )

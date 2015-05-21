@@ -9,12 +9,12 @@ namespace MobileCVO.DAL
 {
     interface IDal<TypeEntity>
     {
-        string message {get;} 
+        string Message {get;} 
         //bool Update(TypeEntity entity); 
-        //int Insert(TypeEntity entity); 
+        int Insert(TypeEntity entity); 
         //bool Delete(int Id); 
-        TypeEntity SelectOne(int cursistNummer);
-        List<TypeEntity> SelectAllByCursistNummer(int cursistNummer);
+        TypeEntity SelectOne(int id);
+        List<TypeEntity> SelectAll();
     }
 }
 
@@ -385,10 +385,23 @@ namespace Administratix.DAL
         }
     }
 
-    public class Evenement
+    public class Evenement : MobileCVO.DAL.IDal<BLL.Evenement>
     {
+        private string message;
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
 
-        public static List<BLL.Evenement> SelectAllEvenement()
+        public Evenement()
+        {
+            this.message = "";
+        }
+
+        public List<BLL.Evenement> SelectAll()
         {
             List<BLL.Evenement> evenementenLijst = new List<BLL.Evenement>();
 
@@ -406,13 +419,13 @@ namespace Administratix.DAL
             command.CommandText = sqlString;
 
             command.Connection = connection;
-            //this.message = "Niets te melden";
+            this.message = "Niets te melden";
 
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
+                this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -421,8 +434,9 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.Evenement evenement = new BLL.Evenement();
+                            evenement.Id = (int)result["Id"];
                             evenement.Naam = result["Naam"].ToString();
-                            evenement.Datum = Convert.ToDateTime(result["Datum"].ToString());
+                            evenement.Datum = result["Datum"].ToString();
                             evenement.Locatie = result["Locatie"].ToString();
                             evenement.Start = result["StartUur"].ToString();
                             evenement.Eind = result["EindUur"].ToString();
@@ -435,7 +449,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                this.message = e.Message;
             }
             finally
             {
@@ -443,6 +457,172 @@ namespace Administratix.DAL
             }
 
             return evenementenLijst;
+        }
+
+
+        public BLL.Evenement SelectOne(int id)
+        {
+            Administratix.BLL.Evenement evenement = new BLL.Evenement();
+            // geen plain vanilla sql statement meegeven,
+            // parameters gebruiken
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+            // Sqlcommand object
+            SqlCommand command = new SqlCommand();
+            // in de CommandText eigenschap stoppen de naam
+            // van de stored procedure
+            string sqlString = "grp2_SelectOneEvenementById";
+
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@Id",
+               SqlDbType.Int)).Value = id;
+            // zeg aan het command object dat het een tored procedure
+            // zal krijgen en geen SQL Statement
+            command.CommandType = CommandType.StoredProcedure;
+            // stop het sql statement in het command object
+            command.CommandText = sqlString;
+            // geeft het connection object door aan het command object
+            command.Connection = connection;
+            this.message = "Niets te melden";
+            // we gaan ervan uit dat het mislukt
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                // retourneert het aantal rijen dat geïnserted werd
+                this.message = "De database is klaar!";
+                // voeg using toe om er voor te zorgen dat
+                // de datareader gesloten wordt als we die niet
+                // meer nodig hebben
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        result.Read();
+                        evenement.Id = (int)result["Id"];
+                        evenement.Naam = result["Naam"].ToString();
+                        evenement.Datum = result["Datum"].ToString();
+                        evenement.Locatie = result["Locatie"].ToString();
+                        evenement.Start = result["StartUur"].ToString();
+                        evenement.Eind = result["EindUur"].ToString();
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return evenement;
+        }
+
+
+        public int Insert(BLL.Evenement entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EvenementInschrijving : MobileCVO.DAL.IDal<BLL.EvenementInschrijving>
+    {
+
+        private string message;
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
+
+        public EvenementInschrijving()
+        {
+            this.message = "";
+        }
+
+        public int Insert(BLL.EvenementInschrijving inschrijvingEvenement)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+            // Sqlcommand object
+            SqlCommand command = new SqlCommand();
+            // in de CommandText eigenschap stoppen de naam
+            // van de stored procedure
+            string sqlString = "grp2_InsertCursistEvenement";
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@IdCursist",
+                SqlDbType.Int)).Value = inschrijvingEvenement.IdCursist;
+            command.Parameters.Add(new SqlParameter("@IdEvenement",
+                SqlDbType.Int)).Value = inschrijvingEvenement.IdEvenement;
+            command.Parameters.Add(new SqlParameter("@Opmerkingen",
+                SqlDbType.NVarChar, 255)).Value = inschrijvingEvenement.Opmerkingen;
+            command.Parameters.Add(new SqlParameter("@ReservatieDatum",
+                SqlDbType.DateTime)).Value = DateTime.Now;
+            SqlParameter id = new SqlParameter("@Id", SqlDbType.Int);
+            id.Direction = ParameterDirection.Output;
+            command.Parameters.Add(id);
+            // zeg aan het command object dat het een tored procedure
+            // zal krijgen en geen SQL Statement
+            command.CommandType = CommandType.StoredProcedure;
+            // stop het sql statement in het command object
+            command.CommandText = sqlString;
+            // geeft het connection object door aan het command object
+            command.Connection = connection;
+            this.message = "Niets te melden";
+            // we gaan ervan uit dat het mislukt
+            int result = 0;
+            try
+            {
+                connection.Open();
+                // retourneert het aantal rijen dat geïnserted werd
+                this.message = "De database is klaar!";
+                result = command.ExecuteNonQuery();
+                // we moeten kijken naar de waarde van out parameter
+                // van Insert stored procedure. Als de naam van de
+                // category al bestaat, retourneert de out parameter van
+                // de stored procedure
+                // -1
+                if ((int)id.Value == -100)
+                {
+                    this.message = String.Format("U bent reeds ingeschreven voor dit evenement.");
+                    result = -100;
+                }
+                else if (result <= 0)
+                {
+                    this.message = String.Format("Uw inschrijving voor dit evenement is niet geregistreerd, probeer het nog een keer.");
+                }
+                else
+                {
+                    message = String.Format("Uw inschrijving voor dit evenement is succesvol afgerond!");
+                    result = (int)id.Value;
+                }
+            }
+            catch (SqlException e)
+            {
+                this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return result; // 0 of de Id van de nieuwe rij
+        }
+
+        public BLL.EvenementInschrijving SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.EvenementInschrijving> SelectAll()
+        {
+            throw new NotImplementedException();
         }
     }
 

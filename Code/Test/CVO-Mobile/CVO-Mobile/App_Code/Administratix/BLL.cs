@@ -90,12 +90,23 @@ namespace Administratix.BLL
     /// </summary> 
     public class Evenement
     {
+        public int Id { get; set; }
         public string Naam { get; set; }
-        public DateTime Datum { get; set; }
+        public string Datum { get; set; }
         public string Locatie { get; set; }
         public string Start { get; set; }
         public string Eind { get; set; }
 
+    }
+
+    public class EvenementInschrijving
+    {
+        public int Id { get; set; }
+        public DateTime ReservatieDatum { get; set; }
+        public int IdCursist { get; set; }
+        public string CursistNummer { get; set; }
+        public int IdEvenement { get; set; }
+        public string Opmerkingen { get; set; }
     }
 
     /// <summary> 

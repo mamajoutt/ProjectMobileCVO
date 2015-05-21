@@ -15,13 +15,34 @@ namespace Administratix
             }
         }
 
-        //public class Evenement
-        //{
-        //    public static List<BLL.Evenement> EvenementenTonen()
-        //    {
-        //        return DAL.Evenement.SelectAllEvenement();
-        //    }
-        //}
+        public class Evenement
+        {
+            public static List<BLL.Evenement> EvenementenTonen()
+            {
+                Administratix.DAL.Evenement dal = new DAL.Evenement();
+                return dal.SelectAll();
+            }
+
+            public static Administratix.BLL.Evenement SelecteerEvenement(int id)
+            {
+                Administratix.DAL.Evenement dal = new DAL.Evenement();
+                return dal.SelectOne(id);
+            }
+        }
+
+        public class EvenementInschrijving
+        {
+            public static string EvenementInschrijven(string idCursist, string idEvenement, string opmerkingen)
+            {
+                Administratix.BLL.EvenementInschrijving evenementInschrijving = new BLL.EvenementInschrijving();
+                evenementInschrijving.IdCursist = Convert.ToInt32(idCursist);
+                evenementInschrijving.IdEvenement = Convert.ToInt32(idEvenement);
+                evenementInschrijving.Opmerkingen = opmerkingen;
+                Administratix.DAL.EvenementInschrijving dal = new DAL.EvenementInschrijving();
+                dal.Insert(evenementInschrijving);
+                return dal.Message;
+            }
+        }
 
         public class CursusResultaat
         {
@@ -132,14 +153,6 @@ namespace Administratix
             public static List<BLL.DelibiratieDate> SelectDeliberatieDateByCursistNummer(int cursistNummer)
             {
                 return DAL.DelibiratieDate.SelectDeliberatieDateByCursistNummer(cursistNummer);
-            }
-        }
-
-        public class Evenement
-        {
-            public static List<BLL.Evenement> SelectAllEvenement()
-            {
-                return DAL.Evenement.SelectAllEvenement();
             }
         }
 
