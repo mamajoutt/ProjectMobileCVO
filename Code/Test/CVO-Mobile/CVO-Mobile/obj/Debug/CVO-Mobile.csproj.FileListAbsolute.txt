@@ -34,3 +34,15 @@ C:\Users\Jo\Desktop\Nieuwe map\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\
 C:\Users\Jo\Desktop\Nieuwe map\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.csprojResolveAssemblyReference.cache
 C:\Users\Jo\Desktop\Nieuwe map\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.dll
 C:\Users\Jo\Desktop\Nieuwe map\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.pdb
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\CVO-Mobile.dll.config
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\CVO-Mobile.dll
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\CVO-Mobile.pdb
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\Newtonsoft.Json.dll
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\RazorEngine.dll
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\System.Web.Razor.dll
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\Newtonsoft.Json.xml
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\RazorEngine.xml
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\bin\System.Web.Razor.xml
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.csprojResolveAssemblyReference.cache
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.dll
+C:\Users\12405\Desktop\ProjectMobileCVO\Code\Test\CVO-Mobile\CVO-Mobile\obj\Debug\CVO-Mobile.pdb

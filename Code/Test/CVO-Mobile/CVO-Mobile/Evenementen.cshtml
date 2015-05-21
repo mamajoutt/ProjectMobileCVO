@@ -19,6 +19,9 @@
             case "viewing":
                 evenement = Administratix.Model.Evenement.SelecteerEvenement(Convert.ToInt32(Request["viewing"]));
                 break;
+            case "inschrijving":
+                evenement = Administratix.Model.Evenement.SelecteerEvenement(Convert.ToInt32(Request["evenement-id"]));
+                break;
             case "inschrijven":
                 message = Administratix.Model.EvenementInschrijving.EvenementInschrijven(Request["cursistNummer-inschrijving"], Request["evenement-id"], Request["opmerkingen-inschrijving"]);
                 break;

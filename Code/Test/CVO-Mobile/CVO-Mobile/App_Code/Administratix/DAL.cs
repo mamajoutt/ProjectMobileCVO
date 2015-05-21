@@ -557,7 +557,7 @@ namespace Administratix.DAL
             // van de stored procedure
             string sqlString = "grp2_InsertCursistEvenement";
             // shortcut to add parameter
-            command.Parameters.Add(new SqlParameter("@IdCursist",
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
                 SqlDbType.Int)).Value = inschrijvingEvenement.IdCursist;
             command.Parameters.Add(new SqlParameter("@IdEvenement",
                 SqlDbType.Int)).Value = inschrijvingEvenement.IdEvenement;
