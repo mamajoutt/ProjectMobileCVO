@@ -16,7 +16,7 @@ go
 -- aanmaken van de procedure
 create procedure grp2_InsertCursistEvenement
 (
-	@IdCursist int,
+	@CursistNummer int,
 	@IdEvenement int,
 	@Opmerkingen nvarchar(255),
 	@Reservatiedatum datetime,
@@ -25,10 +25,12 @@ create procedure grp2_InsertCursistEvenement
 	@Id int out
 )
 as
- 
+begin
 declare @CurrentId int
-select @CurrentId = Id from grp2_EvenementInschrijving where IdCursist = @IdCursist and IdEvenement = @IdEvenement
- 
+declare @CursistId int
+select @CursistId = Id from Cursist where CursistNummer = @CursistNummer
+select @CurrentId = Id from grp2_EvenementInschrijving where IdCursist = @CursistId and IdEvenement = @IdEvenement
+
 if @CurrentId is not null
 begin 
 	--cursist is al ingeschreven voor evenement
@@ -47,7 +49,7 @@ insert into grp2_EvenementInschrijving
 values
 (
 	@Reservatiedatum,
-	(select Id from Cursist where CursistNummer = @IdCursist),
+	@CursistId,
 	@IdEvenement,
 	@Opmerkingen
 )
@@ -55,6 +57,6 @@ values
 -- Retourneert de Id van de nieuw toegevoegde rij.
 set @Id = SCOPE_IDENTITY()
 return
- 
+end
  
  
