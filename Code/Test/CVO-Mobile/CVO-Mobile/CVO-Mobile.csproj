@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\TempTest.css" />
+    <Content Include="Images\Circle_Blue.png" />
     <Content Include="Images\Circle_Green.png" />
     <Content Include="Images\Circle_Orange.png" />
     <Content Include="Images\Circle_Red.png" />

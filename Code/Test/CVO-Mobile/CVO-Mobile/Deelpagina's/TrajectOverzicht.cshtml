@@ -1,14 +1,11 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "Frieda";
-    string message = "Alles gaat goed.";
 
     List<Administratix.BLL.StatusTraject> Resultaat = new List<Administratix.BLL.StatusTraject>();
     List<Administratix.BLL.Module> trajectModules = new List<Administratix.BLL.Module>();
     List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
     List<KeyValuePair<int, int>> voorkennisPairs = new List<KeyValuePair<int, int>>();
-    string action = "none";
-    bool result = false;
     //if (IsPost)
     //{
     //    action = Request["action"];
@@ -21,79 +18,117 @@
     //case "search":
     //string cursistNr = Request["StatusTraject-CursistNummer"];
     if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
-        {
-            string cursistNr = Session["cursistNummer"].ToString();
-                // Haal trajectmodules op
-            trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(cursistNr));
-                // Haal cursist resultaten op
-                resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
-                // Voeg punten toe een trajectmodules
-                trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
-                // Haal nodige voorkenis op, 140 == Informatica
-                voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
-                // Voeg nodige voorkennis toe aan trqjectmodules
-                Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
+    {
+        string cursistNr = Session["cursistNummer"].ToString();
+        // Haal trajectmodules op
+        trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(cursistNr));
+        // Haal cursist resultaten op
+        resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(cursistNr));
+        // Voeg punten toe een trajectmodules
+        trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
+        // Haal nodige voorkenis op, 140 == Informatica
+        voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
+        // Voeg nodige voorkennis toe aan trqjectmodules
+        Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
 
-                //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
-                
+        //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
+
     }
-        @*}
-    }*@
+    @*}
+        }*@
 }
 
 <main>
-    <aside>
-        <form id="search" action="" method="post">
-            <input type="text" name="StatusTraject-CursistNummer" id="StatusTraject-CursistNummer" />  <button type="submit" name="action" value="search">StatusTraject opvragen</button>
-        </form>
-    </aside>
-    <!-- View controller -->
-    <div class="containerLegende">
-        <div class="containerTitle">
-            Legende
-        </div>
-        <div class="legendeItems">
-            <div class="legendeItem">
-                <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoende voorkennis.
+    <div id="centerContainer">
+        <!-- View controller -->
+        <div class="containerLegende">
+            <div class="containerTitle">
+                Legende
             </div>
-            <div class="legendeItem">
-                <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.
-            </div>
-            <div class="legendeItem">
-                <img class="img_StatusCirkelGroen" /> Ingeschreven, geslaagd.
-            </div>
-            <div class="legendeItem">
-                <img class="img_StatusCirkelOranje" /> Ingeschreven, nog geen resultaat.
-            </div>
-            <div class="legendeItem">
-                <img class="img_StatusCirkelRood" /> Ingeschreven, niet geslaagd.
+            <div class="legendeItems">
+                <div class="legendeItem">
+                    <img class="img_StatusCirkelBlauw" /> Ingeschreven, nog geen resultaat.
+                </div>
+                <div class="legendeItem">
+                    <img class="img_StatusCirkelGroen" /> Ingeschreven, geslaagd.
+                </div>
+                <div class="legendeItem">
+                    <img class="img_StatusCirkelRood" /> Ingeschreven, niet geslaagd.
+                </div>
+                <div class="legendeItem">
+                    <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoende voorkennis.
+                </div>
+                <div class="legendeItem">
+                    <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.
+                </div>
             </div>
         </div>
-    </div>
 
-        @{
-            if (trajectModules.Count <= 0)
-            {
-                <p>Je bent nog niet ingeschreven in een traject.</p>
-            }
-            else
-            {
-                <table>
-                    <tr>
-                        <th>Naam</th>
-                        <th>Voorkennis</th>
-                    </tr>
-                    @foreach (Administratix.BLL.Module module in trajectModules)
-                    {
-                        <tr>
-                            <td>
-                                @if (module.CrursistIsIngeschreven)
+        @if (trajectModules.Count <= 0)
+        {
+            <p>Je bent nog niet ingeschreven in een traject.</p>
+        }
+        else
+        {
+            <div class="containerTraject">
+                <div class="itemTraject titleTraject">Naam</div>
+                <div class="itemTraject titleTraject">Voorkennis</div>
+                @for (int i = 0; i < trajectModules.Count; i++)
+                {
+                    Administratix.BLL.Module module = trajectModules[i];
+                    @*}
+                        @foreach (Administratix.BLL.Module module in trajectModules)
+                        {*@
+
+                    <div class="itemTraject @(i%2 == 0 ? "":"shaded")">
+
+                        @if (module.CrursistIsIngeschreven)
+                        {
+                            // Cursist is ingeschreven, geef punte status weer
+                            if (module.PuntenTotaal > 0)
+                            {
+                                // Cursist heeft punten
+                                if (module.CursistIsGeslaagd)
                                 {
-                                    // Cursist is ingeschreven, geef punte status weer
-                                    if (module.PuntenTotaal > 0)
+                                    <img class="img_StatusCirkelGroen" />
+                                }
+                                else
+                                {
+                                    <img class="img_StatusCirkelRood" />
+                                }
+                            }
+                            else
+                            {
+                                // Cursist heeft nog geen punten
+                                <img class="img_StatusCirkelBlauw" />
+                            }
+                        }
+                        else
+                        {
+                            // Cursist is niet ingeschreven, geen inschrijf status weer
+                            if (module.CursistHeeftVoorkennis)
+                            {
+                                <img class="img_StatusNoteGroen" />
+                            }
+                            else
+                            {
+                                <img class="img_StatusNoteRood" />
+                            }
+                        }
+                        @module.Naam
+                    </div>
+
+                    <div class="itemTraject @(i%2 == 0 ? "":"shaded")">
+                        @foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
+                        {
+                            <div>
+                                @if (voorkennis.CrursistIsIngeschreven)
+                                {
+
+                                    if (voorkennis.PuntenTotaal > 0)
                                     {
                                         // Cursist heeft punten
-                                        if (module.CursistIsGeslaagd)
+                                        if (voorkennis.CursistIsGeslaagd)
                                         {
                                             <img class="img_StatusCirkelGroen" />
                                         }
@@ -105,13 +140,14 @@
                                     else
                                     {
                                         // Cursist heeft nog geen punten
-                                        <img class="img_StatusCirkelOranje" />
+                                        <img class="img_StatusCirkelBlauw" />
+
                                     }
                                 }
                                 else
                                 {
                                     // Cursist is niet ingeschreven, geen inschrijf status weer
-                                    if (module.CursistHeeftVoorkennis)
+                                    if (voorkennis.CursistHeeftVoorkennis)
                                     {
                                         <img class="img_StatusNoteGroen" />
                                     }
@@ -120,6 +156,60 @@
                                         <img class="img_StatusNoteRood" />
                                     }
                                 }
+
+                                @voorkennis.Naam
+                            </div>
+                        }
+                    </div>
+
+
+
+                }
+            </div>
+        }
+
+        @*<table>
+                <tr>
+                    <th>Naam</th>
+                    <th>Voorkennis</th>
+                </tr>
+                @foreach (Administratix.BLL.Module module in trajectModules)
+                {
+                    <tr>
+                        <td>
+                            @if (module.CrursistIsIngeschreven)
+                            {
+                                // Cursist is ingeschreven, geef punte status weer
+                                if (module.PuntenTotaal > 0)
+                                {
+                                    // Cursist heeft punten
+                                    if (module.CursistIsGeslaagd)
+                                    {
+                                        <img class="img_StatusCirkelGroen" />
+                                    }
+                                    else
+                                    {
+                                        <img class="img_StatusCirkelRood" />
+                                    }
+                                }
+                                else
+                                {
+                                    // Cursist heeft nog geen punten
+                                    <img class="img_StatusCirkelOranje" />
+                                }
+                            }
+                            else
+                            {
+                                // Cursist is niet ingeschreven, geen inschrijf status weer
+                                if (module.CursistHeeftVoorkennis)
+                                {
+                                    <img class="img_StatusNoteGroen" />
+                                }
+                                else
+                                {
+                                    <img class="img_StatusNoteRood" />
+                                }
+                            }
                             @module.Naam
                         </td>
                         <td>
@@ -168,8 +258,9 @@
 
                         </td>
                     </tr>
-                    }
-                </table>
-            }
-        }
+                }
+            </table>*@
+
+
+    </div>
 </main>

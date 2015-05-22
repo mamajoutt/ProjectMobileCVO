@@ -10,10 +10,18 @@ a:link,a:visited,a:hover,a:active {
     text-decoration: none;
 }
 
+main{
+    display:flex;
+    width:100%;
+    align-items:center;
+    justify-content:center;
+}
+
 #main{
     clear:both;
-    margin:25px;
+    /*margin:25px;*/
     margin-bottom:100px;
+
 }
 
 .header{
@@ -202,6 +210,12 @@ th {
     color: #FFF;
 }
 
+#centerContainer{
+    max-width: 1000px;
+    width: 85%;
+    min-width: 320px;
+}
+
 .img_StatusCirkelGroen {
     background-image: url('../Images/Circle_Green.png');
     width: 16px;
@@ -209,8 +223,8 @@ th {
     display: inline-block;
 }
 
-.img_StatusCirkelOranje {
-    background-image: url('../Images/Circle_Orange.png');
+.img_StatusCirkelBlauw {
+    background-image: url('../Images/Circle_Blue.png');
     width: 16px;
     height: 16px;
     display: inline-block;
@@ -255,7 +269,7 @@ th {
 
 .containerBig{
     width:100%;
-    border: thin solid #DB5C3D;
+    border: 2px solid #DB5C3D;
 }
 
 .containerSmall{
@@ -263,7 +277,7 @@ th {
     display: flex;
     width: 300px;
     flex-grow: 0;
-    border: thin solid #DB5C3D;
+    border: 2px solid #DB5C3D;
 }
 
 .containerOfAllThingsTiny{
@@ -273,31 +287,66 @@ th {
     display: flex;
 }
 
+
+
+.containerLegende{
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
 .containerTitle {
-    display : flexbox;
+    display : block;
+    width: 100%;
+    box-sizing:border-box;
     background-color: #DB5C3D;
     padding: 7px;
     font-size: large;
     color: #FFF
 }
 
-.containerLegende{
-    align-items:flex-start;
-    justify-content:space-between;
-    flex-direction: row;
-    display: flex;
-    flex-wrap: wrap;
-}
 
 .legendeItems{
-
+    align-content:flex-end;
     align-items:flex-start;
-    justify-content:space-between;
+    justify-content:flex-start;
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
+    border: 2px solid #DB5C3D;
 }
 
 .legendeItem{
-    min-width: 280px;
+    width: 30%;
+    min-width: 300px;
+    padding:5px;
+}
+
+.containerTraject{
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px solid #DB5C3D;
+}
+
+.itemTraject{
+    width: 50%;
+    padding: 4px 0px 4px 7px;
+    display: block;
+    box-sizing:border-box;
+}
+
+.shaded{
+    background-color:#FFF5F5;
+}
+
+.titleTraject{
+    display: block;
+    box-sizing:border-box;
+    background-color: #DB5C3D;
+    padding: 7px;
+    font-size: large;
+    color: #FFF
 }
