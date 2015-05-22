@@ -17,13 +17,13 @@ namespace Administratix
 
         public class Evenement
         {
-            public static List<BLL.Evenement> EvenementenTonen()
+            public static List<BLL.Evenement> EvenementSelectAll()
             {
                 Administratix.DAL.Evenement dal = new DAL.Evenement();
                 return dal.SelectAll();
             }
 
-            public static Administratix.BLL.Evenement SelecteerEvenement(int id)
+            public static Administratix.BLL.Evenement EvenementSelectOne(int id)
             {
                 Administratix.DAL.Evenement dal = new DAL.Evenement();
                 return dal.SelectOne(id);
@@ -32,7 +32,7 @@ namespace Administratix
 
         public class EvenementInschrijving
         {
-            public static string EvenementInschrijven(string idCursist, string idEvenement, string opmerkingen)
+            public static string EvenementInschrijvingInsert(string idCursist, string idEvenement, string opmerkingen)
             {
                 Administratix.BLL.EvenementInschrijving evenementInschrijving = new BLL.EvenementInschrijving();
                 evenementInschrijving.IdCursist = Convert.ToInt32(idCursist);
@@ -92,7 +92,7 @@ namespace Administratix
                     {
                         if (resultaat.IdModuleVariant == module.Id)
                         {
-                            module.CrursistIsIngeschreven = true;
+                            module.CursistIsIngeschreven = true;
                             module.PuntenTotaal = resultaat.PuntenTotaal;
                             if (module.PuntenTotaal > 50)
                             {
@@ -124,7 +124,7 @@ namespace Administratix
             {
                 foreach (BLL.Module voorkennis in module.VoorkennisModules)
                 {
-                    if (!voorkennis.CrursistIsIngeschreven || !voorkennis.CursistIsGeslaagd)
+                    if (!voorkennis.CursistIsIngeschreven || !voorkennis.CursistIsGeslaagd)
                     {
                         return false;
                     }
@@ -148,11 +148,12 @@ namespace Administratix
 
         }
 
-        public class DelibiratieDate
+        public class ExDel2deZitDate
         {
-            public static List<BLL.DelibiratieDate> SelectDeliberatieDateByCursistNummer(int cursistNummer)
+            public static List<Administratix.BLL.ExDel2deZitDate> ExDel2deZitDateSelectAll(int cursistNummer)
             {
-                return DAL.DelibiratieDate.SelectDeliberatieDateByCursistNummer(cursistNummer);
+                Administratix.DAL.ExDel2deZitDate dal = new DAL.ExDel2deZitDate();
+                return dal.SelectAllByCursistNummer(cursistNummer);
             }
         }
 

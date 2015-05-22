@@ -58,7 +58,7 @@ namespace Administratix.BLL
     {
         public int Id { get; set; }
         public string Code { get; set; }
-        public bool CrursistIsIngeschreven { get; set; }
+        public bool CursistIsIngeschreven { get; set; }
         public bool CursistIsGeslaagd { get; set; }
         public bool CursistHeeftVoorkennis { get; set; }
         public double PuntenTotaal { get; set; }
@@ -73,15 +73,18 @@ namespace Administratix.BLL
     }
 
     /// <summary> 
-    /// Class definition Delibiratie 
-    /// Used in DAL.DelibiratieDate
+    /// Class definition ExDel2deZitDate 
+    /// Used in DAL.ExDel2deZitDate
     /// </summary> 
-    public class DelibiratieDate
+    public class ExDel2deZitDate
     {
-        public int Cursusnummer { get; set; }
+        public string Cursusnummer { get; set; }
         public string Module { get; set; }
+        public string AanvangsDatum { get; set; }
+        public string EindDatum { get; set; }
+        public string ExamenDatum { get; set; }
         public string DeliberatieDatum { get; set; }
-        public DateTime TweedeZitDatum { get; set; }
+        public string DatumTweedeZit { get; set; }
     }
 
     /// <summary> 

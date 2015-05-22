@@ -3,7 +3,7 @@
     /* wat er altijd moet gebeuren is de lijst van de evenementen ophalen */
     string message = "Alles gaat goed.";
 
-    List<Administratix.BLL.Evenement> evenementenLijst = Administratix.Model.Evenement.EvenementenTonen();
+    List<Administratix.BLL.Evenement> evenementenLijst = Administratix.Model.Evenement.EvenementSelectAll();
     Administratix.BLL.Evenement evenement = new Administratix.BLL.Evenement();
     string action = "none";
     bool result = false;
@@ -17,13 +17,13 @@
         switch (action)
         {
             case "viewing":
-                evenement = Administratix.Model.Evenement.SelecteerEvenement(Convert.ToInt32(Request["viewing"]));
+                evenement = Administratix.Model.Evenement.EvenementSelectOne(Convert.ToInt32(Request["viewing"]));
                 break;
             case "inschrijving":
-                evenement = Administratix.Model.Evenement.SelecteerEvenement(Convert.ToInt32(Request["evenement-id"]));
+                evenement = Administratix.Model.Evenement.EvenementSelectOne(Convert.ToInt32(Request["evenement-id"]));
                 break;
             case "inschrijven":
-                message = Administratix.Model.EvenementInschrijving.EvenementInschrijven(Request["cursistNummer-inschrijving"], Request["evenement-id"], Request["opmerkingen-inschrijving"]);
+                message = Administratix.Model.EvenementInschrijving.EvenementInschrijvingInsert(Request["cursistNummer-inschrijving"], Request["evenement-id"], Request["opmerkingen-inschrijving"]);
                 break;
         }
     }

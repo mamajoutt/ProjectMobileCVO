@@ -88,7 +88,7 @@
 
                     <div class="itemTraject @(i%2 == 0 ? "":"shaded")">
 
-                        @if (module.CrursistIsIngeschreven)
+                        @if (module.CursistIsIngeschreven)
                         {
                             // Cursist is ingeschreven, geef punte status weer
                             if (module.PuntenTotaal > 0)
@@ -128,7 +128,7 @@
                         @foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
                         {
                             <div>
-                                @if (voorkennis.CrursistIsIngeschreven)
+                                @if (voorkennis.CursistIsIngeschreven)
                                 {
 
                                     if (voorkennis.PuntenTotaal > 0)

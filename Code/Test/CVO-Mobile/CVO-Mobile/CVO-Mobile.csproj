@@ -119,6 +119,7 @@
     <Content Include="Shared\_Nav.cshtml" />
     <Content Include="TestPageDropDown.cshtml" />
     <Content Include="Feestdagen.cshtml" />
+    <Content Include="ExDel2deZitDate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -15,6 +15,7 @@ namespace MobileCVO.DAL
         //bool Delete(int Id); 
         TypeEntity SelectOne(int id);
         List<TypeEntity> SelectAll();
+        List<TypeEntity> SelectAllByCursistNummer(int cursistNummer);
     }
 }
 
@@ -322,12 +323,41 @@ namespace Administratix.DAL
         }
     }
 
-    public class DelibiratieDate
+    public class ExDel2deZitDate : MobileCVO.DAL.IDal<BLL.ExDel2deZitDate>
     {
-
-        public static List<BLL.DelibiratieDate> SelectDeliberatieDateByCursistNummer(int cursistNummer)
+        private string message;
+        public string Message
         {
-            List<BLL.DelibiratieDate> resultaten = new List<BLL.DelibiratieDate>();
+            get
+            {
+                return message;
+            }
+        }
+
+        public ExDel2deZitDate()
+        {
+            this.message = "";
+        }
+
+        public int Insert(BLL.ExDel2deZitDate entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BLL.ExDel2deZitDate SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.ExDel2deZitDate> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<BLL.ExDel2deZitDate> SelectAllByCursistNummer(int cursistNummer)
+        {
+            List<BLL.ExDel2deZitDate> exDel2deZitDateLijst = new List<BLL.ExDel2deZitDate>();
 
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
@@ -336,23 +366,23 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectDeliberatieDateByCursistNummer";
-
-            command.Parameters.Add(new SqlParameter("@CursistNummer",
-               SqlDbType.Int)).Value = cursistNummer;
+            string sqlString = "grp2_SelectExDel2deZitDateByCursistNummer";
 
             command.CommandType = CommandType.StoredProcedure;
 
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
             command.CommandText = sqlString;
 
             command.Connection = connection;
-            //this.message = "Niets te melden";
+            this.message = "Niets te melden";
 
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
+                this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -360,13 +390,15 @@ namespace Administratix.DAL
                     {
                         while (result.Read())
                         {
-                            BLL.DelibiratieDate resultaat = new BLL.DelibiratieDate();
-                            resultaat.Module = result["Module"].ToString();
-                            resultaat.Cursusnummer = Convert.ToInt32(result["Cursusnummer"].ToString());
-                            resultaat.DeliberatieDatum = result["DeliberatieDatum"].ToString();
-                            resultaat.TweedeZitDatum = Convert.ToDateTime(result["TweedeZitDatum"].ToString());
-
-                            resultaten.Add(resultaat);
+                            BLL.ExDel2deZitDate exDel2deZitDate = new BLL.ExDel2deZitDate();
+                            exDel2deZitDate.Cursusnummer = result["CursusNummer"].ToString();
+                            exDel2deZitDate.Module = result["Module"].ToString();
+                            exDel2deZitDate.AanvangsDatum = result["AanvangsDatum"].ToString();
+                            exDel2deZitDate.EindDatum = result["EindDatum"].ToString();
+                            exDel2deZitDate.ExamenDatum = result["ExamenDatum"].ToString();
+                            exDel2deZitDate.DeliberatieDatum = result["DeliberatieDatum"].ToString();
+                            exDel2deZitDate.DatumTweedeZit = result["DatumTweedeZit"].ToString();
+                            exDel2deZitDateLijst.Add(exDel2deZitDate);
                         }
 
                     }
@@ -374,14 +406,14 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                this.message = e.Message;
             }
             finally
             {
                 connection.Close();
             }
 
-            return resultaten;
+            return exDel2deZitDateLijst;
         }
     }
 
@@ -526,6 +558,12 @@ namespace Administratix.DAL
         {
             throw new NotImplementedException();
         }
+
+
+        public List<BLL.Evenement> SelectAllByCursistNummer(int cursistNummer)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class EvenementInschrijving : MobileCVO.DAL.IDal<BLL.EvenementInschrijving>
@@ -621,6 +659,12 @@ namespace Administratix.DAL
         }
 
         public List<BLL.EvenementInschrijving> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<BLL.EvenementInschrijving> SelectAllByCursistNummer(int cursistNummer)
         {
             throw new NotImplementedException();
         }
