@@ -1,181 +1,189 @@
 ﻿@{
     Layout = "~/Shared/_Layout.cshtml";
-    Page.Title = "Frieda";
+    Page.Title = "Deadlines";
+
+    if (IsPost)
+    {
+        string action = Request["action"];
+
+        if (action.Equals("login"))
+        {
+            Session["cursistNummer"] = Request["Login-CursistNummer"];
+        }
+        if (action.Equals("logout"))
+        {
+            Session["cursistNummer"] = null;
+        }
+
+
+
+    }
+    
     string token = "";
     int cursistId = -1;
     string email = "";
-    string action = "none";
-    TimeSpan requestTime = new TimeSpan();
+
     Moodle.DAL.MoodlePackage.MoodleURL = "moodle-cvomobile.rhcloud.com";
 
     List<Moodle.BLL.Course> _enrolledCourses = new List<Moodle.BLL.Course>();
     List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
     Moodle.BLL.Deadline _deadlineOnDate = new Moodle.BLL.Deadline();
 
-    if (IsPost)
+    //if (IsPost)
+    //{
+    //    action = Request["action"];
+
+    //    if (action.Equals("viewing"))
+    //    {
+
+    if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
     {
-        action = Request["action"];
+        string cursistNr = Session["cursistNummer"].ToString();
 
-        if (action.Equals("viewing"))
+        email = Administratix.Model.Cursist.GetEmailByCursistNummer(Convert.ToInt32(cursistNr));
+
+        token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
+        cursistId = Moodle.DAL.User.GetUserIdByEmail(token, email);
+
+        if (cursistId != -1)
         {
-            DateTime start = DateTime.Now;
 
-            int cursistNummer = Convert.ToInt32(Request["search-cursistnummer"]);
+            // Get all courses the student is enrolled in
+            _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(token, cursistId);
 
-            email = Administratix.Model.Cursist.GetEmailByCursistNummer(cursistNummer);
-
-            token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
-            cursistId = Moodle.DAL.User.GetUserIdByEmail(token, email);
-
-            if (cursistId != -1)
+            foreach (Moodle.BLL.Course _course in _enrolledCourses)
             {
+                // Get all assignments of a course
+                _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(token, _course.Id);
 
-                // Get all courses the student is enrolled in
-                _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(token, cursistId);
 
-                foreach (Moodle.BLL.Course _course in _enrolledCourses)
+                foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
                 {
-                    // Get all assignments of a course
-                    _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(token, _course.Id);
+                    // Add name of course for dealines
+                    _assing.CourseName = _course.FullName;
 
-
-                    foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
-                    {
-                        // Add name of course for dealines
-                        _assing.CourseName = _course.FullName;
-
-                        // Get the score of the student for the assignment
-                        double score = Moodle.Model.GetGradeOfStudentForAssignment(token, _assing.Id, cursistId);
-                        if (score == -1)
-                        {
-                            _assing.UserScore = "--";
-                        }
-                        _assing.UserScore = "" + score;
-                    }
+                    // Get the score of the student for the assignment
+                    double score = Moodle.Model.GetGradeOfStudentForAssignment(token, _assing.Id, cursistId);
+                    _assing.UserScore = "" + score;
                 }
-
-                _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
-                List<Moodle.BLL.Deadline> temp = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1);
-                if (temp.Count > 0) {
-                    _deadlineOnDate = temp.First();
-                }     
-                
             }
-            DateTime end = DateTime.Now;
 
-            requestTime = end - start;
+            _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, DateTime.Now, 14);
+            List<Moodle.BLL.Deadline> temp = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, new DateTime(2015, 5, 13), 1);
+            if (temp.Count > 0)
+            {
+                _deadlineOnDate = temp.First();
+            }
+
         }
-
     }
+
 }
 
-<form id="viewing" method="post" action="">
-    <fieldset>
-        <legend>Bekijk je deadlines en punten</legend>
-        <div>
-            <label for="name-insert">
-                Cursistnummer
-            </label>
-            <input type="text" name="search-cursistnummer" id="cursist-Cursistnummer" />
-        </div>
-        <div>
-            <button type="submit" name="action" value="viewing">Zoek</button>
-        </div>
-    </fieldset>
-</form>
 
+<main>
+    <div id="centerContainer">
 
-@if (action == "viewing")
-{
-
-
-    
-
-
-    if (@cursistId == -1)
-    {
-        <div>
-            Geen cursist gevonden met het volgende email adress: @email
-        </div>
-    }
-    else
-    {
+        @if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+        {
 
 
 
-        <div>
-            <div class="moodleCourse">
-                Deadlines voor specifieke dag (13/5)
-
-                <div class="moodleAssignment">
-                    @if (_deadlineOnDate.Date != DateTime.MinValue)
-                    {
-                        String.Format("{0:d/M/yyyy}", _deadlineOnDate.Date.Date);
-                        foreach (Moodle.BLL.Assignment assignment in _deadlineOnDate.Assignments)
-                        {
-                            <div class="moodleGrade">
-                                @assignment.CourseName : @assignment.Name<br />
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        @:Je hebt geen deadlines op deze datum
-                    }
-
-                    
+            if (@cursistId == -1)
+            {
+                <div>
+                    Geen cursist gevonden met het volgende email adress: @email
                 </div>
-            </div>
-        </div>
+            }
+            else
+            {
 
-        <div>
-                <div class="containerBig">
-                    <div class="containerTitle">
-                        Deadlines voor de komende 2 weken
-                    </div>
 
-                    @if (_upcommingDeadlines.Count == 0)
-                    {
-                        @:Je momenteel hebt geen deadlines in de komende 2 weken.
-                    }
-                    else { 
 
-                    foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
-                    {
+                @*<div>
+                    <div class="moodleCourse">
+                        Deadlines voor specifieke dag (13/5)
+
                         <div class="moodleAssignment">
-                            @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
-                            @foreach (Moodle.BLL.Assignment assignment in deadline.Assignments)
+                            @if (_deadlineOnDate.Date != DateTime.MinValue)
                             {
-                                <div class="moodleGrade">
-                                    @assignment.CourseName : @assignment.Name<br />
+                                String.Format("{0:d/M/yyyy}", _deadlineOnDate.Date.Date);
+                                foreach (Moodle.BLL.Assignment assignment in _deadlineOnDate.Assignments)
+                                {
+                                    <div class="moodleGrade">
+                                        @assignment.CourseName : @assignment.Name<br />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                @:Je hebt geen deadlines op deze datum
+                    }
+
+
+                        </div>
+                    </div>
+                </div>*@
+
+                <div>
+                    <div class="containerBig">
+                        <div class="containerTitle">
+                            Deadlines voor de komende 2 weken
+                        </div>
+
+                        @if (_upcommingDeadlines.Count == 0)
+                        {
+                            @:Je momenteel hebt geen deadlines in de komende 2 weken.
+                    }
+                        else
+                        {
+
+                            foreach (Moodle.BLL.Deadline deadline in _upcommingDeadlines)
+                            {
+                                <div class="moodleAssignment">
+                                    @String.Format("{0:d/M/yyyy}", deadline.Date.Date)
+                                    @foreach (Moodle.BLL.Assignment assignment in deadline.Assignments)
+                                    {
+                                        <div class="moodleGrade">
+                                            @assignment.CourseName : @assignment.Name<br />
+                                        </div>
+                                    }
                                 </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="containerOfAllThingsTiny">
+                    @foreach (Moodle.BLL.Course course in _enrolledCourses)
+                    {
+                        <div class="containerSmall">
+                            <div class="containerTitle">
+                                @course.FullName
+                            </div>
+                            @foreach (Moodle.BLL.Assignment assign in course.Assignments)
+                            {
+                                <div class="moodleAssignment">
+
+                                    @assign.Name<br />
+                                    <div class="moodleGrade">
+                                        @if (assign.UserScore.Equals(""+-1))
+	{
+                                            @:Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)
+	}
+
+                                  else{
+                                            @:Score: @assign.UserScore / @assign.MaxGrade
+                                    }
+
+                                            
+                                        </div>
+                                    </div>
                             }
                         </div>
                     }
-                    }
                 </div>
-                </div>
-    <div class="containerOfAllThingsTiny">
-        @foreach (Moodle.BLL.Course course in _enrolledCourses)
-        {
-        <div class="containerSmall">
-            <div class="containerTitle">
-                @course.FullName
-            </div>
-            @foreach (Moodle.BLL.Assignment assign in course.Assignments)
-            {
-                <div class="moodleAssignment">
-                    @assign.Name<br />
-                    Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)<br />
 
-                    <div class="moodleGrade">
-                        Score: @assign.UserScore / @assign.MaxGrade
-                    </div>
-                </div>
             }
-        </div>
         }
     </div>
-
-    }
-}
+</main>

@@ -270,6 +270,8 @@ th {
 .containerBig{
     width:100%;
     border: 2px solid #DB5C3D;
+    margin-bottom: 20px;
+    box-sizing:border-box;
 }
 
 .containerSmall{
@@ -316,7 +318,6 @@ th {
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
-    border: 2px solid #DB5C3D;
 }
 
 .legendeItem{
