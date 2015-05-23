@@ -13,6 +13,11 @@ namespace Administratix
             {
                 return DAL.LesDavinci.SelectAllByCursistNummer(cursistNummer);
             }
+
+            public static List<BLL.LesDavinci> LesroosterTussenDatums(int cursistNummer, DateTime begin, DateTime einde)
+            {
+                return DAL.LesDavinci.SelectAllByCursistNummerAndDates(cursistNummer, begin, einde);
+            }
         }
 
         public class Evenement

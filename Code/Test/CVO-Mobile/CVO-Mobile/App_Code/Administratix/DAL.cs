@@ -815,7 +815,7 @@ namespace Administratix.DAL
                             BLL.LesDavinci les = new BLL.LesDavinci();
                             les.Cursusnummer = result["Cursusnummer"].ToString(); 
                             les.Dag = result["Dag"].ToString(); 
-                            les.Datum = result["Datum"].ToString();
+                            les.Datum = Convert.ToDateTime(result["Datum"]);
                             les.IdPersoneel = (int)result["IdPersoneel"];
                             les.Docent = result["Docent"].ToString();
                             les.IdLesplaats = (int)result["IdLesPlaats"];
@@ -824,8 +824,70 @@ namespace Administratix.DAL
                             les.Lokaal = result["Lokaal"].ToString();
                             les.IdIngerichteModulevariant = (int)result["IdIngerichteModulevariant"];
                             les.Module = result["Module"].ToString();
-                            les.Aanvangsdatum = result["Van"].ToString();
-                            les.Einddatum = result["Tot"].ToString();
+                            les.Aanvangsdatum = Convert.ToDateTime(result["Van"]);
+                            les.Einddatum = Convert.ToDateTime(result["Tot"]);
+                            lessenrooster.Add(les);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                //this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return lessenrooster;
+        }
+
+        public static List<BLL.LesDavinci> SelectAllByCursistNummerAndDates(int cursistNummer, DateTime begin, DateTime einde)
+        {
+            List<BLL.LesDavinci> lessenrooster = new List<BLL.LesDavinci>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "grp2_SelectLesDavinci";
+
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+            command.Parameters.Add(new SqlParameter("@DateBegin",
+               SqlDbType.DateTime)).Value = begin;
+            command.Parameters.Add(new SqlParameter("@DateEinde",
+               SqlDbType.DateTime)).Value = einde;
+
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = sqlString;
+            command.Connection = connection;
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.LesDavinci les = new BLL.LesDavinci();
+                            les.Cursusnummer = result["Cursusnummer"].ToString();
+                            les.Datum = Convert.ToDateTime(result["Datum"]);
+                            les.Docent = result["Docent"].ToString();
+                            les.Campus = result["Campus"].ToString();
+                            les.Lokaal = result["Lokaal"].ToString();
+                            les.Module = result["Module"].ToString();
+                            les.Aanvangsdatum = Convert.ToDateTime(result["Van"]);
+                            les.Einddatum = Convert.ToDateTime(result["Tot"]);
                             lessenrooster.Add(les);
                         }
 

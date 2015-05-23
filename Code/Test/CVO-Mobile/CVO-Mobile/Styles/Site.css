@@ -349,5 +349,46 @@ th {
     background-color: #DB5C3D;
     padding: 7px;
     font-size: large;
-    color: #FFF
+    color: #FFF;
+}
+
+.containerCalendarRow {
+    display:flex;
+    box-sizing:border-box;
+}
+
+.containerCalendarTitle {
+    box-sizing:border-box;
+    background-color: #DB5C3D;
+    padding: 7px 7px 7px 7px;
+    font-size: large;
+    color: #FFF;
+    flex-grow: 1;
+    flex-basis:100px;
+}
+
+.containerCalendarRow{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}
+
+.containerCalendarColumn{
+    
+    flex-grow: 1;
+    flex-basis:100px;
+    padding: 2px 7px 2px 7px;
+}
+
+.columnTiny{
+    flex-basis:50px;
+}
+
+.columnBig{
+    flex-basis:200px;
+}
+
+.columnMed{
+    flex-basis:150px;
 }
