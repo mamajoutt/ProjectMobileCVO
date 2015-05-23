@@ -24,6 +24,8 @@ begin
 select 
 	IngerichteModulevariant.CursusNummer as Cursusnummer
 	,IngerichteModulevariant.Naam as Module
+	,Convert(nvarchar, AanvangsDatum, 5) as AanvangsDatum
+	,Convert(nvarchar, EindDatum, 5) as EindDatum
 	,PlaatsingResultaat.PuntenTotaal
 	,PlaatsingResultaat.PuntenPermanenteEvaluatie
 	,PlaatsingResultaat.PuntenEersteZit
