@@ -15,7 +15,7 @@
         switch (action)
         {
             case "search":
-                
+                resultaten = Administratix.Model.CursusResultaat.SelectAllCursusResultaat(Convert.ToInt32(Request["cursusResultaat-CursistNummer"]));
                 //resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(Request["cursusResultaat-CursistNummer"]));
                 break;
         }
@@ -72,8 +72,8 @@
             @foreach (Administratix.BLL.CursusResultaat resultaat in resultaten)
             {
                 <tr>
-                    @*<td>
-                        @resultaat.CursusNaam
+                    <td>
+                        @resultaat.Module
                     </td>
                     <td>
                         @resultaat.PuntenTotaal
@@ -86,7 +86,7 @@
                     </td>
                     <td>
                         @resultaat.PuntenTweedeZit
-                    </td>*@
+                    </td>
                 </tr>
             }
         </table>

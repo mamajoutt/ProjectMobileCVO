@@ -121,6 +121,7 @@
     <Content Include="TestPageDropDown.cshtml" />
     <Content Include="Feestdagen.cshtml" />
     <Content Include="ExDel2deZitDate.cshtml" />
+    <Content Include="Resultaten - Copy.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

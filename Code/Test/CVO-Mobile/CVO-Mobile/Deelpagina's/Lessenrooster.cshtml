@@ -6,13 +6,13 @@
     {
         string action = Request["action"];
 
-        if (action.Equals("login"))
+        if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursistNummer"] = Request["Login-CursistNummer"];
+            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32( Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
-            Session["cursistNummer"] = null;
+            Session["cursist"] = null;
         }
 
 
@@ -26,14 +26,14 @@
     string message = "Alles gaat goed.";
 
     List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
-    if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+    if (Session["cursist"] != null)
     {
-        string cursistNr = Session["cursistNummer"].ToString();
+        Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
         //lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursistNr));
         
         //testdatum
         DateTime testDatum = new DateTime(2014, 1, 1);
-        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(Convert.ToInt32(cursistNr), testDatum, new DateTime(2015, 8, 1));
+        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, testDatum, new DateTime(2015, 8, 1));
 
     }
     

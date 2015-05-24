@@ -6,13 +6,13 @@
     {
         string action = Request["action"];
 
-        if (action.Equals("login"))
+        if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursistNummer"] = Request["Login-CursistNummer"];
+            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
-            Session["cursistNummer"] = null;
+            Session["cursist"] = null;
         }
 
 
@@ -24,13 +24,13 @@
     List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
     List<KeyValuePair<int, int>> voorkennisPairs = new List<KeyValuePair<int, int>>();
 
-    if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+    if (Session["cursist"] != null)
     {
-        string cursistNr = Session["cursistNummer"].ToString();
+        Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
         // Haal trajectmodules op
-        trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(Convert.ToInt32(cursistNr));
+        trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursist.CursistNummer);
         // Haal cursist resultaten op
-        resultaten = Administratix.Model.CursusResultaat.CursusResultaten(Convert.ToInt32(cursistNr));
+        resultaten = Administratix.Model.CursusResultaat.SelectAllCursusResultaat(cursist.CursistNummer);
         // Voeg punten toe een trajectmodules
         trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
         // Haal nodige voorkenis op, 140 == Informatica

@@ -166,9 +166,9 @@ namespace Administratix
 
         public class Cursist
         {
-            public static string GetEmailByCursistNummer(int cursistNummer)
+            public static BLL.Cursist GetCursistByCursistNummer(int cursistNummer)
             {
-                return DAL.Cursist.GetEmailByCursistNummer(cursistNummer);
+                return DAL.Cursist.SelectCursistByCursistNummer(cursistNummer);
             }
         }
 

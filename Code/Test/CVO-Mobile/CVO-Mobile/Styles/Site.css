@@ -30,6 +30,8 @@ main{
     box-sizing:border-box;
     background-color:#4388cc;
     border-bottom: 4px solid #00ffff;
+    /*border-bottom: 4px solid #DB5C3D;*/
+    margin-bottom: 10px;
         
 }
 
@@ -43,7 +45,27 @@ main{
     
 }
 
-.header p{
+.loginForm{
+    margin: 10px;
+    margin-right: 30px;
+    float:right;
+}
+
+.loginForm input{
+    display:block;
+}
+
+.loginForm label{
+    display:block;
+}
+
+.loginForm button{
+    float:right;
+    margin-top:5px;
+
+}*/
+
+/*.header p{
     float:right;
     margin-right:30px;
     margin-top:30px;
@@ -62,7 +84,7 @@ main{
     margin-right:30px;
     padding:4px;
     width:80px;
-}
+}*/
 
 
 /*Start nav code*/

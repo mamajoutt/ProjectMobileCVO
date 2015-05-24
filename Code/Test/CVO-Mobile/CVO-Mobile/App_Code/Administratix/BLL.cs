@@ -24,6 +24,14 @@ namespace Administratix.BLL
         public string OpmerkingNaDeliberatieEersteZit { get; set; }
     }
 
+    public class Cursist
+    {
+        public int CursistNummer { get; set; }
+        public string Voornaam { get; set; }
+        public string Familienaam { get; set; }
+        public string Email { get; set; }
+    }
+
     /// <summary> 
     /// Class definition TweedeZitInschrijving
     /// Used in DAL.TweedeZitInschrijving

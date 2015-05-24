@@ -4,20 +4,22 @@
 
     string action = "";
 
+    Administratix.BLL.Cursist cursist = new Administratix.BLL.Cursist();
+        
     if (IsPost)
     {
         action = Request["action"];
 
         if (action.Equals("login"))
         {
-            Session["cursistNummer"] = Request["Login-CursistNummer"];
+            
+            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"])); ;
+            
         }
         if (action.Equals("logout"))
         {
-            Session["cursistNummer"] = null;
+            Session["cursist"] = null;
         }
-
-
 
     }
 
@@ -34,16 +36,19 @@
 <body>
     <div class="header">
         <img src="~/Images/Logo_CVOAntwerpen.png" />
-        @if (Session["cursistNummer"] != null)
+        @if (Session["cursist"] != null)
         {
-            <form id="login" action="" method="post">
+            <form id="login" action="" method="post" class="loginForm">
+                @{cursist = (Administratix.BLL.Cursist)Session["cursist"];}
+                <label>Ingelogd als @cursist.Voornaam (@cursist.CursistNummer)</label>
+
                 <button type="submit" name="action" value="logout">Log uit</button>
             </form>
             //Session["cursistNummer"].ToString();
         }
         else
         {
-            <form id="login" action="" method="post">
+            <form id="login" action="" method="post" class="loginForm">
                 <input type="text" name="Login-CursistNummer" id="Login-CursistNummer" />  <button type="submit" name="action" value="login">Inloggen</button>
             </form>
         }

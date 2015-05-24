@@ -6,16 +6,14 @@
     {
         string action = Request["action"];
 
-        if (action.Equals("login"))
+        if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursistNummer"] = Request["Login-CursistNummer"];
+            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
-            Session["cursistNummer"] = null;
+            Session["cursist"] = null;
         }
-
-
 
     }
     
@@ -36,14 +34,12 @@
     //    if (action.Equals("viewing"))
     //    {
 
-    if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+    if (Session["cursist"] != null)
     {
-        string cursistNr = Session["cursistNummer"].ToString();
-
-        email = Administratix.Model.Cursist.GetEmailByCursistNummer(Convert.ToInt32(cursistNr));
+        Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
 
         token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
-        cursistId = Moodle.DAL.User.GetUserIdByEmail(token, email);
+        cursistId = Moodle.DAL.User.GetUserIdByEmail(token, cursist.Email);
 
         if (cursistId != -1)
         {
@@ -84,7 +80,7 @@
 <main>
     <div id="centerContainer">
 
-        @if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+        @if (Session["cursist"] != null)
         {
 
 

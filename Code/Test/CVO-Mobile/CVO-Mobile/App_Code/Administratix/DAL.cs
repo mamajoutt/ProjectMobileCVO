@@ -902,9 +902,9 @@ namespace Administratix.DAL
 
     public class Cursist //: MobileCVO.DAL.IDal<BLL.LesDavinci>
     {
-        public static string GetEmailByCursistNummer(int cursistNummer)
+        public static BLL.Cursist SelectCursistByCursistNummer(int cursistNummer)
         {
-            string email = "";
+            BLL.Cursist cursist = new BLL.Cursist();
             // geen plain vanilla sql statement meegeven,
             // parameters gebruiken
             SqlConnection connection = new SqlConnection();
@@ -915,7 +915,7 @@ namespace Administratix.DAL
             SqlCommand command = new SqlCommand();
             // in de CommandText eigenschap stoppen de naam
             // van de stored procedure
-            string sqlString = "grp2_SelectCursistEmailByCursistNummer";
+            string sqlString = "grp2_SelectCursistByCursistNummer";
 
             // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
@@ -941,7 +941,10 @@ namespace Administratix.DAL
                     {
                         while (result.Read())
                         {
-                            email = result["Email"].ToString(); 
+                            cursist.CursistNummer = cursistNummer;
+                            cursist.Voornaam = result["Voornaam"].ToString();
+                            cursist.Familienaam = result["Familienaam"].ToString(); 
+                            cursist.Email = result["Email"].ToString(); 
                         }
 
                     }
@@ -956,7 +959,7 @@ namespace Administratix.DAL
                 connection.Close();
             }
 
-            return email;
+            return cursist;
         }
     }
 
