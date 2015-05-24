@@ -14,7 +14,7 @@
         switch (Action)
         {
             case "search":
-                feestdagen = Administratix.Model.Kalender.SelectFeestdagen(Request["Kalender-Date1"], Request["Kalender-Date2"]);
+                feestdagen = Administratix.Model.Kalender.SelectFeestdagen(Convert.ToDateTime( Request["Kalender-Date1"]), Convert.ToDateTime( Request["Kalender-Date2"]));
                 break;
         }
     }
