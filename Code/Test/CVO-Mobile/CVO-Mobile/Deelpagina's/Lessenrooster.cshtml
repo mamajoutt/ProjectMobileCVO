@@ -2,9 +2,11 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "Lessenrooster";
 
+    string action = "";
+
     if (IsPost)
     {
-        string action = Request["action"];
+        action = Request["action"];
 
         if (action.Equals("login") && Session["cursist"] == null)
         {
@@ -14,10 +16,8 @@
         {
             Session["cursist"] = null;
         }
-
-
-
     }
+
 
     //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("nl-BE");
 
@@ -26,19 +26,24 @@
     string message = "Alles gaat goed.";
 
     List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
+    List<Administratix.BLL.Kalender> feestdagen = new List<Administratix.BLL.Kalender>();
     if (Session["cursist"] != null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
         //lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursistNr));
-        
+
         //testdatum
-        DateTime testDatum = new DateTime(2014, 1, 1);
-        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, testDatum, new DateTime(2015, 8, 1));
+        DateTime testDatumStart = new DateTime(2015, 1, 1);
+        DateTime testDatumEinde = new DateTime(2015, 8, 1);
+        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, testDatumStart, testDatumEinde);
+        if (action.Equals("feestdagen-inclusief"))
+        {
+            feestdagen = Administratix.DAL.Feestdagen.SelectFeesdagen(testDatumStart, testDatumEinde);
+            lessenrooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenrooster, feestdagen);
+        }
 
     }
     
-    
-
 }
 
 
@@ -46,10 +51,77 @@
     <div id="centerContainer">
 
         @*@if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
+            {
+
+            }*@
+
+        <form id="lessenrooster-display" action="" method="post">
+            <fieldset>
+                <legend>Display opties</legend>
+                <button type="submit" name="action" value="feestdagen-exclusief">Exclusief feestdagen</button>
+                <button type="submit" name="action" value="feestdagen-inclusief">Inclusief feestdagen</button>
+                <button type="submit" name="action" value="display-compact">Compact Test</button>
+                </fieldset>
+        </form>
+
+        @if (action.Equals("display-compact"))
         {
 
-        }*@
+            <div class="containerBig">
+                <div class="containerCalendarRow">
+                    <div class="containerCalendarTitle">
+                        Datum
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Dag
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Lokaal
+                    </div>
+                    <div class="containerCalendarTitle columnBig">
+                        Module
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Van
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Tot
+                    </div>
+                </div>
 
+                @for (int i = 0; i < lessenrooster.Count; i++)
+                {
+                    Administratix.BLL.LesDavinci les = lessenrooster[i];
+                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+                        <div class="containerCalendarColumn">
+                            @les.Datum.ToString("dd-MM-yyyy", culture)
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @les.Datum.ToString("dddd", culture)
+                        </div>
+                        <div class="containerCalendarColumn columnTiny">
+                            @les.Lokaal
+                        </div>
+                        <div class="containerCalendarColumn columnBig">
+                            @les.Module
+                        </div>
+                        <div class="containerCalendarColumn columnTiny">
+                            @les.Aanvangsdatum.ToString("HH:mm", culture)
+                        </div>
+                        <div class="containerCalendarColumn columnTiny">
+                            @les.Einddatum.ToString("HH:mm", culture)
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+
+
+        }
+        else
+        {
         <div class="containerBig">
             <div class="containerCalendarRow">
                 <div class="containerCalendarTitle columnTiny">
@@ -115,51 +187,52 @@
                 </div>
 
             }
-            
+
         </div>
 
+        }
 
 
-            @*@{
-                if (lessenrooster.Count <= 0)
-                {
-                    <p>Geen lessenrooster gevonden.</p>
-                }
-                else
-                {
-                    <div class="containerBig">
-                        <table>
-                            <tr>
-                                <th class="containerCalendarTitle">Cursusnummer</th>
-                                <th class="containerCalendarTitle">Weekdag</th>
-                                <th class="containerCalendarTitle">Datum</th>
-                                <th class="containerCalendarTitle">Module</th>
-                                <th class="containerCalendarTitle">Docent</th>
-                                <th class="containerCalendarTitle">Lokaal</th>
-                                <th class="containerCalendarTitle">Campus</th>
-                                <th class="containerCalendarTitle">Van</th>
-                                <th class="containerCalendarTitle">Tot</th>
-                            </tr>
-                            @for (int i = 0; i < lessenrooster.Count; i++)
+        @*@{
+                            if (lessenrooster.Count <= 0)
                             {
-                                Administratix.BLL.LesDavinci les = lessenrooster[i];
-                                <tr>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Cursusnummer</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Dag</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Datum</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Module</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Docent</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Lokaal</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Campus</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Aanvangsdatum</td>
-                                    <td class="@(i%2 == 0 ? "":"shaded")">@les.Einddatum</td>
-                                </tr>
+                                <p>Geen lessenrooster gevonden.</p>
                             }
-                        </table>
-                    </div>
-                }
-}*@
+                            else
+                            {
+                                <div class="containerBig">
+                                    <table>
+                                        <tr>
+                                            <th class="containerCalendarTitle">Cursusnummer</th>
+                                            <th class="containerCalendarTitle">Weekdag</th>
+                                            <th class="containerCalendarTitle">Datum</th>
+                                            <th class="containerCalendarTitle">Module</th>
+                                            <th class="containerCalendarTitle">Docent</th>
+                                            <th class="containerCalendarTitle">Lokaal</th>
+                                            <th class="containerCalendarTitle">Campus</th>
+                                            <th class="containerCalendarTitle">Van</th>
+                                            <th class="containerCalendarTitle">Tot</th>
+                                        </tr>
+                                        @for (int i = 0; i < lessenrooster.Count; i++)
+                                        {
+                                            Administratix.BLL.LesDavinci les = lessenrooster[i];
+                                            <tr>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Cursusnummer</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Dag</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Datum</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Module</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Docent</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Lokaal</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Campus</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Aanvangsdatum</td>
+                                                <td class="@(i%2 == 0 ? "":"shaded")">@les.Einddatum</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            }
+            }*@
 
 
                     </div>
-</main>
+        </main>

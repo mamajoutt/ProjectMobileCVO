@@ -965,7 +965,7 @@ namespace Administratix.DAL
 
     public class Feestdagen
     {
-        public static List<BLL.Kalender> SelectFeesdagen(string Date1, string Date2)
+        public static List<BLL.Kalender> SelectFeesdagen(DateTime Date1, DateTime Date2)
         {
             List<BLL.Kalender> lijstfeestdagen = new List<BLL.Kalender>();
 
@@ -975,9 +975,9 @@ namespace Administratix.DAL
 
             String sqlString = "grp2_SelectFeestdagen";
             com.Parameters.Add(new SqlParameter("@Date1",
-               SqlDbType.NVarChar)).Value = Date1;
+               SqlDbType.DateTime)).Value = Date1;
             com.Parameters.Add(new SqlParameter("@Date2",
-               SqlDbType.NVarChar)).Value = Date2;
+               SqlDbType.DateTime)).Value = Date2;
 
             com.CommandType = CommandType.StoredProcedure;
             com.CommandText = sqlString;
@@ -994,7 +994,7 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.Kalender kalender = new BLL.Kalender();
-                            kalender.Datum = result["Datum"].ToString();
+                            kalender.Datum = Convert.ToDateTime(result["Datum"]);
                             kalender.IdSchooljaar = Convert.ToInt32(result["IdSchooljaar"].ToString());
                             kalender.Omschrijving = result["Omschrijving"].ToString();
 

@@ -18,6 +18,24 @@ namespace Administratix
             {
                 return DAL.LesDavinci.SelectAllByCursistNummerAndDates(cursistNummer, begin, einde);
             }
+
+            public static List<BLL.LesDavinci> LessenroosterVakantiedagenToevoegen(List<BLL.LesDavinci> lessenrooster, List<BLL.Kalender> vakantiedagen)
+            {
+                foreach (BLL.Kalender k in vakantiedagen)
+                {
+                    if (!k.Omschrijving.Equals(""))
+                    {
+                        BLL.LesDavinci dag = new BLL.LesDavinci();
+                        dag.Datum = k.Datum;
+                        dag.Module = k.Omschrijving;
+
+                        lessenrooster.Add(dag);
+                    }
+
+                }
+                return lessenrooster.OrderBy(o => o.Datum).ThenBy(o => o.Aanvangsdatum).ToList();
+
+            }
         }
 
         public class Evenement
@@ -174,7 +192,7 @@ namespace Administratix
 
         public class Kalender
         {
-            public static List<BLL.Kalender> SelectFeestdagen(string Date1,string Date2)
+            public static List<BLL.Kalender> SelectFeestdagen(DateTime Date1,DateTime  Date2)
             {
                 return DAL.Feestdagen.SelectFeesdagen(Date1,Date2);
             }
