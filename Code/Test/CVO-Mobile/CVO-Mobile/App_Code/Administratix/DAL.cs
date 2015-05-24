@@ -22,122 +22,6 @@ namespace MobileCVO.DAL
 namespace Administratix.DAL
 {
 
-    public class TweedezitResultaat 
-    {
-
-        public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int CursistNummer)
-        {
-            List<BLL.TweedezitResultaat> resultaten = new List<BLL.TweedezitResultaat>();
-
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString =
-                 System.Configuration.ConfigurationManager.
-                 ConnectionStrings["MobileCVO"].ToString();
-
-            SqlCommand command = new SqlCommand();
-
-            string sqlString = "grp2_SelectTweedeZitByCursistNummer";
-
-            command.Parameters.Add(new SqlParameter("@CursistNummer",
-               SqlDbType.Int)).Value = CursistNummer;
-
-            command.CommandType = CommandType.StoredProcedure;
-
-            command.CommandText = sqlString;
-
-            command.Connection = connection;
-            //this.message = "Niets te melden";
-
-            SqlDataReader result;
-            try
-            {
-                connection.Open();
-                //this.message = "De database is klaar!";
-
-                using (result = command.ExecuteReader())
-                {
-                    if (result.HasRows)
-                    {
-                        while (result.Read())
-                        {
-                            BLL.TweedezitResultaat resultaat = new BLL.TweedezitResultaat();
-                            resultaat.Module = result["Module"].ToString();
-                            resultaat.Datum= Convert.ToDateTime(result["Datum"].ToString());
-                            resultaat.Lokaal = result["Lokaal"].ToString();
-                            resultaat.Van = result["Van"].ToString();
-                            resultaat.Tot = result["Tot"].ToString();
-                            resultaat.Punten = Convert.ToDouble(result["Punten"].ToString());
-                            resultaat.Ingeschreven = Convert.ToBoolean(result["Ingeschreven"].ToString());
-
-                            resultaten.Add(resultaat);
-                        }
-
-                    }
-                }
-            }
-            catch (SqlException e)
-            {
-                //this.message = e.Message;
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            return resultaten;
-        }
-        public static int UpdateTweedeZit(int CursistNummer, string CursusNummer)
-        {
-            int result = 0;
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString =
-                 System.Configuration.ConfigurationManager.
-                 ConnectionStrings["MobileCVO"].ToString();
-
-            SqlCommand command = new SqlCommand();
-
-            string sqlString = "grp2_UpdateTweedeZit";
-
-            command.Parameters.Add(new SqlParameter("@CursistNummer",
-               SqlDbType.Int)).Value = CursistNummer;
-            command.Parameters.Add(new SqlParameter("@CursusNummer",
-               SqlDbType.NVarChar)).Value = CursusNummer;
-
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = sqlString;
-            command.Connection = connection;
-            //this.message = "Niets te melden";
-
-            int row = 0;
-            try
-            {
-                connection.Open();
-                //this.message = "De database is klaar!";
-                row = command.ExecuteNonQuery();
-                if(row == 1)
-                {
-                    result = 1;
-                }
-                else
-                {
-                    result = 2;
-                }
-
-            }
-            catch (SqlException e)
-            {
-                //this.message = e.Message;
-                result = 3;
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            return result;
-        }
-    }
-
     public class StatusTraject 
     {
 
@@ -670,9 +554,9 @@ namespace Administratix.DAL
         }
     }
 
-    public class CursusResultaat //: MobileCVO.DAL.IDal<BLL.CursusResultaat>
+    public class CursusResultaat : MobileCVO.DAL.IDal<BLL.CursusResultaat>
     {
-        /*private string message;
+        private string message;
         public string Message
         {
             get
@@ -682,13 +566,31 @@ namespace Administratix.DAL
         }
 
         public CursusResultaat()
-       {
-           this.message = "";
-       }*/
-
-        public static List<BLL.CursusResultaat> SelectAllByCursistNummer(int cursistNummer)
         {
-            List<BLL.CursusResultaat> resultaten = new List<BLL.CursusResultaat>();
+            this.message = "";
+        }
+
+        public List<BLL.CursusResultaat> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public BLL.CursusResultaat SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public int Insert(BLL.CursusResultaat entity)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<BLL.CursusResultaat> SelectAllByCursistNummer(int cursistNummer)
+        {
+            List<BLL.CursusResultaat> resultatenLijst = new List<BLL.CursusResultaat>();
 
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
@@ -697,8 +599,9 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectPlaatsingResultaatByCursistNummer";
+            string sqlString = "grp2_SelectAllResultatenByCursistNummer";
 
+            // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
 
@@ -707,13 +610,13 @@ namespace Administratix.DAL
             command.CommandText = sqlString;
 
             command.Connection = connection;
-            //this.message = "Niets te melden";
+            this.message = "Niets te melden";
 
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
+                this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -722,23 +625,18 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.CursusResultaat resultaat = new BLL.CursusResultaat();
-                            resultaat.CursusNummer = Convert.ToInt32(result["Cursusnummer"].ToString());
-                            resultaat.CursusNaam = result["Naam"].ToString();
-                            double punt = -1;
-                            resultaat.IdModuleVariant = Convert.ToInt32(result["IdModuleVariant"].ToString());
-                            Double.TryParse(result["PuntenTotaal"].ToString(), out punt);
-                            resultaat.PuntenTotaal = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenPermanenteEvaluatie"].ToString(), out punt);
-                            resultaat.PuntenPermanenteEvaluatie = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenEersteZit"].ToString(), out punt);
-                            resultaat.PuntenEersteZit = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenTweedeZit"].ToString(), out punt);
-                            resultaat.PuntenTweedeZit = punt;
-
-                            resultaten.Add(resultaat);
+                            resultaat.Id = (int)result["Id"];
+                            resultaat.CursusNummer = result["CursusNummer"].ToString();
+                            resultaat.Module = result["Module"].ToString();
+                            resultaat.AanvangsDatum = result["AanvangsDatum"].ToString();
+                            resultaat.EindDatum = result["EindDatum"].ToString();
+                            resultaat.PuntenTotaal = (double)result["PuntenTotaal"];
+                            resultaat.PuntenPermanenteEvaluatie = (double)result["PuntenPermanenteEvaluatie"];
+                            resultaat.PuntenEersteZit = (double)result["PuntenEersteZit"];
+                            resultaat.Grp2_IdTweedeZit = (int)result["grp2_IdTweedeZit"];
+                            resultaat.PuntenTweedeZit = (double)result["PuntenTweedeZit"];
+                            resultaat.OpmerkingNaDeliberatieEersteZit = result["OpmerkingNaDeliberatieEersteZit"].ToString();
+                            resultatenLijst.Add(resultaat);
                         }
 
                     }
@@ -746,14 +644,109 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                this.message = e.Message;
             }
             finally
             {
                 connection.Close();
             }
 
-            return resultaten;
+            return resultatenLijst;
+        }
+    }
+
+    public class TweedeZitInschrijving : MobileCVO.DAL.IDal<BLL.TweedeZitInschrijving>
+    {
+        private string message;
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
+
+        public int Insert(BLL.TweedeZitInschrijving inschrijvingTweedeZit)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+            // Sqlcommand object
+            SqlCommand command = new SqlCommand();
+            // in de CommandText eigenschap stoppen de naam
+            // van de stored procedure
+            string sqlString = "grp2_InsertCursistTweedeZit";
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+                SqlDbType.Int)).Value = inschrijvingTweedeZit.IdCursist;
+            command.Parameters.Add(new SqlParameter("@IdTweedeZit",
+                SqlDbType.Int)).Value = inschrijvingTweedeZit.Grp2_IdTweedeZit ;
+            command.Parameters.Add(new SqlParameter("@ReservatieDatum",
+                SqlDbType.DateTime)).Value = DateTime.Now;
+            SqlParameter id = new SqlParameter("@Id", SqlDbType.Int);
+            id.Direction = ParameterDirection.Output;
+            command.Parameters.Add(id);
+            // zeg aan het command object dat het een tored procedure
+            // zal krijgen en geen SQL Statement
+            command.CommandType = CommandType.StoredProcedure;
+            // stop het sql statement in het command object
+            command.CommandText = sqlString;
+            // geeft het connection object door aan het command object
+            command.Connection = connection;
+            this.message = "Niets te melden";
+            // we gaan ervan uit dat het mislukt
+            int result = 0;
+            try
+            {
+                connection.Open();
+                // retourneert het aantal rijen dat geïnserted werd
+                this.message = "De database is klaar!";
+                result = command.ExecuteNonQuery();
+                // we moeten kijken naar de waarde van out parameter
+                // van Insert stored procedure. Als de naam van de
+                // category al bestaat, retourneert de out parameter van
+                // de stored procedure
+                // -1
+                if ((int)id.Value == -100)
+                {
+                    this.message = String.Format("U bent reeds ingeschreven voor de 2de zit van deze module.");
+                    result = -100;
+                }
+                else if (result <= 0)
+                {
+                    this.message = String.Format("Uw inschrijving voor de 2de zit van deze module is niet geregistreerd, probeert u het nog een keer a.u.b");
+                }
+                else
+                {
+                    message = String.Format("Uw inschrijving voor de 2de zit van deze module is succesvol afgerond!");
+                    result = (int)id.Value;
+                }
+            }
+            catch (SqlException e)
+            {
+                this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return result; // 0 of de Id van de nieuwe rij
+        }
+
+        public BLL.TweedeZitInschrijving SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.TweedeZitInschrijving> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.TweedeZitInschrijving> SelectAllByCursistNummer(int cursistNummer)
+        {
+            throw new NotImplementedException();
         }
     }
 

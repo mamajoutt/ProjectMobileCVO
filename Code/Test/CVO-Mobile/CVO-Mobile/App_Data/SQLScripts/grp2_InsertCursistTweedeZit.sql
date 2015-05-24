@@ -17,7 +17,7 @@ go
 create procedure grp2_InsertCursistTweedeZit
 (
 	@CursistNummer int,
-	@IdTweedeZit int,
+	@Grp2_IdTweedeZit int,
 	@Reservatiedatum datetime,
 	-- out omdat de waarde naar de calling
 	-- programma geretourneerd moet worden
@@ -26,9 +26,11 @@ create procedure grp2_InsertCursistTweedeZit
 as
 begin
 declare @CurrentId int
+--omzetten van cursistnummer naar idCursist
 declare @CursistId int
 select @CursistId = Id from Cursist where CursistNummer = @CursistNummer
-select @CurrentId = Id from grp2_TweedeZitInschrijving where IdCursist = @CursistId and IdTweedeZit = @IdTweedeZit
+--check doen of cursist al ingeschreven is voor 2de zit
+select @CurrentId = Id from grp2_TweedeZitInschrijving where IdCursist = @CursistId and Grp2_IdTweedeZit = @Grp2_IdTweedeZit
 
 if @CurrentId is not null
 begin 
@@ -42,13 +44,13 @@ insert into grp2_TweedeZitInschrijving
 (
 	Reservatiedatum,
 	IdCursist,
-	IdTweedeZit
+	Grp2_IdTweedeZit
 )
 values
 (
 	@Reservatiedatum,
 	@CursistId,
-	@IdTweedeZit
+	@Grp2_IdTweedeZit
 )
  
 -- Retourneert de Id van de nieuw toegevoegde rij.

@@ -37,7 +37,7 @@ namespace Administratix
 
         public class EvenementInschrijving
         {
-            public static string EvenementInschrijvingInsert(string idCursist, string idEvenement, string opmerkingen)
+            public static string InsertEvenementInschrijving(string idCursist, string idEvenement, string opmerkingen)
             {
                 Administratix.BLL.EvenementInschrijving evenementInschrijving = new BLL.EvenementInschrijving();
                 evenementInschrijving.IdCursist = Convert.ToInt32(idCursist);
@@ -51,21 +51,23 @@ namespace Administratix
 
         public class CursusResultaat
         {
-            public static List<BLL.CursusResultaat> CursusResultaten(int cursistNummer)
+            public static List<BLL.CursusResultaat> SelectAllCursusResultaat(int cursistNummer)
             {
-                return DAL.CursusResultaat.SelectAllByCursistNummer(cursistNummer);
+                Administratix.DAL.CursusResultaat dal = new DAL.CursusResultaat();
+                return dal.SelectAllByCursistNummer(cursistNummer);
             }
         }
 
-        public class TweedezitResultaat
+        public class TweedeZitInschrijving
         {
-            public static List<BLL.TweedezitResultaat> Select2deZitByCursistNummer(int CursistNummer)
+            public static string InsertTweedeZitInschrijving(string idCursist, string grp2_IdTweedeZit)
             {
-                return DAL.TweedezitResultaat.Select2deZitByCursistNummer(CursistNummer);
-            }
-            public static int UpdateTweedeZit(int CursistNummer, string CursusNummer)
-            {
-                return DAL.TweedezitResultaat.UpdateTweedeZit(CursistNummer, CursusNummer);
+                Administratix.BLL.TweedeZitInschrijving tweedeZitInschrijving = new BLL.TweedeZitInschrijving();
+                tweedeZitInschrijving.IdCursist = Convert.ToInt32(idCursist);
+                tweedeZitInschrijving.Grp2_IdTweedeZit = Convert.ToInt32(grp2_IdTweedeZit);
+                Administratix.DAL.TweedeZitInschrijving dal = new DAL.TweedeZitInschrijving();
+                dal.Insert(tweedeZitInschrijving);
+                return dal.Message;
             }
         }
 
@@ -95,7 +97,7 @@ namespace Administratix
                 {
                     foreach (BLL.CursusResultaat resultaat in moduleResultaten)
                     {
-                        if (resultaat.IdModuleVariant == module.Id)
+                        if (resultaat.Id == module.Id)
                         {
                             module.CursistIsIngeschreven = true;
                             module.PuntenTotaal = resultaat.PuntenTotaal;

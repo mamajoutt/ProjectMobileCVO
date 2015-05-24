@@ -5,35 +5,35 @@ using System.Web;
 
 namespace Administratix.BLL
 {
-    /// <summary> 
-    /// Class definition CursusResultaat 
+    ///<summary>
+    ///Class definition IngerichteModulevariant CursusResultaat
     /// Used in DAL.CursusResultaat
-    /// </summary> 
+    /// </summary>
     public class CursusResultaat
     {
-        public int CursusNummer { get; set; }
-        public int IdModuleVariant { get; set; }
-        public string CursusNaam { get; set; }
+        public int Id { get; set; }
+        public string CursusNummer { get; set; }
+        public string Module { get; set; }
+        public string AanvangsDatum { get; set; }
+        public string EindDatum { get; set; }
         public double PuntenTotaal { get; set; }
         public double PuntenPermanenteEvaluatie { get; set; }
         public double PuntenEersteZit { get; set; }
+        public int Grp2_IdTweedeZit { get; set; }
         public double PuntenTweedeZit { get; set; }
+        public string OpmerkingNaDeliberatieEersteZit { get; set; }
     }
 
     /// <summary> 
-    /// Class definition Tweedezit 
-    /// Used in DAL.TweedezitResultaat
+    /// Class definition TweedeZitInschrijving
+    /// Used in DAL.TweedeZitInschrijving
     /// </summary> 
-    public class TweedezitResultaat
+    public class TweedeZitInschrijving
     {
-        public string Module { get; set; }
-        public DateTime Datum { get; set; }
-        public string Lokaal { get; set; }
-        public string Van { get; set; }
-        public string Tot { get; set; }
-        public bool Ingeschreven { get; set; }
-        public double Punten { get; set; }
-
+        public int Id { get; set; }
+        public DateTime ReservatieDatum { get; set; }
+        public int IdCursist { get; set; }
+        public int Grp2_IdTweedeZit { get; set; }
     }
 
     /// <summary> 
@@ -102,6 +102,10 @@ namespace Administratix.BLL
 
     }
 
+    /// <summary> 
+    /// Class definition EvenementInschrijving
+    /// Used in DAL.EvenementInschrijving
+    /// </summary> 
     public class EvenementInschrijving
     {
         public int Id { get; set; }

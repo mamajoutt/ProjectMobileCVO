@@ -22,19 +22,21 @@ as 
 begin
  
 select 
-	IngerichteModulevariant.Id
+	IngerichteModulevariant.Id as Id
 	,IngerichteModulevariant.CursusNummer as Cursusnummer
 	,IngerichteModulevariant.Naam as Module
 	,Convert(nvarchar, AanvangsDatum, 5) as AanvangsDatum
 	,Convert(nvarchar, EindDatum, 5) as EindDatum
-	,PlaatsingResultaat.PuntenTotaal
-	,PlaatsingResultaat.PuntenPermanenteEvaluatie
-	,PlaatsingResultaat.PuntenEersteZit
-	,PlaatsingResultaat.PuntenTweedeZit
+	,PlaatsingResultaat.PuntenTotaal as PuntenTotaal
+	,PlaatsingResultaat.PuntenPermanenteEvaluatie as PuntenPermanenteEvaluatie
+	,PlaatsingResultaat.PuntenEersteZit as PuntenEersteZit
+	,PlaatsingResultaat.grp2_IdTweedeZit as grp2_IdTweedeZit
+	,PlaatsingResultaat.PuntenTweedeZit as PuntenTweedeZit
+	,PlaatsingResultaat.OpmerkingNaDeliberatieEersteZit as OpmerkingNaDeliberatieEersteZit
 from IngerichteModulevariant
 inner join Plaatsing on Plaatsing.IdIngerichteModulevariant = IngerichteModulevariant.id
 left join PlaatsingResultaat on Plaatsing.IdPlaatsingResultaat = PlaatsingResultaat.Id
 inner join Cursist on Plaatsing.IdCursist = Cursist.Id
 where Cursist.CursistNummer = @CursistNummer
-order by IngerichteModulevariant.CursusNummer 
+order by IngerichteModulevariant.EindDatum
 end
