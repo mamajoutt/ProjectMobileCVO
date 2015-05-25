@@ -115,7 +115,7 @@ namespace Administratix
                 {
                     foreach (BLL.CursusResultaat resultaat in moduleResultaten)
                     {
-                        if (resultaat.Id == module.Id)
+                        if (resultaat.IdModuleVariant == module.Id)
                         {
                             module.CursistIsIngeschreven = true;
                             module.PuntenTotaal = resultaat.PuntenTotaal;
