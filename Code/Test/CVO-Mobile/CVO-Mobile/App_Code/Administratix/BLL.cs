@@ -88,11 +88,11 @@ namespace Administratix.BLL
     {
         public string Cursusnummer { get; set; }
         public string Module { get; set; }
-        public string AanvangsDatum { get; set; }
-        public string EindDatum { get; set; }
-        public string ExamenDatum { get; set; }
-        public string DeliberatieDatum { get; set; }
-        public string DatumTweedeZit { get; set; }
+        public DateTime AanvangsDatum { get; set; }
+        public DateTime EindDatum { get; set; }
+        public DateTime ExamenDatum { get; set; }
+        public DateTime DeliberatieDatum { get; set; }
+        public DateTime DatumTweedeZit { get; set; }
     }
 
     /// <summary> 
@@ -131,26 +131,26 @@ namespace Administratix.BLL
     public class LesDavinci
     {
         public string Cursusnummer { get; set; }
-        public string Dag { get; set; }
         public DateTime Datum { get; set; }
-        public int IdLesplaats { get; set; }
         public string Campus { get; set; }
-        public int IdIngerichteModulevariant { get; set; }
         public string Module { get; set; }
-        public int IdPersoneel { get; set; }
         public string Docent { get; set; }
-        public int IdLokaal { get; set; }
         public string Lokaal { get; set; }
         public DateTime Aanvangsdatum { get; set; }
         public DateTime Einddatum { get; set; }
 
     }
 
+    /// <summary> 
+    /// Class definition Kalender 
+    /// Used in DAL.Kalender and DAL.Feestdagen
+    /// </summary> 
     public class Kalender
     {
         public int Id { get; set; }
-        public DateTime Datum { get; set; }
         public int IdSchooljaar { get; set; }
+        public string Schooljaar { get; set; }
+        public DateTime Datum { get; set; }
         public string Omschrijving { get; set; }
         //public int IdVerlofdagtype { get; set; }
     }

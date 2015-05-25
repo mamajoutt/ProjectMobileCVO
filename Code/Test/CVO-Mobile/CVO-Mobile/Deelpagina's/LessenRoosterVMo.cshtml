@@ -10,7 +10,7 @@
 
         if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32( Request["Login-CursistNummer"]));
+            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
@@ -18,34 +18,25 @@
         }
     }
 
-
-    //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("nl-BE");
-
+    //Dit is om nederlandse weekdagen te krijgen
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
 
-    string message = "Alles gaat goed.";
+    string message = "Alles gaat goed";
 
-    List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
-    List<Administratix.BLL.Kalender> feestdagen = new List<Administratix.BLL.Kalender>();
-    if (Session["cursist"] != null)
+    List<Administratix.BLL.LesDavinci> lessenRooster = new List<Administratix.BLL.LesDavinci>();
+    List<Administratix.BLL.Kalender> feestDagen = new List<Administratix.BLL.Kalender>();
+    if (Session["cursist"]!=null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
-        //lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursistNr));
+        lessenRooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursist.CursistNummer));
 
-        //testdatum
-        DateTime testDatumStart = new DateTime(2015, 1, 1);
-        DateTime testDatumEinde = new DateTime(2015, 8, 1);
-        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, testDatumStart, testDatumEinde);
-        if (action.Equals("feestdagen-inclusief"))
+        if (action.Equals("feestdagen-toevoegen"))
         {
-            feestdagen = Administratix.DAL.Feestdagen.SelectFeestDagen(testDatumStart, testDatumEinde);
-            lessenrooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenrooster, feestdagen);
+            feestDagen = Administratix.Model.Kalender.KalenderSelectAll();
+            lessenRooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenRooster, feestDagen);
         }
-
     }
-    
 }
-
 
 <main>
     <div id="centerContainer">
@@ -58,14 +49,14 @@
         <form id="lessenrooster-display" action="" method="post">
             <fieldset>
                 <legend>Display opties</legend>
-                <button type="submit" name="action" value="feestdagen-exclusief">Exclusief feestdagen</button>
-                <button type="submit" name="action" value="feestdagen-inclusief">Inclusief feestdagen</button>
+                <button type="submit" name="action" value="feestdagen-toevoegen">Feestdagen tonen</button>
+                <button type="submit" name="action" value="feestdagen-exclusief">Feestdagen verbergen</button>
                 <button type="submit" name="action" value="display-compact">Compact Test</button>
-                </fieldset>
+            </fieldset>
         </form>
 
         @if (action.Equals("display-compact"))
-        {
+           {
 
             <div class="containerBig">
                 <div class="containerCalendarRow">
@@ -87,17 +78,90 @@
                     <div class="containerCalendarTitle columnTiny">
                         Tot
                     </div>
+                 </div>
+
+            @for (int i = 0; i < lessenRooster.Count; i++)
+                    {
+                        Administratix.BLL.LesDavinci les = lessenRooster[i];
+                <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+                    <div class="containerCalendarColumn">
+                        @les.Datum.ToString("dd-MM-yyyy", culture)
+                    </div>
+                    <div class="containerCalendarColumn">
+                        @les.Datum.ToString("dddd", culture)
+                    </div>
+                    <div class="containerCalendarColumn columnTiny">
+                        @les.Lokaal
+                    </div>
+                    <div class="containerCalendarColumn columnBig">
+                        @les.Module
+                    </div>
+                    <div class="containerCalendarColumn columnTiny">
+                        @les.Aanvangsdatum.ToString("HH:mm", culture)
+                    </div>
+                    <div class="containerCalendarColumn columnTiny">
+                        @les.Einddatum.ToString("HH:mm", culture)
+                    </div>
                 </div>
 
-                @for (int i = 0; i < lessenrooster.Count; i++)
+                    }
+
+             </div>
+
+
+
+        }
+        else
+        {
+        <div class="containerBig">
+                <div class="containerCalendarRow">
+                    <div class="containerCalendarTitle columnTiny">
+                        Nr
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Datum
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Dag
+                    </div>
+                    <div class="containerCalendarTitle columnMed">
+                        Docent
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Campus
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Lokaal
+                    </div>
+                    <div class="containerCalendarTitle columnBig">
+                        Module
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Van
+                    </div>
+                    <div class="containerCalendarTitle columnTiny">
+                        Tot
+                    </div>
+                </div>
+
+                @for (int i = 0; i < lessenRooster.Count; i++)
                 {
-                    Administratix.BLL.LesDavinci les = lessenrooster[i];
+                    Administratix.BLL.LesDavinci les = lessenRooster[i];
                     <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+                        <div class="containerCalendarColumn columnTiny">
+                            @les.Cursusnummer
+                        </div>
                         <div class="containerCalendarColumn">
                             @les.Datum.ToString("dd-MM-yyyy", culture)
                         </div>
                         <div class="containerCalendarColumn">
                             @les.Datum.ToString("dddd", culture)
+                        </div>
+                        <div class="containerCalendarColumn columnMed">
+                            @les.Docent
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @les.Campus
                         </div>
                         <div class="containerCalendarColumn columnTiny">
                             @les.Lokaal
@@ -116,79 +180,6 @@
                 }
 
             </div>
-
-
-
-        }
-        else
-        {
-        <div class="containerBig">
-            <div class="containerCalendarRow">
-                <div class="containerCalendarTitle columnTiny">
-                    Nr
-                </div>
-                <div class="containerCalendarTitle">
-                    Datum
-                </div>
-                <div class="containerCalendarTitle">
-                    Dag
-                </div>
-                <div class="containerCalendarTitle columnMed">
-                    Docent
-                </div>
-                <div class="containerCalendarTitle">
-                    Campus
-                </div>
-                <div class="containerCalendarTitle columnTiny">
-                    Lokaal
-                </div>
-                <div class="containerCalendarTitle columnBig">
-                    Module
-                </div>
-                <div class="containerCalendarTitle columnTiny">
-                    Van
-                </div>
-                <div class="containerCalendarTitle columnTiny">
-                    Tot
-                </div>
-            </div>
-
-            @for (int i = 0; i < lessenrooster.Count; i++)
-            {
-                Administratix.BLL.LesDavinci les = lessenrooster[i];
-                <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-                    <div class="containerCalendarColumn columnTiny">
-                        @les.Cursusnummer
-                    </div>
-                    <div class="containerCalendarColumn">
-                        @les.Datum.ToString("dd-MM-yyyy", culture)
-                    </div>
-                    <div class="containerCalendarColumn">
-                        @les.Datum.ToString("dddd", culture)
-                    </div>
-                    <div class="containerCalendarColumn columnMed">
-                        @les.Docent
-                    </div>
-                    <div class="containerCalendarColumn">
-                        @les.Campus
-                    </div>
-                    <div class="containerCalendarColumn columnTiny">
-                        @les.Lokaal
-                    </div>
-                    <div class="containerCalendarColumn columnBig">
-                        @les.Module
-                    </div>
-                    <div class="containerCalendarColumn columnTiny">
-                        @les.Aanvangsdatum.ToString("HH:mm", culture)
-                    </div>
-                    <div class="containerCalendarColumn columnTiny">
-                        @les.Einddatum.ToString("HH:mm", culture)
-                    </div>
-                </div>
-
-            }
-
-        </div>
 
         }
 
@@ -234,5 +225,5 @@
             }*@
 
 
-                    </div>
-        </main>
+    </div>
+</main>

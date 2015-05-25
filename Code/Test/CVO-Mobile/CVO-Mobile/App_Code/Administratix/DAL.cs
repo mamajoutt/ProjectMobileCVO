@@ -277,11 +277,11 @@ namespace Administratix.DAL
                             BLL.ExDel2deZitDate exDel2deZitDate = new BLL.ExDel2deZitDate();
                             exDel2deZitDate.Cursusnummer = result["CursusNummer"].ToString();
                             exDel2deZitDate.Module = result["Module"].ToString();
-                            exDel2deZitDate.AanvangsDatum = result["AanvangsDatum"].ToString();
-                            exDel2deZitDate.EindDatum = result["EindDatum"].ToString();
-                            exDel2deZitDate.ExamenDatum = result["ExamenDatum"].ToString();
-                            exDel2deZitDate.DeliberatieDatum = result["DeliberatieDatum"].ToString();
-                            exDel2deZitDate.DatumTweedeZit = result["DatumTweedeZit"].ToString();
+                            exDel2deZitDate.AanvangsDatum = Convert.ToDateTime(result["AanvangsDatum"]);
+                            exDel2deZitDate.EindDatum = Convert.ToDateTime(result["EindDatum"]);
+                            exDel2deZitDate.ExamenDatum = Convert.ToDateTime(result["ExamenDatum"]);
+                            exDel2deZitDate.DeliberatieDatum = Convert.ToDateTime(result["DeliberatieDatum"]);
+                            exDel2deZitDate.DatumTweedeZit = Convert.ToDateTime(result["DatumTweedeZit"]);
                             exDel2deZitDateLijst.Add(exDel2deZitDate);
                         }
 
@@ -807,15 +807,10 @@ namespace Administratix.DAL
                         {
                             BLL.LesDavinci les = new BLL.LesDavinci();
                             les.Cursusnummer = result["Cursusnummer"].ToString(); 
-                            les.Dag = result["Dag"].ToString(); 
                             les.Datum = Convert.ToDateTime(result["Datum"]);
-                            les.IdPersoneel = (int)result["IdPersoneel"];
                             les.Docent = result["Docent"].ToString();
-                            les.IdLesplaats = (int)result["IdLesPlaats"];
                             les.Campus = result["Campus"].ToString();
-                            les.IdLokaal = (int)result["IdLokaal"];
                             les.Lokaal = result["Lokaal"].ToString();
-                            les.IdIngerichteModulevariant = (int)result["IdIngerichteModulevariant"];
                             les.Module = result["Module"].ToString();
                             les.Aanvangsdatum = Convert.ToDateTime(result["Van"]);
                             les.Einddatum = Convert.ToDateTime(result["Tot"]);
@@ -963,9 +958,87 @@ namespace Administratix.DAL
         }
     }
 
+    public class Kalender : MobileCVO.DAL.IDal<BLL.Kalender>
+    {
+        private string message;
+        public string Message
+        {
+            get
+            {
+                return message;
+            }
+        }
+
+        public Kalender()
+        {
+            this.message = "";
+        }
+
+        public int Insert(BLL.Kalender entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BLL.Kalender SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.Kalender> SelectAll()
+        {
+            List<BLL.Kalender> feestDagenLijst = new List<BLL.Kalender>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
+            SqlCommand command = new SqlCommand();
+
+            String sqlString = "grp2_SelectFeestdagenVersieMo";
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = sqlString;
+            command.Connection = connection;
+            this.message = "Niets te melden";
+            SqlDataReader result;
+
+            try
+            {
+                connection.Open();
+                this.message = "De database is klaar";
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.Kalender feestDag = new BLL.Kalender();
+                            feestDag.Schooljaar = result["Schooljaar"].ToString();
+                            feestDag.Datum = Convert.ToDateTime(result["Datum"]);
+                            feestDag.Omschrijving = result["Omschrijving"].ToString();
+                            feestDagenLijst.Add(feestDag);
+                        }
+                    }
+                }
+            }
+
+            catch (SqlException e)
+            {
+                this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return feestDagenLijst;
+        }
+
+        public List<BLL.Kalender> SelectAllByCursistNummer(int cursistNummer)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class Feestdagen
     {
-        public static List<BLL.Kalender> SelectFeesdagen(DateTime Date1, DateTime Date2)
+        public static List<BLL.Kalender> SelectFeestDagen(DateTime Date1, DateTime Date2)
         {
             List<BLL.Kalender> lijstfeestdagen = new List<BLL.Kalender>();
 

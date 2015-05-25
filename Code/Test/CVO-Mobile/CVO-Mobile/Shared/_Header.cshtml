@@ -40,7 +40,7 @@
         {
             <form id="login" action="" method="post" class="loginForm">
                 @{cursist = (Administratix.BLL.Cursist)Session["cursist"];}
-                <label>Ingelogd als @cursist.Voornaam (@cursist.CursistNummer)</label>
+                <label>Ingelogd als @cursist.Voornaam @cursist.Familienaam (@cursist.CursistNummer)</label>
 
                 <button type="submit" name="action" value="logout">Log uit</button>
             </form>

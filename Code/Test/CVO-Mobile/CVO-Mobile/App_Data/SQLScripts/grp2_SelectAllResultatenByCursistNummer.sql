@@ -1,5 +1,6 @@
 --author Nikos
 --updated SVR 3/05/2015
+--updated Mohamed Amajoutt 24/05/2015
  
 --stored procedure
 --resultaten overzicht

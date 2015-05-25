@@ -17,22 +17,16 @@ create procedure grp2_SelectAllLesDavinciByCursistNummer
 )
 
 as
-
 begin
 select 
 	IngerichteModulevariant.CursusNummer as Cursusnummer
-	,CONVERT(nvarchar,Datename(dw,LesDavinci.Lesdatum)) as Dag
-	,Convert(nvarchar, LesDavinci.Lesdatum, 5) as Datum
-	,LesDavinci.IdPersoneel
+	,LesDavinci.Lesdatum as Datum
 	,Personeel.Naam + ' ' + Personeel.Voornaam as Docent
-	,LesDavinci.IdLesplaats
 	,Lesplaats.Naam as Campus
-	,IdLokaal
 	,LesDavinci.LocatieOmschrijving as Lokaal
-	,LesDavinci.IdIngerichteModulevariant
 	,IngerichteModulevariant.Naam as Module
-	,Convert(nvarchar(5), LesDavinci.Aanvangsdatum, 108) as Van
-	,Convert(nvarchar(5), LesDavinci.Einddatum, 108) as Tot
+	,LesDavinci.AanvangsDatum as Van
+	,LesDavinci.Einddatum as Tot
 from LesDavinci 
 inner join IngerichteModulevariant on LesDavinci.IdIngerichteModulevariant = IngerichteModulevariant.Id
 inner join Lesplaats on LesDavinci.IdLesplaats = LesPlaats.Id

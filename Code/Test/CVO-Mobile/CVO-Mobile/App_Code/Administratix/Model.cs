@@ -192,9 +192,15 @@ namespace Administratix
 
         public class Kalender
         {
-            public static List<BLL.Kalender> SelectFeestdagen(DateTime Date1,DateTime  Date2)
+            public static List<BLL.Kalender> KalenderSelectAll()
             {
-                return DAL.Feestdagen.SelectFeesdagen(Date1,Date2);
+                Administratix.DAL.Kalender dal = new DAL.Kalender();
+                return dal.SelectAll();
+            }
+
+            public static List<BLL.Kalender> SelectFeestdagenByDate(DateTime Date1,DateTime  Date2)
+            {
+                return DAL.Feestdagen.SelectFeestDagen(Date1,Date2);
             }
         }
     }
