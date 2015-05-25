@@ -626,15 +626,31 @@ namespace Administratix.DAL
                         {
                             BLL.CursusResultaat resultaat = new BLL.CursusResultaat();
                             resultaat.Id = (int)result["Id"];
+                            resultaat.IdModuleVariant = (int)result["IdModuleVariant"];
                             resultaat.CursusNummer = result["CursusNummer"].ToString();
                             resultaat.Module = result["Module"].ToString();
                             resultaat.AanvangsDatum = result["AanvangsDatum"].ToString();
                             resultaat.EindDatum = result["EindDatum"].ToString();
-                            resultaat.PuntenTotaal = (double)result["PuntenTotaal"];
-                            resultaat.PuntenPermanenteEvaluatie = (double)result["PuntenPermanenteEvaluatie"];
-                            resultaat.PuntenEersteZit = (double)result["PuntenEersteZit"];
-                            resultaat.Grp2_IdTweedeZit = (int)result["grp2_IdTweedeZit"];
-                            resultaat.PuntenTweedeZit = (double)result["PuntenTweedeZit"];
+                            double punt = -1;
+                            Double.TryParse(result["PuntenTotaal"].ToString(), out punt);
+                            resultaat.PuntenTotaal = punt;
+                            punt = -1;
+                            Double.TryParse(result["PuntenPermanenteEvaluatie"].ToString(), out punt);
+                            resultaat.PuntenPermanenteEvaluatie = punt;
+                            punt = -1;
+                            Double.TryParse(result["PuntenEersteZit"].ToString(), out punt);
+                            resultaat.PuntenEersteZit = punt;
+                            punt = -1;
+                            Double.TryParse(result["PuntenTweedeZit"].ToString(), out punt);
+                            resultaat.PuntenTweedeZit = punt;
+                            int id = 0;
+                            Int32.TryParse(result["grp2_IdTweedeZit"].ToString(), out id);
+                            resultaat.Grp2_IdTweedeZit = id;
+                            //resultaat.Grp2_IdTweedeZit = (int)result["grp2_IdTweedeZit"];
+                            //resultaat.PuntenTotaal = (double)result["PuntenTotaal"];
+                            //resultaat.PuntenPermanenteEvaluatie = (double)result["PuntenPermanenteEvaluatie"];
+                            //resultaat.PuntenEersteZit = (double)result["PuntenEersteZit"];
+                            //resultaat.PuntenTweedeZit = (double)result["PuntenTweedeZit"];
                             resultaat.OpmerkingNaDeliberatieEersteZit = result["OpmerkingNaDeliberatieEersteZit"].ToString();
                             resultatenLijst.Add(resultaat);
                         }

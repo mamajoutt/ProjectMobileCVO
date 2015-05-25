@@ -32,13 +32,25 @@
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
         //lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursistNr));
 
-        //testdatum
-        DateTime testDatumStart = new DateTime(2015, 1, 1);
-        DateTime testDatumEinde = new DateTime(2015, 8, 1);
-        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, testDatumStart, testDatumEinde);
+        //start datum rooster
+        DateTime startDatum = DateTime.Now;
+        
+        //startdatum overwrite voor voorstelling
+        startDatum = new DateTime(2014, 9, 1);
+
+        //datum na juli -> jaar eind datum = volgend jaar, anders dit jaar
+        int jaar = startDatum.Month > 7 ? startDatum.Year + 1 : startDatum.Year;
+        //eind datum rooster (einde schooljaar, begin augustus)
+        DateTime eindDatum = new DateTime(jaar, 8, 1);
+
+        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, startDatum, eindDatum);
         if (action.Equals("feestdagen-inclusief"))
         {
+<<<<<<< HEAD
             feestdagen = Administratix.DAL.Feestdagen.SelectFeestDagen(testDatumStart, testDatumEinde);
+=======
+            feestdagen = Administratix.DAL.Feestdagen.SelectFeesdagen(startDatum, eindDatum);
+>>>>>>> origin/master
             lessenrooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenrooster, feestdagen);
         }
 
