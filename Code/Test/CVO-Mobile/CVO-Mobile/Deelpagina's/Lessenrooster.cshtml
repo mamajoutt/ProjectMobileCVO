@@ -34,7 +34,7 @@
 
         //start datum rooster
         DateTime startDatum = DateTime.Now;
-        
+
         //startdatum overwrite voor voorstelling
         startDatum = new DateTime(2014, 9, 1);
 
@@ -46,11 +46,7 @@
         lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, startDatum, eindDatum);
         if (action.Equals("feestdagen-inclusief"))
         {
-<<<<<<< HEAD
-            feestdagen = Administratix.DAL.Feestdagen.SelectFeestDagen(testDatumStart, testDatumEinde);
-=======
-            feestdagen = Administratix.DAL.Feestdagen.SelectFeesdagen(startDatum, eindDatum);
->>>>>>> origin/master
+            feestdagen = Administratix.DAL.Feestdagen.SelectFeestDagen(startDatum, eindDatum);
             lessenrooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenrooster, feestdagen);
         }
 

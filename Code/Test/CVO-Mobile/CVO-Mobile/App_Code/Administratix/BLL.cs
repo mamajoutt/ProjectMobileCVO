@@ -104,10 +104,10 @@ namespace Administratix.BLL
     {
         public int Id { get; set; }
         public string Naam { get; set; }
-        public string Datum { get; set; }
+        public DateTime Datum { get; set; }
         public string Locatie { get; set; }
-        public string Start { get; set; }
-        public string Eind { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime Eind { get; set; }
 
     }
 

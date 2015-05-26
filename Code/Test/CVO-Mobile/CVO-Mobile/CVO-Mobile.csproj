@@ -113,6 +113,7 @@
     <Content Include="Deelpagina%27s\Deadlines.cshtml" />
     <Content Include="Deelpagina%27s\Lessenrooster.cshtml" />
     <Content Include="Deelpagina%27s\LessenRoosterVMo.cshtml" />
+    <Content Include="Deelpagina%27s\Evenementen.cshtml" />
     <None Include="Evenementen.cshtml" />
     <Content Include="MasterPageTestPage.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />

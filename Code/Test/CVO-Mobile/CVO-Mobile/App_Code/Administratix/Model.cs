@@ -55,7 +55,7 @@ namespace Administratix
 
         public class EvenementInschrijving
         {
-            public static string InsertEvenementInschrijving(string idCursist, string idEvenement, string opmerkingen)
+            public static string InsertEvenementInschrijving(int idCursist, string idEvenement, string opmerkingen)
             {
                 Administratix.BLL.EvenementInschrijving evenementInschrijving = new BLL.EvenementInschrijving();
                 evenementInschrijving.IdCursist = Convert.ToInt32(idCursist);
@@ -65,6 +65,7 @@ namespace Administratix
                 dal.Insert(evenementInschrijving);
                 return dal.Message;
             }
+
         }
 
         public class CursusResultaat

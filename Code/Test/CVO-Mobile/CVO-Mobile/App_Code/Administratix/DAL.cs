@@ -352,11 +352,10 @@ namespace Administratix.DAL
                             BLL.Evenement evenement = new BLL.Evenement();
                             evenement.Id = (int)result["Id"];
                             evenement.Naam = result["Naam"].ToString();
-                            evenement.Datum = result["Datum"].ToString();
+                            evenement.Datum = Convert.ToDateTime(result["Datum"]);
                             evenement.Locatie = result["Locatie"].ToString();
-                            evenement.Start = result["StartUur"].ToString();
-                            evenement.Eind = result["EindUur"].ToString();
-
+                            evenement.Start = Convert.ToDateTime(result["StartUur"]);
+                            evenement.Eind = Convert.ToDateTime(result["EindUur"]);
                             evenementenLijst.Add(evenement);
                         }
 
@@ -378,63 +377,7 @@ namespace Administratix.DAL
 
         public BLL.Evenement SelectOne(int id)
         {
-            Administratix.BLL.Evenement evenement = new BLL.Evenement();
-            // geen plain vanilla sql statement meegeven,
-            // parameters gebruiken
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString =
-                 System.Configuration.ConfigurationManager.
-                 ConnectionStrings["MobileCVO"].ToString();
-            // Sqlcommand object
-            SqlCommand command = new SqlCommand();
-            // in de CommandText eigenschap stoppen de naam
-            // van de stored procedure
-            string sqlString = "grp2_SelectOneEvenementById";
-
-            // shortcut to add parameter
-            command.Parameters.Add(new SqlParameter("@Id",
-               SqlDbType.Int)).Value = id;
-            // zeg aan het command object dat het een tored procedure
-            // zal krijgen en geen SQL Statement
-            command.CommandType = CommandType.StoredProcedure;
-            // stop het sql statement in het command object
-            command.CommandText = sqlString;
-            // geeft het connection object door aan het command object
-            command.Connection = connection;
-            this.message = "Niets te melden";
-            // we gaan ervan uit dat het mislukt
-            SqlDataReader result;
-            try
-            {
-                connection.Open();
-                // retourneert het aantal rijen dat geïnserted werd
-                this.message = "De database is klaar!";
-                // voeg using toe om er voor te zorgen dat
-                // de datareader gesloten wordt als we die niet
-                // meer nodig hebben
-                using (result = command.ExecuteReader())
-                {
-                    if (result.HasRows)
-                    {
-                        result.Read();
-                        evenement.Id = (int)result["Id"];
-                        evenement.Naam = result["Naam"].ToString();
-                        evenement.Datum = result["Datum"].ToString();
-                        evenement.Locatie = result["Locatie"].ToString();
-                        evenement.Start = result["StartUur"].ToString();
-                        evenement.Eind = result["EindUur"].ToString();
-                    }
-                }
-            }
-            catch (SqlException e)
-            {
-                this.message = e.Message;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return evenement;
+            throw new NotImplementedException();
         }
 
 

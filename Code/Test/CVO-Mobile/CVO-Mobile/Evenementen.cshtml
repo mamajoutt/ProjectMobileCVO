@@ -23,7 +23,7 @@
                 evenement = Administratix.Model.Evenement.EvenementSelectOne(Convert.ToInt32(Request["evenement-id"]));
                 break;
             case "inschrijven":
-                message = Administratix.Model.EvenementInschrijving.InsertEvenementInschrijving(Request["cursistNummer-inschrijving"], Request["evenement-id"], Request["opmerkingen-inschrijving"]);
+                message = Administratix.Model.EvenementInschrijving.InsertEvenementInschrijving(Convert.ToInt32(Request["cursistNummer-inschrijving"]), Request["evenement-id"], Request["opmerkingen-inschrijving"]);
                 break;
         }
     }
