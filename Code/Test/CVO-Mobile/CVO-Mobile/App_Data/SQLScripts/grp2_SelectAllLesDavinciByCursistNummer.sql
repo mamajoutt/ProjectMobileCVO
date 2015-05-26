@@ -30,8 +30,8 @@ select
 from LesDavinci 
 inner join IngerichteModulevariant on LesDavinci.IdIngerichteModulevariant = IngerichteModulevariant.Id
 inner join Lesplaats on LesDavinci.IdLesplaats = LesPlaats.Id
-inner join Personeel on IdPersoneel = Personeel.Id
-inner join Lokaal on IdLokaal = Lokaal.Id
+inner join Personeel on LesDavinci.IdPersoneel = Personeel.Id
+inner join Lokaal on LesDavinci.IdLokaal = Lokaal.Id
 inner join Plaatsing on Plaatsing.IdIngerichteModulevariant = IngerichteModulevariant.id
 inner join Cursist on Plaatsing.IdCursist = Cursist.Id
 where Cursist.CursistNummer = @CursistNummer and LesDavinci.Aanvangsdatum >= GETDATE()
