@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
-//using PROJECT_SCRATCHPAD;
 using Newtonsoft.Json.Linq;
-//using Json;
 
 namespace Moodle.DAL
 {
@@ -17,7 +15,6 @@ namespace Moodle.DAL
     public class MoodlePackage
     {
         public static string MoodleURL { set; get; }
-        //string url = "moodle-cvomobile.rhcloud.com";
         string service = "";
         List<KeyValuePair<string, string>> parameters;
 
@@ -29,7 +26,7 @@ namespace Moodle.DAL
         }
 
         // Voeg Input Parameters toe
-        public void P(string key, string value)
+        public void AddParameter(string key, string value)
         {
             parameters.Add(new KeyValuePair<string, string>(key, value));
         }
@@ -82,10 +79,10 @@ namespace Moodle.DAL
 
 
             MoodlePackage pAssignment = new MoodlePackage("/webservice/rest/server.php");
-            pAssignment.P("wstoken", token);
-            pAssignment.P("wsfunction", "mod_assign_get_assignments");
-            pAssignment.P("moodlewsrestformat", "json");
-            pAssignment.P("courseids[0]", "" + courseId);
+            pAssignment.AddParameter("wstoken", token);
+            pAssignment.AddParameter("wsfunction", "mod_assign_get_assignments");
+            pAssignment.AddParameter("moodlewsrestformat", "json");
+            pAssignment.AddParameter("courseids[0]", "" + courseId);
             JObject jCourses = new JObject();
 
             try
@@ -135,22 +132,14 @@ namespace Moodle.DAL
             string token = "";
 
             MoodlePackage pToken = new Moodle.DAL.MoodlePackage("/login/token.php");
-            pToken.P("username", accountName);
-            pToken.P("password", password);
-            pToken.P("service", service);
+            pToken.AddParameter("username", accountName);
+            pToken.AddParameter("password", password);
+            pToken.AddParameter("service", service);
 
             JObject jToken = new JObject();
             try
             {
                 jToken = JObject.Parse(pToken.Send());
-                //jCourses.TryGetValue("warnings", out jWarning);
-
-                //Console.WriteLine(jCourses);
-
-                //if (!jCourses["warnings"].ToString().Equals("[]"))//check for errors
-                //{
-                //    throw new Exception("mod_assign_get_assignments: " + jCourses["warnings"][0]);
-                //}
 
                 token = (string)jToken["token"];
 
@@ -159,8 +148,6 @@ namespace Moodle.DAL
             {
                 Console.WriteLine(e.Message);
             }
-
-            //token = (String)JsonParser.FromJson(pToken.Send())["token"];
 
             return token;
         }
@@ -180,10 +167,10 @@ namespace Moodle.DAL
             double grade = -1;
 
             MoodlePackage pGrade = new MoodlePackage("/webservice/rest/server.php");
-            pGrade.P("wstoken", token);
-            pGrade.P("wsfunction", "mod_assign_get_grades");
-            pGrade.P("moodlewsrestformat", "json");
-            pGrade.P("assignmentids[0]", "" + assignmentId);
+            pGrade.AddParameter("wstoken", token);
+            pGrade.AddParameter("wsfunction", "mod_assign_get_grades");
+            pGrade.AddParameter("moodlewsrestformat", "json");
+            pGrade.AddParameter("assignmentids[0]", "" + assignmentId);
 
             JObject jAssignments = new JObject();
 
@@ -193,7 +180,7 @@ namespace Moodle.DAL
 
                 if (!jAssignments["assignments"].HasValues)
                 {
-                    return -1;
+                    throw new Exception(jAssignments["warnings"].ToString());
                 }
 
                 JObject jGrades = (JObject)jAssignments["assignments"][0];
@@ -238,11 +225,11 @@ namespace Moodle.DAL
             int id = -1;
 
             Moodle.DAL.MoodlePackage puser = new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
-            puser.P("wstoken", token);
-            puser.P("wsfunction", "core_user_get_users_by_field");
-            puser.P("moodlewsrestformat", "json");
-            puser.P("field", "email");
-            puser.P("values[0]", email);
+            puser.AddParameter("wstoken", token);
+            puser.AddParameter("wsfunction", "core_user_get_users_by_field");
+            puser.AddParameter("moodlewsrestformat", "json");
+            puser.AddParameter("field", "email");
+            puser.AddParameter("values[0]", email);
 
             try
             {
@@ -273,10 +260,10 @@ namespace Moodle.DAL
 
             Moodle.DAL.MoodlePackage pCourse =
                 new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
-            pCourse.P("wstoken", token);
-            pCourse.P("wsfunction", "core_enrol_get_users_courses");
-            pCourse.P("moodlewsrestformat", "json");
-            pCourse.P("userid", "" + userId);
+            pCourse.AddParameter("wstoken", token);
+            pCourse.AddParameter("wsfunction", "core_enrol_get_users_courses");
+            pCourse.AddParameter("moodlewsrestformat", "json");
+            pCourse.AddParameter("userid", "" + userId);
 
             try
             {
