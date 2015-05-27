@@ -659,7 +659,7 @@ namespace Administratix.DAL
                             {
                                 resultaat.IdTweedeZit = Convert.ToInt32(result["IdTweedeZit"]);
                             }
-                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            if (!Convert.IsDBNull(result["PuntenTweedeZit"]))
                             {
                                 resultaat.PuntenTweedeZit = Convert.ToDouble(result["PuntenTweedeZit"]);
                             }

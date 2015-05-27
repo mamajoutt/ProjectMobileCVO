@@ -7,6 +7,7 @@ namespace Administratix
 {
     public class Model
     {
+
         public class LesDavinci
         {
             public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummer(int cursistNummer)
@@ -194,6 +195,27 @@ namespace Administratix
             public static BLL.Cursist CursistSelectAllByCursistNummer(int cursistNummer)
             {
                 return DAL.Cursist.SelectCursistByCursistNummer(cursistNummer);
+            }
+
+            public static BLL.Cursist Login(string input)
+            {
+                BLL.Cursist cursist = new BLL.Cursist();
+                int cursistNummer = 0;
+
+                if (!Int32.TryParse(input, out cursistNummer))
+                {
+                    throw new Exception("Ongeldige crusist nummer.");
+                }
+
+
+                cursist = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(cursistNummer);
+
+                if (cursist.CursistNummer == 0)
+                {
+                    throw new Exception("Ongeldige crusist nummer.");
+                }
+
+                return cursist;
             }
         }
 
