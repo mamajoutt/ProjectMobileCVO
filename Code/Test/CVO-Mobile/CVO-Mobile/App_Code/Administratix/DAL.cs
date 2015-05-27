@@ -640,6 +640,7 @@ namespace Administratix.DAL
                         {
                             BLL.CursusResultaat resultaat = new BLL.CursusResultaat();
                             resultaat.IdIngerichteModulevariant = Convert.ToInt32(result["IdIngerichteModulevariant"]);
+                            resultaat.IdModuleVariant = Convert.ToInt32(result["IdModuleVariant"]);
                             resultaat.CursusNummer = result["CursusNummer"].ToString();
                             resultaat.Module = result["Module"].ToString();
                             if (!Convert.IsDBNull(result["PuntenTotaal"]))

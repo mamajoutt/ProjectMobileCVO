@@ -24,6 +24,7 @@ begin
  
 select 
 	IngerichteModulevariant.Id as IdIngerichteModulevariant
+	,IngerichteModulevariant.IdModuleVariant as IdModuleVariant
 	,IngerichteModulevariant.CursusNummer as Cursusnummer
 	,IngerichteModulevariant.Naam as Module
 	,PlaatsingResultaat.PuntenTotaal as PuntenTotaal

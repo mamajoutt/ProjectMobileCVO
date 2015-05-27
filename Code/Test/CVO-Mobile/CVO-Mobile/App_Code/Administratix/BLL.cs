@@ -12,6 +12,7 @@ namespace Administratix.BLL
     public class CursusResultaat
     {
         public int IdIngerichteModulevariant { get; set; }
+        public int IdModuleVariant { get; set; }
         public string CursusNummer { get; set; }
         public string Module { get; set; }
         public double PuntenTotaal { get; set; }
