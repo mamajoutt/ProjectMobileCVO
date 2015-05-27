@@ -159,4 +159,10 @@ namespace Administratix.BLL
         //public int IdVerlofdagtype { get; set; }
     }
 
+    public class Lessenrooster
+    {
+        public static bool FeestdagenTonen { get; set; }
+        public static bool Compact { get; set; }
+    }
+
 }

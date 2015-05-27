@@ -414,3 +414,32 @@ th {
 .columnMed{
     flex-basis:150px;
 }
+
+.optionButton{
+    width:125px;
+    height:50px;
+    border: none;
+    font-size: large;
+    color: #000;
+    border: 2px solid #DB5C3D;
+    margin: 5px;
+}
+
+.optionSelected{
+    background-color: #DB5C3D;
+    color: #FFF;
+}
+
+.optionButton:hover{
+    background-color: #D88977;
+}
+
+.containerOptions{
+    display: flex;
+    flex-direction:row;
+    justify-content:space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    border: none;
+}
+

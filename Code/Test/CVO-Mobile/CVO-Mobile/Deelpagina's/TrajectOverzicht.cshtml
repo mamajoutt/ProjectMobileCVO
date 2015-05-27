@@ -2,21 +2,35 @@
     Layout = "~/Shared/_Layout.cshtml";
     Page.Title = "Trajectoverzicht";
 
+    string action = "";
+
+    Session["loginError"] = "";
     if (IsPost)
     {
-        string action = Request["action"];
+        action = Request["action"];
 
-        if (action.Equals("login") && Session["cursist"] == null)
+        switch (action)
         {
-            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+            case "login":
+                if (Session["cursist"] == null)
+                {
+                    try
+                    {
+                        Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
+                    }
+                    catch (Exception e)
+                    {
+                        Session["loginError"] = e.Message;
+                    }
+
+                }
+                break;
+
+            case "logout":
+                Session["cursist"] = null;
+                break;
+
         }
-        if (action.Equals("logout"))
-        {
-            Session["cursist"] = null;
-        }
-
-
-
     }
 
     List<Administratix.BLL.StatusTraject> Resultaat = new List<Administratix.BLL.StatusTraject>();
@@ -30,7 +44,7 @@
         // Haal trajectmodules op
         trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursist.CursistNummer);
         // Haal cursist resultaten op
-        resultaten = Administratix.Model.CursusResultaat.SelectAllCursusResultaat(cursist.CursistNummer);
+        resultaten = Administratix.Model.CursusResultaat.CursusResultaatSelectAllByCursistNummer(cursist.CursistNummer);
         // Voeg punten toe een trajectmodules
         trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
         // Haal nodige voorkenis op, 140 == Informatica
