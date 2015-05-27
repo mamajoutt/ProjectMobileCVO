@@ -4,22 +4,55 @@
 
     string action = "";
 
+    Session["loginError"] = "";
     if (IsPost)
     {
         action = Request["action"];
-
         if (action != null)
         {
-            if (action.Equals("login") && Session["cursist"] == null)
-            {
-                Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
-            }
-            if (action.Equals("logout"))
-            {
+        switch (action)
+        {
+            case "login":
+                if (Session["cursist"] == null)
+                {
+                    try
+                    {
+
+                        Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
+                    }
+                    catch (Exception e)
+                    {
+
+                        Session["loginError"] = e.Message;
+                    }
+
+                }
+                break;
+
+            case "logout":
                 Session["cursist"] = null;
-            }
+                break;
+
+        }
         }
     }
+    
+    //if (IsPost)
+    //{
+    //    action = Request["action"];
+
+    //    if (action != null)
+    //    {
+    //        if (action.Equals("login") && Session["cursist"] == null)
+    //        {
+    //            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+    //        }
+    //        if (action.Equals("logout"))
+    //        {
+    //            Session["cursist"] = null;
+    //        }
+    //    }
+    //}
     
 
     //Dit is om nederlandse weekdagen te krijgen
@@ -177,7 +210,7 @@
                                         <input type="hidden" name="evenementId-inschrijving" id="evenementId-inschrijving" value="@evenement.Id" />
                                     </div>
                                     <div class="containerCalendarTitle">
-                                        <button type="submit" name="inschrijven" value="inschrijven">Schrijf me in!</button>
+                                        <button type="submit" name="action" value="inschrijven">Schrijf me in!</button>
                                     </div>
                                 </form>
                             }
