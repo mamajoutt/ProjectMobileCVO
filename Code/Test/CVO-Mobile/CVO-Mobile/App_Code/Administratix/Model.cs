@@ -86,11 +86,11 @@ namespace Administratix
 
         public class TweedeZitInschrijving
         {
-            public static string TweedeZitInschrijvingInsert(string idCursist, string grp2_IdTweedeZit)
+            public static string TweedeZitInschrijvingInsert(int idCursist, int grp2_IdTweedeZit)
             {
                 Administratix.BLL.TweedeZitInschrijving tweedeZitInschrijving = new BLL.TweedeZitInschrijving();
-                tweedeZitInschrijving.IdCursist = Convert.ToInt32(idCursist);
-                tweedeZitInschrijving.IdTweedeZit = Convert.ToInt32(grp2_IdTweedeZit);
+                tweedeZitInschrijving.IdCursist = idCursist;
+                tweedeZitInschrijving.IdTweedeZit = grp2_IdTweedeZit;
                 Administratix.DAL.TweedeZitInschrijving dal = new DAL.TweedeZitInschrijving();
                 dal.Insert(tweedeZitInschrijving);
                 return dal.Message;

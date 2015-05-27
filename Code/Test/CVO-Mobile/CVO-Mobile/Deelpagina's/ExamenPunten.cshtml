@@ -49,10 +49,10 @@
 
         if (action != null)
         {
-            //if (action.Equals("inschrijven-TweedeZit"))
-            //{
-            //    message = Administratix.Model.TweedeZitInschrijving.TweedeZitInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer));
-            //}
+            if (action.Equals("inschrijven"))
+            {
+                message = Administratix.Model.TweedeZitInschrijving.TweedeZitInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer), Convert.ToInt32(Request["IdTweedeZit-inschrijving"]));
+            }
             //if (action.Equals("tweedeZitInschrijvingLijst-tonen"))
             //{
                 
@@ -164,13 +164,14 @@
                     else
                     {
                         @resultaat.PuntenTweedeZit
-                        <input type="hidden" name="IdTweedeZit-inschrijving" id="IdTweedeZit-inschrijving" value="@resultaat.IdTweedeZit" />
+                        
                     }
                     </div>
                     @if (Session["cursist"] != null)
                     {
                     <div class="containerCalendarTitle">
-                        <button type="submit" name="inschrijven" value="inschrijven">Inschrijven</button>
+                        <input type="hidden" name="IdTweedeZit-inschrijving" id="IdTweedeZit-inschrijving" value="@resultaat.IdTweedeZit" />
+                        <button type="submit" name="action" value="inschrijven">Inschrijven</button>
                     </div>
                     }
                 </form>
