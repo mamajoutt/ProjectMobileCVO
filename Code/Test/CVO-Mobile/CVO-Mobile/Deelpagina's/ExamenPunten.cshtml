@@ -1,0 +1,170 @@
+﻿@{
+    Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "Examenpunten";
+
+    string action = "";
+
+    if (IsPost)
+    {
+        action = Request["action"];
+
+        if (action != null)
+        {
+            if (action.Equals("login") && Session["cursist"] == null)
+            {
+                Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+            }
+            if (action.Equals("logout"))
+            {
+                Session["cursist"] = null;
+            }
+        }
+    }
+
+    //Dit is om nederlandse weekdagen te krijgen
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
+
+    string message = "Alles gaat goed";
+
+    List<Administratix.BLL.CursusResultaat> cursusResultatenLijst = new List<Administratix.BLL.CursusResultaat>();
+
+    if (Session["cursist"] != null)
+    {
+        Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
+
+        cursusResultatenLijst = Administratix.Model.CursusResultaat.CursusResultaatSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
+
+        if (action != null)
+        {
+            //if (action.Equals("inschrijven-TweedeZit"))
+            //{
+            //    message = Administratix.Model.TweedeZitInschrijving.TweedeZitInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer));
+            //}
+            //if (action.Equals("tweedeZitInschrijvingLijst-tonen"))
+            //{
+                
+            //}
+        }
+    }
+    
+}
+
+<main>
+    <div id="centerContainer">
+        <form id="cursusResultaat-display" action="" method="post">
+            <fieldset>
+                <legend>Display opties</legend>
+                <button type="submit" name="action" value="tweedeZitInschrijvingLijst-tonen">Mijn 2de zit</button>
+                <button type="submit" name="action" value="alle-resultaten">Alle resultaten</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="containerBig">
+        <div class="containerCalendarRow">
+            <div class="containerCalendarTitle">
+                CursusNr
+            </div>
+            <div class="containerCalendarTitle">
+                Module
+            </div>
+            <div class="containerCalendarTitle">
+                Totaal
+            </div>
+            <div class="containerCalendarTitle">
+                PE
+            </div>
+            <div class="containerCalendarTitle">
+                1ste zit
+            </div>
+            <div class="containerCalendarTitle">
+                Deliberatie 1ste zit
+            </div>
+            <div class="containerCalendarTitle">
+                2de zit
+            </div>
+            <div class="containerCalendarTitle">
+
+            </div>
+            <div class="containerCalendarTitle">
+                Deliberatie 2de zit
+            </div>
+        </div>
+
+        @for (int i = 0; i < cursusResultatenLijst.Count; i++)
+        {
+            Administratix.BLL.CursusResultaat resultaat = cursusResultatenLijst[i];
+            <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+
+                <div class="containerCalendarTitle">
+                    @resultaat.CursusNummer
+                </div>
+                <div class="containerCalendarTitle">
+                    @resultaat.Module
+                </div>
+                <div class="containerCalendarTitle">
+                    @if (resultaat.PuntenTotaal == 0)
+                    {
+                        <p>x</p>
+                    }
+                    else 
+                    { 
+                        @resultaat.PuntenTotaal
+                    }
+                </div>
+                <div class="containerCalendarTitle">
+                    @if (resultaat.PuntenPermanenteEvaluatie == 0)
+                    {
+                        <p>x</p>
+                    }
+                    else 
+                    { 
+                        @resultaat.PuntenPermanenteEvaluatie
+                    }
+                </div>
+                <div class="containerCalendarTitle">
+                    @if (resultaat.PuntenEersteZit == 0)
+                    {
+                        <p>x</p>
+                    }
+                    else
+                    {
+                        @resultaat.PuntenEersteZit
+                    }
+                </div>
+                <div class="containerCalendarTitle">
+                    @if (resultaat.OpmerkingNaDeliberatieEersteZit == null)
+                    {
+                        <p>x</p>
+                    }
+                    else
+                    {
+                        @resultaat.OpmerkingNaDeliberatieEersteZit
+                    }
+                </div>
+                <form id ="tweedezit-inschrijven" action="" method="post">
+                    <div class="containerCalendarTitle">
+                    @if (resultaat.PuntenTweedeZit == 0)
+                    {
+                        <p>x</p>
+                    }
+                    else
+                    {
+                        @resultaat.PuntenTweedeZit
+                        <input type="hidden" name="IdTweedeZit-inschrijving" id="IdTweedeZit-inschrijving" value="@resultaat.IdTweedeZit" />
+                    }
+                    </div>
+                    @if (Session["cursist"] != null)
+                    {
+                    <div class="containerCalendarTitle">
+                        <button type="submit" name="inschrijven" value="inschrijven">Inschrijven</button>
+                    </div>
+                    }
+                </form>
+            </div>
+        }
+    </div>
+
+
+    
+</main>

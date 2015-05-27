@@ -3,6 +3,7 @@
  
  
 --Stored procedure insert voor de tabel grp2_TweedeZitInschrijving
+--Koppeling tabel Cursist & grp2_TweedeZit
 --Cursist inschrijven voor 2de zit
 use Administratix_cursist
 go
@@ -17,7 +18,7 @@ go
 create procedure grp2_InsertCursistTweedeZit
 (
 	@CursistNummer int,
-	@Grp2_IdTweedeZit int,
+	@IdTweedeZit int,
 	@Reservatiedatum datetime,
 	-- out omdat de waarde naar de calling
 	-- programma geretourneerd moet worden
@@ -30,7 +31,7 @@ declare @CurrentId int
 declare @CursistId int
 select @CursistId = Id from Cursist where CursistNummer = @CursistNummer
 --check doen of cursist al ingeschreven is voor 2de zit
-select @CurrentId = Id from grp2_TweedeZitInschrijving where IdCursist = @CursistId and Grp2_IdTweedeZit = @Grp2_IdTweedeZit
+select @CurrentId = Id from grp2_TweedeZitInschrijving where IdCursist = @CursistId and IdTweedeZit = @IdTweedeZit
 
 if @CurrentId is not null
 begin 
@@ -44,18 +45,16 @@ insert into grp2_TweedeZitInschrijving
 (
 	Reservatiedatum,
 	IdCursist,
-	Grp2_IdTweedeZit
+	IdTweedeZit
 )
 values
 (
 	@Reservatiedatum,
 	@CursistId,
-	@Grp2_IdTweedeZit
+	@IdTweedeZit
 )
  
 -- Retourneert de Id van de nieuw toegevoegde rij.
 set @Id = SCOPE_IDENTITY()
 return
 end
- 
- 

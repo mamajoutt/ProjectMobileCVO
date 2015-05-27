@@ -1,6 +1,8 @@
 -- Mohamed Amajoutt
 -- 27/04/2015
 
+--SP geeft een lessenrooster weer adhv de ingegeven cursistnummer
+
 use Administratix_cursist
 go
 

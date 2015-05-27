@@ -10,7 +10,7 @@
 
         if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32( Request["Login-CursistNummer"]));
+            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
@@ -43,11 +43,11 @@
         //eind datum rooster (einde schooljaar, begin augustus)
         DateTime eindDatum = new DateTime(jaar, 8, 1);
 
-        lessenrooster = Administratix.Model.LesDavinci.LesroosterTussenDatums(cursist.CursistNummer, startDatum, eindDatum);
+        lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerAndDates(cursist.CursistNummer, startDatum, eindDatum);
         if (action.Equals("feestdagen-inclusief"))
         {
-            feestdagen = Administratix.DAL.Feestdagen.SelectFeestDagen(startDatum, eindDatum);
-            lessenrooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenrooster, feestdagen);
+            feestdagen = Administratix.Model.Kalender.KalenderSelectAllByDates(startDatum, eindDatum);
+            lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerWithVakantieDagen(lessenrooster, feestdagen);
         }
 
     }

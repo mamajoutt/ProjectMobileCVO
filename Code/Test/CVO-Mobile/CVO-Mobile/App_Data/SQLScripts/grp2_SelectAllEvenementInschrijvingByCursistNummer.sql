@@ -1,6 +1,8 @@
 -- Mohamed Amajoutt
 -- 26/05/2015
 
+--SP toont persoonlijke lijst voor welke evenementen u bent ingeschreven adhv het cursistnummer
+
 use Administratix_cursist
 go
 
@@ -24,6 +26,7 @@ select
 	, Evenement.Locatie as Locatie
 	, Evenement.StartUur as StartUur
 	, Evenement.EindUur as EindUur
+	, Opmerkingen
 from grp2_EvenementInschrijving
 inner join Evenement on grp2_EvenementInschrijving.IdEvenement = Evenement.Id
 inner join Cursist on grp2_EvenementInschrijving.IdCursist = Cursist.Id

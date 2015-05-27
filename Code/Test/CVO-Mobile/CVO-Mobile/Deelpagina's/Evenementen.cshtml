@@ -3,15 +3,16 @@
     Page.Title = "Evenementen";
 
     string action = ""; 
+    
      if (IsPost)
      {
+        action = Request["action"];
+         
         if (action != null)
-        {
-            action = Request["action"];
-        
+        {        
             if (action.Equals("login") && Session["cursist"] == null)
             {
-                Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+                Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
             }
             if (action.Equals("logout"))
             {
@@ -26,15 +27,27 @@
 
     string message = "Alles gaat goed";
     List<Administratix.BLL.Evenement> evenementenLijst = new List<Administratix.BLL.Evenement>();
+    List<Administratix.BLL.EvenementInschrijving> evenementInschrijvingLijst = new List<Administratix.BLL.EvenementInschrijving>();
+    
+    evenementenLijst = Administratix.Model.Evenement.EvenementSelectAll();
     
     if (Session["cursist"] != null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
-        evenementenLijst = Administratix.Model.Evenement.EvenementSelectAll();
         
-        if (action.Equals("inschrijven"))
-        {
-            message = Administratix.Model.EvenementInschrijving.InsertEvenementInschrijving(cursist.CursistNummer, Request["evenementId-inschrijving"], Request["opmerkingen-inschrijving"]);
+        evenementenLijst = Administratix.Model.Evenement.EvenementSelectAll();
+
+        if (action != null)
+        { 
+            if (action.Equals("inschrijven"))
+            {
+                message = Administratix.Model.EvenementInschrijving.EvenementInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer), Request["evenementId-inschrijving"], Request["opmerkingen-inschrijving"]);
+            }
+            if (action.Equals("evenementInschrijvingLijst-tonen"))
+            {
+                evenementInschrijvingLijst = Administratix.Model.EvenementInschrijving.evenementInschrijvingSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
+            }
+            
         }
     }   
     
@@ -45,99 +58,116 @@
         <form id="evenementen-display" action="" method="post">
             <fieldset>
                 <legend>Display opties</legend>
-                <button type="submit" name="action" value="ingeschreven-evenementen tonen">Mijn ingeschreven evenementen</button>
+                <button type="submit" name="action" value="evenementInschrijvingLijst-tonen">Mijn ingeschreven evenementen</button>
                 <button type="submit" name="action" value="alle-evenementen">Alle evenementen</button>
             </fieldset>
         </form>
     </div>
 
-    @*  DIT WERKT NOG NIET  *@
-    @*<form id="viewallevenement" action="" method="post"> 
-        @{
-            if(evenementenLijst.Count <= 0)
-            {
-                <p>Geen evenementen gevonden.</p>
-            }
-            else
-            {
-                <table>
-                    <tr>
-                        <th>Naam</th>
-                        <th>Weekdag</th>
-                        <th>Datum</th>
-                        <th>Locatie</th>
-                        <th>Start</th>
-                        <th>Einde</th>
-                        <th></th>
-                        <th>Opmerkingen</th>
-                    </tr>
-                    @{
-                    foreach(Administratix.BLL.Evenement item in evenementenLijst)
-                    {
-                        <tr>
-                            <td>@item.Naam</td>
-                            <td>@item.Datum</td>
-                            <td>@item.Datum</td>
-                            <td>@item.Locatie</td>
-                            <td>@item.Start</td>
-                            <td>@item.Eind</td>
-                            <td><button type="submit" name="inschrijven" value="@item.Id">Schrijf me in!</button></td>
-                            <td><input type="text" name="opmerkingen-inschrijving" id="opmerkingen-inschrijving"/></td>
-                        </tr>
-                    }
-                    }
-                </table>
-                      
-            }
-        }
-    </form>*@
+    @if (action.Equals("evenementInschrijvingLijst-tonen"))
+    {
+            <div class="containerBig">
+                <div class="containerCalendarRow">
+                    <div class="containerCalendarTitle">
+                        Reservatiedatum
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Naam
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Datum
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Locatie
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Start
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Eind
+                    </div>
+                    <div class="containerCalendarTitle">
+                        Opmerkingen
+                    </div>
+                </div>
+                @for (int i = 0; i < evenementInschrijvingLijst.Count; i++)
+                {
+                    Administratix.BLL.EvenementInschrijving inschrijving = evenementInschrijvingLijst[i];
+                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+                        <div class="containerCalendarColumn">
+                            @inschrijving.ReservatieDatum.ToString("dd-MM-yyyy", culture)
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.Naam
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.Datum.ToString("dd-MM-yyyy", culture)
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.Locatie
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.StartUur.ToString("HH:mm", culture)
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.EindUur.ToString("HH:mm", culture)
+                        </div>
+                        <div class="containerCalendarColumn">
+                            @inschrijving.Opmerkingen
+                        </div>
+                    </div>
 
-    <div class="containerBig">
-        <div class="containerCalendarRow">
-            <div class="containerCalendarTitle columnBig">
-                Naam
-            </div>
-            <div class="containerCalendarTitle">
-                Datum
-            </div>
-            <div class="containerCalendarTitle">
-                Locatie
-            </div>
-            <div class="containerCalendarTitle">
-                Start
-            </div>
-            <div class="containerCalendarTitle">
-                Einde
-            </div>
-            <div class="containerCalendarTitle">
+                }
+              </div>
+                }
+                else
+                {
+                <div class="containerBig">
+                    <div class="containerCalendarRow">
+                        <div class="containerCalendarTitle">
+                            Naam
+                        </div>
+                        <div class="containerCalendarTitle">
+                            Datum
+                        </div>
+                        <div class="containerCalendarTitle">
+                            Locatie
+                        </div>
+                        <div class="containerCalendarTitle">
+                            Start
+                        </div>
+                        <div class="containerCalendarTitle">
+                            Einde
+                        </div>
+                        <div class="containerCalendarTitle">
 
-            </div>
-            @if(Session["cursist"]!=null){
-            <div class="containerCalendarTitle">
-                Opmerkingen
-            </div>
+                        </div>
+                        @if(Session["cursist"]!=null){
+                            <div class="containerCalendarTitle">
+                                Opmerkingen
+                            </div>
             }
-        </div>
-        
-              @for (int i = 0; i < evenementenLijst.Count; i++)
+                    </div>
+
+                    @for (int i = 0; i < evenementenLijst.Count; i++)
               {
                     Administratix.BLL.Evenement evenement = evenementenLijst[i];
-                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-                        
+                        <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
+
                             <div class="containerCalendarTitle">
                                 @evenement.Naam
                             </div>
                             <div class="containerCalendarTitle">
-                                @evenement.Datum
+                                @evenement.Datum.ToString("dd-MM-yyyy", culture)
                             </div>
                             <div class="containerCalendarTitle">
                                 @evenement.Locatie
                             </div>
                             <div class="containerCalendarTitle">
-                                @evenement.Start
+                                @evenement.Start.ToString("HH:mm", culture)
                             </div>
                             <div class="containerCalendarTitle">
-                                @evenement.Eind
+                                @evenement.Eind.ToString("HH:mm", culture)
                             </div>
                             @if (Session["cursist"] != null)
                             {
@@ -151,15 +181,12 @@
                                     </div>
                                 </form>
                             }
-                    </div>
-                
-
+                        </div>
               }
-        
+                </div>
+                }
 
-    </div>
 
-    
 
 </main>
 @message

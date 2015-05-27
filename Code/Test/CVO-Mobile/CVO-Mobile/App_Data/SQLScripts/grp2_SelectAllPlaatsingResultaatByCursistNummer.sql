@@ -8,13 +8,13 @@
 use Administratix_cursist
 go
  
-if exists (select 1 from sysobjects where name = 'grp2_SelectAllResultatenByCursistNummer' AND type = 'P') -- P = procedure 
+if exists (select 1 from sysobjects where name = 'grp2_SelectAllPlaatsingResultaatByCursistNummer' AND type = 'P') -- P = procedure 
 begin
-	drop proc grp2_SelectAllResultatenByCursistNummer
+	drop proc grp2_SelectAllPlaatsingResultaatByCursistNummer
 end
 go
  
-create procedure grp2_SelectAllResultatenByCursistNummer
+create procedure grp2_SelectAllPlaatsingResultaatByCursistNummer
 (
 	@CursistNummer int
 )
@@ -23,17 +23,16 @@ as 
 begin
  
 select 
-	IngerichteModulevariant.Id as Id
+	IngerichteModulevariant.Id as IdIngerichteModulevariant
 	,IngerichteModulevariant.CursusNummer as Cursusnummer
 	,IngerichteModulevariant.Naam as Module
-	,Convert(nvarchar, AanvangsDatum, 5) as AanvangsDatum
-	,Convert(nvarchar, EindDatum, 5) as EindDatum
 	,PlaatsingResultaat.PuntenTotaal as PuntenTotaal
 	,PlaatsingResultaat.PuntenPermanenteEvaluatie as PuntenPermanenteEvaluatie
 	,PlaatsingResultaat.PuntenEersteZit as PuntenEersteZit
-	,PlaatsingResultaat.grp2_IdTweedeZit as grp2_IdTweedeZit
-	,PlaatsingResultaat.PuntenTweedeZit as PuntenTweedeZit
 	,PlaatsingResultaat.OpmerkingNaDeliberatieEersteZit as OpmerkingNaDeliberatieEersteZit
+	,PlaatsingResultaat.grp2_IdTweedeZit as IdTweedeZit
+	,PlaatsingResultaat.PuntenTweedeZit as PuntenTweedeZit
+	,PlaatsingResultaat.OpmerkingNaDeliberatieTweedeZit as OpmerkingNaDeliberatieTweedeZit
 from IngerichteModulevariant
 inner join Plaatsing on Plaatsing.IdIngerichteModulevariant = IngerichteModulevariant.id
 left join PlaatsingResultaat on Plaatsing.IdPlaatsingResultaat = PlaatsingResultaat.Id

@@ -8,7 +8,7 @@
 
         if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {

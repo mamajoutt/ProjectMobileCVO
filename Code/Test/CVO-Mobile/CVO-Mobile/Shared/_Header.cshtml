@@ -9,16 +9,18 @@
     if (IsPost)
     {
         action = Request["action"];
+        if (action != null)
+        {
+            if (action.Equals("login"))
+            {
 
-        if (action.Equals("login"))
-        {
+                Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"])); ;
             
-            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"])); ;
-            
-        }
-        if (action.Equals("logout"))
-        {
-            Session["cursist"] = null;
+            }
+            if (action.Equals("logout"))
+            {
+                Session["cursist"] = null;
+            }
         }
 
     }

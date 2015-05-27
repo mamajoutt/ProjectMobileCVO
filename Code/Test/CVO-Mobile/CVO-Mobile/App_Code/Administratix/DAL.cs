@@ -207,7 +207,7 @@ namespace Administratix.DAL
         }
     }
 
-    public class ExDel2deZitDate : MobileCVO.DAL.IDal<BLL.ExDel2deZitDate>
+    public class ModuleExamenData : MobileCVO.DAL.IDal<BLL.ModuleExamenData>
     {
         private string message;
         public string Message
@@ -218,30 +218,29 @@ namespace Administratix.DAL
             }
         }
 
-        public ExDel2deZitDate()
+        public ModuleExamenData()
         {
             this.message = "";
         }
 
-        public int Insert(BLL.ExDel2deZitDate entity)
+        public int Insert(BLL.ModuleExamenData entity)
         {
             throw new NotImplementedException();
         }
 
-        public BLL.ExDel2deZitDate SelectOne(int id)
+        public BLL.ModuleExamenData SelectOne(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<BLL.ExDel2deZitDate> SelectAll()
+        public List<BLL.ModuleExamenData> SelectAll()
         {
             throw new NotImplementedException();
         }
 
-
-        public List<BLL.ExDel2deZitDate> SelectAllByCursistNummer(int cursistNummer)
+        public List<BLL.ModuleExamenData> SelectAllByCursistNummer(int cursistNummer)
         {
-            List<BLL.ExDel2deZitDate> exDel2deZitDateLijst = new List<BLL.ExDel2deZitDate>();
+            List<BLL.ModuleExamenData> moduleExamenDatumsLijst = new List<BLL.ModuleExamenData>();
 
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
@@ -250,7 +249,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectExDel2deZitDateByCursistNummer";
+            string sqlString = "grp2_SelectAllModuleExamenDatumsByCursistNummer";
 
             command.CommandType = CommandType.StoredProcedure;
 
@@ -274,15 +273,31 @@ namespace Administratix.DAL
                     {
                         while (result.Read())
                         {
-                            BLL.ExDel2deZitDate exDel2deZitDate = new BLL.ExDel2deZitDate();
-                            exDel2deZitDate.Cursusnummer = result["CursusNummer"].ToString();
-                            exDel2deZitDate.Module = result["Module"].ToString();
-                            exDel2deZitDate.AanvangsDatum = Convert.ToDateTime(result["AanvangsDatum"]);
-                            exDel2deZitDate.EindDatum = Convert.ToDateTime(result["EindDatum"]);
-                            exDel2deZitDate.ExamenDatum = Convert.ToDateTime(result["ExamenDatum"]);
-                            exDel2deZitDate.DeliberatieDatum = Convert.ToDateTime(result["DeliberatieDatum"]);
-                            exDel2deZitDate.DatumTweedeZit = Convert.ToDateTime(result["DatumTweedeZit"]);
-                            exDel2deZitDateLijst.Add(exDel2deZitDate);
+                            BLL.ModuleExamenData module = new BLL.ModuleExamenData();
+                            module.CursusNummer = result["CursusNummer"].ToString();
+                            module.Naam = result["Naam"].ToString();
+                            if (!Convert.IsDBNull(result["AanvangsDatum"]))
+                            { 
+                                module.AanvangsDatum = Convert.ToDateTime(result["AanvangsDatum"]); 
+                            }
+                            if (!Convert.IsDBNull(result["EindDatum"]))
+                            {
+                                module.EindDatum = Convert.ToDateTime(result["EindDatum"]);
+                            }
+                            if (!Convert.IsDBNull(result["ExamenDatum"]))
+                            {
+                                module.ExamenDatum = Convert.ToDateTime(result["ExamenDatum"]);
+                            }
+                            if (!Convert.IsDBNull(result["DeliberatieDatum"]))
+                            {
+                                module.DeliberatieDatum = Convert.ToDateTime(result["DeliberatieDatum"]);
+                            }
+                            if (!Convert.IsDBNull(result["DatumTweedeZit"]))
+                            {
+                                module.DatumTweedeZit = Convert.ToDateTime(result["DatumTweedeZit"]);
+                            }
+                            
+                            moduleExamenDatumsLijst.Add(module);
                         }
 
                     }
@@ -297,7 +312,7 @@ namespace Administratix.DAL
                 connection.Close();
             }
 
-            return exDel2deZitDateLijst;
+            return moduleExamenDatumsLijst;
         }
     }
 
@@ -493,7 +508,63 @@ namespace Administratix.DAL
 
         public List<BLL.EvenementInschrijving> SelectAllByCursistNummer(int cursistNummer)
         {
-            throw new NotImplementedException();
+            List<BLL.EvenementInschrijving> eventInschrijvingsLijst= new List<BLL.EvenementInschrijving>();
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString =
+                 System.Configuration.ConfigurationManager.
+                 ConnectionStrings["MobileCVO"].ToString();
+
+            SqlCommand command = new SqlCommand();
+
+            string sqlString = "grp2_SelectAllEvenementInschrijvingByCursistNummer";
+
+            command.CommandType = CommandType.StoredProcedure;
+
+            // shortcut to add parameter
+            command.Parameters.Add(new SqlParameter("@CursistNummer",
+               SqlDbType.Int)).Value = cursistNummer;
+            command.CommandText = sqlString;
+
+            command.Connection = connection;
+            this.message = "Niets te melden";
+
+            SqlDataReader result;
+            try
+            {
+                connection.Open();
+                this.message = "De database is klaar!";
+
+                using (result = command.ExecuteReader())
+                {
+                    if (result.HasRows)
+                    {
+                        while (result.Read())
+                        {
+                            BLL.EvenementInschrijving eventInschrijving = new BLL.EvenementInschrijving();
+                            eventInschrijving.ReservatieDatum = Convert.ToDateTime(result["Reservatiedatum"]);
+                            eventInschrijving.Naam = result["Naam"].ToString();
+                            eventInschrijving.Datum = Convert.ToDateTime(result["Datum"]);
+                            eventInschrijving.Locatie = result["Locatie"].ToString();
+                            eventInschrijving.StartUur = Convert.ToDateTime(result["StartUur"]);
+                            eventInschrijving.EindUur = Convert.ToDateTime(result["EindUur"]);
+                            eventInschrijving.Opmerkingen = result["Opmerkingen"].ToString();
+                            eventInschrijvingsLijst.Add(eventInschrijving);
+                        }
+
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                this.message = e.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return eventInschrijvingsLijst;
         }
     }
 
@@ -542,7 +613,7 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectAllResultatenByCursistNummer";
+            string sqlString = "grp2_SelectAllPlaatsingResultaatByCursistNummer";
 
             // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
@@ -568,33 +639,31 @@ namespace Administratix.DAL
                         while (result.Read())
                         {
                             BLL.CursusResultaat resultaat = new BLL.CursusResultaat();
-                            resultaat.Id = (int)result["Id"];
-                            resultaat.IdModuleVariant = (int)result["IdModuleVariant"];
+                            resultaat.IdIngerichteModulevariant = Convert.ToInt32(result["IdIngerichteModulevariant"]);
                             resultaat.CursusNummer = result["CursusNummer"].ToString();
                             resultaat.Module = result["Module"].ToString();
-                            resultaat.AanvangsDatum = result["AanvangsDatum"].ToString();
-                            resultaat.EindDatum = result["EindDatum"].ToString();
-                            double punt = -1;
-                            Double.TryParse(result["PuntenTotaal"].ToString(), out punt);
-                            resultaat.PuntenTotaal = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenPermanenteEvaluatie"].ToString(), out punt);
-                            resultaat.PuntenPermanenteEvaluatie = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenEersteZit"].ToString(), out punt);
-                            resultaat.PuntenEersteZit = punt;
-                            punt = -1;
-                            Double.TryParse(result["PuntenTweedeZit"].ToString(), out punt);
-                            resultaat.PuntenTweedeZit = punt;
-                            int id = 0;
-                            Int32.TryParse(result["grp2_IdTweedeZit"].ToString(), out id);
-                            resultaat.Grp2_IdTweedeZit = id;
-                            //resultaat.Grp2_IdTweedeZit = (int)result["grp2_IdTweedeZit"];
-                            //resultaat.PuntenTotaal = (double)result["PuntenTotaal"];
-                            //resultaat.PuntenPermanenteEvaluatie = (double)result["PuntenPermanenteEvaluatie"];
-                            //resultaat.PuntenEersteZit = (double)result["PuntenEersteZit"];
-                            //resultaat.PuntenTweedeZit = (double)result["PuntenTweedeZit"];
+                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            {
+                                resultaat.PuntenTotaal = Convert.ToDouble(result["PuntenTotaal"]);
+                            }
+                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            {
+                                resultaat.PuntenPermanenteEvaluatie = Convert.ToDouble(result["PuntenPermanenteEvaluatie"]);
+                            }
+                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            {
+                                resultaat.PuntenEersteZit = Convert.ToDouble(result["PuntenEersteZit"]);
+                            }
                             resultaat.OpmerkingNaDeliberatieEersteZit = result["OpmerkingNaDeliberatieEersteZit"].ToString();
+                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            {
+                                resultaat.IdTweedeZit = Convert.ToInt32(result["IdTweedeZit"]);
+                            }
+                            if (!Convert.IsDBNull(result["PuntenTotaal"]))
+                            {
+                                resultaat.PuntenTweedeZit = Convert.ToDouble(result["PuntenTweedeZit"]);
+                            }
+                            resultaat.OpmerkingNaDeliberatieTweedeZit = result["OpmerkingNaDeliberatieTweedeZit"].ToString();
                             resultatenLijst.Add(resultaat);
                         }
 
@@ -640,7 +709,7 @@ namespace Administratix.DAL
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                 SqlDbType.Int)).Value = inschrijvingTweedeZit.IdCursist;
             command.Parameters.Add(new SqlParameter("@IdTweedeZit",
-                SqlDbType.Int)).Value = inschrijvingTweedeZit.Grp2_IdTweedeZit ;
+                SqlDbType.Int)).Value = inschrijvingTweedeZit.IdTweedeZit ;
             command.Parameters.Add(new SqlParameter("@ReservatieDatum",
                 SqlDbType.DateTime)).Value = DateTime.Now;
             SqlParameter id = new SqlParameter("@Id", SqlDbType.Int);

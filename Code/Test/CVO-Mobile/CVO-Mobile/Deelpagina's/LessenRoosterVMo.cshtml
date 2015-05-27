@@ -10,7 +10,7 @@
 
         if (action.Equals("login") && Session["cursist"] == null)
         {
-            Session["cursist"] = Administratix.Model.Cursist.GetCursistByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
+            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
         }
         if (action.Equals("logout"))
         {
@@ -28,12 +28,12 @@
     if (Session["cursist"]!=null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
-        lessenRooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursist.CursistNummer));
+        lessenRooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
 
         if (action.Equals("feestdagen-toevoegen"))
         {
             feestDagen = Administratix.Model.Kalender.KalenderSelectAll();
-            lessenRooster = Administratix.Model.LesDavinci.LessenroosterVakantiedagenToevoegen(lessenRooster, feestDagen);
+            lessenRooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerWithVakantieDagen(lessenRooster, feestDagen);
         }
     }
 }

@@ -6,23 +6,36 @@ using System.Web;
 namespace Administratix.BLL
 {
     ///<summary>
-    ///Class definition IngerichteModulevariant CursusResultaat
+    ///Class definition IngerichteModulevariant PlaatsingResultaat Grp2_TweedeZit
     /// Used in DAL.CursusResultaat
     /// </summary>
     public class CursusResultaat
     {
-        public int Id { get; set; }
-        public int IdModuleVariant { get; set; }
+        public int IdIngerichteModulevariant { get; set; }
         public string CursusNummer { get; set; }
         public string Module { get; set; }
-        public string AanvangsDatum { get; set; }
-        public string EindDatum { get; set; }
         public double PuntenTotaal { get; set; }
         public double PuntenPermanenteEvaluatie { get; set; }
         public double PuntenEersteZit { get; set; }
-        public int Grp2_IdTweedeZit { get; set; }
-        public double PuntenTweedeZit { get; set; }
         public string OpmerkingNaDeliberatieEersteZit { get; set; }
+        public int IdTweedeZit { get; set; }
+        public double PuntenTweedeZit { get; set; }
+        public string OpmerkingNaDeliberatieTweedeZit { get; set; }
+    }
+
+    ///<summary>
+    ///Class definition IngerichteModulevariant
+    /// Used in DAL.ModuleExamenData
+    /// </summary>
+    public class ModuleExamenData
+    {
+        public string CursusNummer { get; set; }
+        public DateTime AanvangsDatum { get; set; }
+        public DateTime EindDatum { get; set; }
+        public string Naam { get; set; }
+        public DateTime ExamenDatum { get; set; }
+        public DateTime DeliberatieDatum { get; set; }
+        public DateTime DatumTweedeZit { get; set; }
     }
 
     public class Cursist
@@ -42,7 +55,7 @@ namespace Administratix.BLL
         public int Id { get; set; }
         public DateTime ReservatieDatum { get; set; }
         public int IdCursist { get; set; }
-        public int Grp2_IdTweedeZit { get; set; }
+        public int IdTweedeZit { get; set; }
     }
 
     /// <summary> 
@@ -82,21 +95,6 @@ namespace Administratix.BLL
     }
 
     /// <summary> 
-    /// Class definition ExDel2deZitDate 
-    /// Used in DAL.ExDel2deZitDate
-    /// </summary> 
-    public class ExDel2deZitDate
-    {
-        public string Cursusnummer { get; set; }
-        public string Module { get; set; }
-        public DateTime AanvangsDatum { get; set; }
-        public DateTime EindDatum { get; set; }
-        public DateTime ExamenDatum { get; set; }
-        public DateTime DeliberatieDatum { get; set; }
-        public DateTime DatumTweedeZit { get; set; }
-    }
-
-    /// <summary> 
     /// Class definition Evenement 
     /// Used in DAL.Evenement
     /// </summary> 
@@ -120,8 +118,12 @@ namespace Administratix.BLL
         public int Id { get; set; }
         public DateTime ReservatieDatum { get; set; }
         public int IdCursist { get; set; }
-        public string CursistNummer { get; set; }
-        public int IdEvenement { get; set; }
+        public int IdEvenement { get; set;}
+        public string Naam { get; set; }
+        public DateTime Datum { get; set; }
+        public string Locatie { get; set; }
+        public DateTime StartUur { get; set; }
+        public DateTime EindUur { get; set; }
         public string Opmerkingen { get; set; }
     }
 

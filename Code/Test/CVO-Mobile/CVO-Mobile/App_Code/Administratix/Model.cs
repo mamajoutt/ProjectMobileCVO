@@ -9,17 +9,17 @@ namespace Administratix
     {
         public class LesDavinci
         {
-            public static List<BLL.LesDavinci> LesroosterTonen(int cursistNummer)
+            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummer(int cursistNummer)
             {
                 return DAL.LesDavinci.SelectAllByCursistNummer(cursistNummer);
             }
 
-            public static List<BLL.LesDavinci> LesroosterTussenDatums(int cursistNummer, DateTime begin, DateTime einde)
+            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummerAndDates(int cursistNummer, DateTime begin, DateTime einde)
             {
                 return DAL.LesDavinci.SelectAllByCursistNummerAndDates(cursistNummer, begin, einde);
             }
 
-            public static List<BLL.LesDavinci> LessenroosterVakantiedagenToevoegen(List<BLL.LesDavinci> lessenrooster, List<BLL.Kalender> vakantiedagen)
+            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummerWithVakantieDagen(List<BLL.LesDavinci> lessenrooster, List<BLL.Kalender> vakantiedagen)
             {
                 foreach (BLL.Kalender k in vakantiedagen)
                 {
@@ -55,7 +55,7 @@ namespace Administratix
 
         public class EvenementInschrijving
         {
-            public static string InsertEvenementInschrijving(int idCursist, string idEvenement, string opmerkingen)
+            public static string EvenementInschrijvingInsert(int idCursist, string idEvenement, string opmerkingen)
             {
                 Administratix.BLL.EvenementInschrijving evenementInschrijving = new BLL.EvenementInschrijving();
                 evenementInschrijving.IdCursist = Convert.ToInt32(idCursist);
@@ -66,11 +66,17 @@ namespace Administratix
                 return dal.Message;
             }
 
+            public static List<Administratix.BLL.EvenementInschrijving> evenementInschrijvingSelectAllByCursistNummer(int cursistNummer)
+            {
+                Administratix.DAL.EvenementInschrijving dal = new DAL.EvenementInschrijving();
+                return dal.SelectAllByCursistNummer(cursistNummer);
+            }
+
         }
 
         public class CursusResultaat
         {
-            public static List<BLL.CursusResultaat> SelectAllCursusResultaat(int cursistNummer)
+            public static List<BLL.CursusResultaat> CursusResultaatSelectAllByCursistNummer(int cursistNummer)
             {
                 Administratix.DAL.CursusResultaat dal = new DAL.CursusResultaat();
                 return dal.SelectAllByCursistNummer(cursistNummer);
@@ -79,11 +85,11 @@ namespace Administratix
 
         public class TweedeZitInschrijving
         {
-            public static string InsertTweedeZitInschrijving(string idCursist, string grp2_IdTweedeZit)
+            public static string TweedeZitInschrijvingInsert(string idCursist, string grp2_IdTweedeZit)
             {
                 Administratix.BLL.TweedeZitInschrijving tweedeZitInschrijving = new BLL.TweedeZitInschrijving();
                 tweedeZitInschrijving.IdCursist = Convert.ToInt32(idCursist);
-                tweedeZitInschrijving.Grp2_IdTweedeZit = Convert.ToInt32(grp2_IdTweedeZit);
+                tweedeZitInschrijving.IdTweedeZit = Convert.ToInt32(grp2_IdTweedeZit);
                 Administratix.DAL.TweedeZitInschrijving dal = new DAL.TweedeZitInschrijving();
                 dal.Insert(tweedeZitInschrijving);
                 return dal.Message;
@@ -116,7 +122,7 @@ namespace Administratix
                 {
                     foreach (BLL.CursusResultaat resultaat in moduleResultaten)
                     {
-                        if (resultaat.IdModuleVariant == module.Id)
+                        if (resultaat.IdIngerichteModulevariant == module.Id)
                         {
                             module.CursistIsIngeschreven = true;
                             module.PuntenTotaal = resultaat.PuntenTotaal;
@@ -174,18 +180,18 @@ namespace Administratix
 
         }
 
-        public class ExDel2deZitDate
+        public class ModuleExamenData
         {
-            public static List<Administratix.BLL.ExDel2deZitDate> ExDel2deZitDateSelectAll(int cursistNummer)
+            public static List<Administratix.BLL.ModuleExamenData> ModuleExamenDatumsSelectAllByCursistNummer(int cursistNummer)
             {
-                Administratix.DAL.ExDel2deZitDate dal = new DAL.ExDel2deZitDate();
+                Administratix.DAL.ModuleExamenData dal = new DAL.ModuleExamenData();
                 return dal.SelectAllByCursistNummer(cursistNummer);
             }
         }
 
         public class Cursist
         {
-            public static BLL.Cursist GetCursistByCursistNummer(int cursistNummer)
+            public static BLL.Cursist CursistSelectAllByCursistNummer(int cursistNummer)
             {
                 return DAL.Cursist.SelectCursistByCursistNummer(cursistNummer);
             }
@@ -199,7 +205,7 @@ namespace Administratix
                 return dal.SelectAll();
             }
 
-            public static List<BLL.Kalender> SelectFeestdagenByDate(DateTime Date1,DateTime  Date2)
+            public static List<BLL.Kalender> KalenderSelectAllByDates(DateTime Date1,DateTime  Date2)
             {
                 return DAL.Feestdagen.SelectFeestDagen(Date1,Date2);
             }
