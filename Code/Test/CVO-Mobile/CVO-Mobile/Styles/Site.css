@@ -235,7 +235,7 @@ th {
 #centerContainer{
     max-width: 1000px;
     width: 85%;
-    min-width: 320px;
+    min-width: 300px;
 }
 
 .img_StatusCirkelGroen {
@@ -294,6 +294,7 @@ th {
     border: 2px solid #DB5C3D;
     margin-bottom: 20px;
     box-sizing:border-box;
+    border-radius: 10px 0px;
 }
 
 .containerSmall{
@@ -329,7 +330,8 @@ th {
     background-color: #DB5C3D;
     padding: 7px;
     font-size: large;
-    color: #FFF
+    color: #FFF;
+    border-radius: 5px 0px 0px 0px;
 }
 
 
@@ -363,6 +365,7 @@ th {
 
 .shaded{
     background-color:#FFF5F5;
+    border-radius: 10px 0px;
 }
 
 .titleTraject{
@@ -443,3 +446,44 @@ th {
     border: none;
 }
 
+.itemBox{
+    border-radius: 10px 0px;
+    min-width: 300px;
+    width: 45%;
+    max-width: 500px;
+    
+    margin-bottom: 20px;
+    box-sizing:border-box;
+}
+
+.itemTitle{
+    border-radius: 10px 0px;
+    display : block;
+    width: 100%;
+    box-sizing:border-box;
+    background-color: #DB5C3D;
+    padding: 7px;
+    font-size: large;
+    color: #FFF
+}
+
+.itemContainer{
+    display:flex;
+    justify-content:space-around;
+    align-content:flex-start;
+    flex-flow:row wrap;
+}
+
+.itemContent{
+    display: none;
+    border-radius: 0px 0px 10px 0px;
+    border: 2px solid #DB5C3D;
+}
+
+.itemBox:target > .itemTitle{
+    border-radius: 10px 0px 0px 0px;
+}
+
+.itemBox:target > .itemContent {
+    display : block;
+}
