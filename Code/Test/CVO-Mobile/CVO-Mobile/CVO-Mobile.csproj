@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Themes\TempTest.css" />
+    <Content Include="Images\1431366103_text_align_full-128.png" />
     <Content Include="Images\Circle_Blue.png" />
     <Content Include="Images\Circle_Green.png" />
     <Content Include="Images\Circle_Orange.png" />
@@ -85,6 +86,7 @@
     <Content Include="Images\traject.png" />
     <Content Include="Styles\App.css" />
     <Content Include="Styles\MoodleTest.css" />
+    <Content Include="Styles\Site_Old.css" />
     <Content Include="Styles\Site.css" />
     <Content Include="Styles\TestFile.css" />
     <Content Include="Web.config" />
@@ -116,16 +118,18 @@
     <Content Include="Deelpagina%27s\Evenementen.cshtml" />
     <Content Include="Deelpagina%27s\ExamenData.cshtml" />
     <Content Include="Deelpagina%27s\ExamenPunten.cshtml" />
+    <Content Include="Deelpagina%27s\Default.cshtml" />
     <None Include="Evenementen.cshtml" />
     <Content Include="MasterPageTestPage.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />
-    <Content Include="Shared\_Header.cshtml" />
     <Content Include="Shared\_Layout.cshtml" />
     <Content Include="Shared\_Nav.cshtml" />
     <Content Include="TestPageDropDown.cshtml" />
     <Content Include="Feestdagen.cshtml" />
     <Content Include="ExDel2deZitDate.cshtml" />
     <Content Include="Resultaten - Copy.cshtml" />
+    <Content Include="Shared\_Header.cshtml" />
+    <Content Include="Shared\_Layout_old.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
