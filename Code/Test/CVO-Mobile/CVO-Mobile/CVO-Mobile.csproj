@@ -68,11 +68,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Themes\TempTest.css" />
     <Content Include="Images\1431366103_text_align_full-128.png" />
     <Content Include="Images\Circle_empty.png" />
     <Content Include="Images\Circle_V.png" />
     <Content Include="Images\Circle_X.png" />
+    <Content Include="Images\icon_Sun.png" />
     <Content Include="Images\Logo_mobileCVO.jpg" />
     <Content Include="Images\nav_left.png" />
     <Content Include="Images\nav_right.png" />
@@ -99,13 +99,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Assignments.cshtml" />
-    <Content Include="LesRooster.cshtml" />
-    <Content Include="Resultaten.cshtml" />
-    <Content Include="TweedezitResultaat.cshtml" />
-    <Content Include="View_StatusTraject.cshtml" />
-    <Content Include="DelibiratieDate.cshtml" />
-    <Content Include="Upate TweedeZit.cshtml" />
     <Content Include="Deelpagina%27s\TrajectOverzicht.cshtml" />
     <Content Include="Deelpagina%27s\Deadlines.cshtml" />
     <Content Include="Deelpagina%27s\Lessenrooster.cshtml" />
@@ -113,18 +106,13 @@
     <Content Include="Deelpagina%27s\Evenementen.cshtml" />
     <Content Include="Deelpagina%27s\ExamenData.cshtml" />
     <Content Include="Deelpagina%27s\ExamenPunten.cshtml" />
-    <Content Include="Deelpagina%27s\Default.cshtml" />
-    <None Include="Evenementen.cshtml" />
-    <Content Include="MasterPageTestPage.cshtml" />
+    <Content Include="Default.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />
     <Content Include="Shared\_Layout.cshtml" />
     <Content Include="Shared\_Nav.cshtml" />
-    <Content Include="TestPageDropDown.cshtml" />
-    <Content Include="Feestdagen.cshtml" />
-    <Content Include="ExDel2deZitDate.cshtml" />
-    <Content Include="Resultaten - Copy.cshtml" />
     <Content Include="Shared\_Header.cshtml" />
     <Content Include="Shared\_Layout_old.cshtml" />
+    <Content Include="Deelpagina%27s\Default.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
