@@ -11,12 +11,16 @@
     <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    @RenderPage("~/Shared/_Nav.cshtml")
-    <div id="watermark">
-        @*<img src="~/Images/Logo_CVOAntwerpen.png" />*@
-    </div>
-    <div id="main">
-        @RenderBody()
-    </div>
+    
+        <main>
+            <div id="centerContainer">
+                <div id="contentContainer">
+                    @RenderPage("~/Shared/_Nav.cshtml")
+                    <div id="watermark">
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
 </body>
 </html>

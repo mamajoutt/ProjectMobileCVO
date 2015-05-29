@@ -35,6 +35,11 @@
         }
     }
 
+    if (Session["cursist"] == null)
+    {
+        Response.Redirect("~/Deelpagina's/Default.cshtml");
+    }
+
     //Dit is om nederlandse weekdagen te krijgen
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
 
@@ -56,8 +61,7 @@
     
 }
 
-<main>
-    <div id="centerContainer">
+
         <form id="moduleExamenData-display" action="" method="post">
             <fieldset>
                 <legend>Display opties</legend>
@@ -225,7 +229,4 @@
                 }
             </div>
         }
-    </div>
-
-</main>
 

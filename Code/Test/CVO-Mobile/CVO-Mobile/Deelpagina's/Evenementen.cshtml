@@ -36,6 +36,11 @@
         }
         }
     }
+
+    if (Session["cursist"] == null)
+    {
+        Response.Redirect("~/Deelpagina's/Default.cshtml");
+    }
     
     //if (IsPost)
     //{
@@ -86,8 +91,6 @@
     
 }
 
-<main>
-    <div id="centerContainer">
         <form id="evenementen-display" action="" method="post">
             <fieldset>
                 <legend>Display opties</legend>
@@ -95,7 +98,7 @@
                 <button type="submit" name="action" value="alle-evenementen">Alle evenementen</button>
             </fieldset>
         </form>
-    </div>
+
 
     @if (action.Equals("evenementInschrijvingLijst-tonen"))
     {
@@ -221,5 +224,4 @@
 
 
 
-</main>
 @message

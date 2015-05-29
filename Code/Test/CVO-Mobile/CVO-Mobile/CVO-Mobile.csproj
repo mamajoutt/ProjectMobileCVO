@@ -70,19 +70,14 @@
   <ItemGroup>
     <Content Include="App_Themes\TempTest.css" />
     <Content Include="Images\1431366103_text_align_full-128.png" />
-    <Content Include="Images\Circle_Blue.png" />
-    <Content Include="Images\Circle_Green.png" />
-    <Content Include="Images\Circle_Orange.png" />
-    <Content Include="Images\Circle_Red.png" />
-    <Content Include="Images\contact.png" />
-    <Content Include="Images\home.png" />
-    <Content Include="Images\kalender.png" />
-    <Content Include="Images\Logo_CVOAntwerpen.png" />
+    <Content Include="Images\Circle_empty.png" />
+    <Content Include="Images\Circle_V.png" />
+    <Content Include="Images\Circle_X.png" />
     <Content Include="Images\Logo_mobileCVO.jpg" />
     <Content Include="Images\nav_left.png" />
     <Content Include="Images\nav_right.png" />
-    <Content Include="Images\Note_Green.png" />
-    <Content Include="Images\Note_Red.png" />
+    <Content Include="Images\Note_V.png" />
+    <Content Include="Images\Note_X.png" />
     <Content Include="Images\traject.png" />
     <Content Include="Styles\App.css" />
     <Content Include="Styles\MoodleTest.css" />

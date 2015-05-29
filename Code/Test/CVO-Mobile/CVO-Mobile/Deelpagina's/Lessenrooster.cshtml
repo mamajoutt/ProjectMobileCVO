@@ -35,6 +35,11 @@
         }
     }
 
+    if (Session["cursist"] == null)
+    {
+        Response.Redirect("~/Deelpagina's/Default.cshtml");
+    }
+
 
     if (IsPost)
     {
@@ -100,8 +105,6 @@
 }
 
 
-<main>
-    <div id="centerContainer">
 
         @*@if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
             {
@@ -294,7 +297,3 @@
                                 </div>
                             }
             }*@
-
-
-        </div>
-        </main>

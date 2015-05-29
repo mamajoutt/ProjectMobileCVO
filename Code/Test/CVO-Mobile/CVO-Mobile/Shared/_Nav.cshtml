@@ -7,7 +7,17 @@
         <img src="~/Images/nav_left.png" alt="Nav Links" />
         <img src="~/Images/nav_right.png" alt="Nav Rechts" />
     </div>
+
+    @if (Session["cursist"] != null)
+    {
+        <form id="login" action="" method="post" class="loginForm">
+            @{Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];}
+            <label>Ingelogd als @cursist.Voornaam @cursist.Familienaam (@cursist.CursistNummer)</label>
+
+            <button type="submit" name="action" value="logout">Log uit</button>
+        </form>
+    }
     <div class="navLogo">
-    <img src="~/Images/Logo_mobileCVO.jpg" alt="Logo MobileCVO"/>
+        <img src="~/Images/Logo_mobileCVO.jpg" alt="Logo MobileCVO" />
     </div>
 </nav>
