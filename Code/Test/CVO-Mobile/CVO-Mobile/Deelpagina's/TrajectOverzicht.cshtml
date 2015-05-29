@@ -52,6 +52,8 @@
         // Voeg nodige voorkennis toe aan trqjectmodules
         Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
 
+        trajectModules = trajectModules.OrderBy(o => o.Naam).ToList();
+
         //Resultaat = Administratix.Model.StatusTraject.SelectStatusByCursistNummer(Convert.ToInt32(Request["StatusTraject-CursistNummer"]));
 
     }
@@ -60,139 +62,152 @@
 
 <main>
     <div id="centerContainer">
-        <!-- View controller -->
-        <div class="containerBig">
-            <div class="containerTitle">
-                Legende
+        <div id="contentContainer">
+            <div class="containerBig">
+                <div class="containerTitle">
+                    Legende
+                </div>
+                <div class="legendeItems">
+                    <div class="legendeItem">
+                        <img class="img_StatusCirkelBlauw" /> Ingeschreven, nog geen resultaat.
+                    </div>
+                    <div class="legendeItem">
+                        <img class="img_StatusCirkelGroen" /> Ingeschreven, geslaagd.
+                    </div>
+                    <div class="legendeItem">
+                        <img class="img_StatusCirkelRood" /> Ingeschreven, niet geslaagd.
+                    </div>
+                    <div class="legendeItem">
+                        <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoende voorkennis.
+                    </div>
+                    <div class="legendeItem">
+                        <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.
+                    </div>
+                </div>
             </div>
-            <div class="legendeItems">
-                <div class="legendeItem">
-                    <img class="img_StatusCirkelBlauw" /> Ingeschreven, nog geen resultaat.
-                </div>
-                <div class="legendeItem">
-                    <img class="img_StatusCirkelGroen" /> Ingeschreven, geslaagd.
-                </div>
-                <div class="legendeItem">
-                    <img class="img_StatusCirkelRood" /> Ingeschreven, niet geslaagd.
-                </div>
-                <div class="legendeItem">
-                    <img class="img_StatusNoteRood" /> Niet ingeschreven, onvoldoende voorkennis.
-                </div>
-                <div class="legendeItem">
-                    <img class="img_StatusNoteGroen" /> Niet ingeschreven, voldoende voorkennis.
-                </div>
-            </div>
-        </div>
 
-        @if (trajectModules.Count <= 0)
-        {
-            <p>Je bent nog niet ingeschreven in een traject.</p>
-        }
-        else
-        {
-            <div class="itemContainer">
-                @for (int i = 0; i < trajectModules.Count; i++)
-                {
-                    Administratix.BLL.Module module = trajectModules[i];
-                    <div class="itemBox" id="@module.Id">
-                        <a class="itemTitle" href="#@module.Id">
+            @if (trajectModules.Count <= 0)
+            {
+                <p>Je bent nog niet ingeschreven in een traject.</p>
+            }
+            else
+            {
+                <div class="itemContainer">
+                    @for (int i = 0; i < trajectModules.Count; i++)
+                    {
+                        Administratix.BLL.Module module = trajectModules[i];
+                        <div class="itemBox" id="@module.Id">
+                            <a class="itemTitle" href="#@module.Id">
 
-                            @if (module.CursistIsIngeschreven)
-                            {
-                                // Cursist is ingeschreven, geef punte status weer
-                                if (module.PuntenTotaal > 0)
-                                {
-                                    // Cursist heeft punten
-                                    if (module.CursistIsGeslaagd)
+                                <div class="iconBg">
+                                    @if (module.CursistIsIngeschreven)
                                     {
-                                        <img class="img_StatusCirkelGroen" />
-                                    }
-                                    else
-                                    {
-                                        <img class="img_StatusCirkelRood" />
-                                    }
-                                }
-                                else
-                                {
-                                    // Cursist heeft nog geen punten
-                                    <img class="img_StatusCirkelBlauw" />
-                                }
-                            }
-                            else
-                            {
-                                // Cursist is niet ingeschreven, geen inschrijf status weer
-                                if (module.CursistHeeftVoorkennis)
-                                {
-                                    <img class="img_StatusNoteGroen" />
-                                }
-                                else
-                                {
-                                    <img class="img_StatusNoteRood" />
-                                }
-                            }
-
-
-                            @module.Naam
-                        </a>
-                        <div class="itemContent">
-                            @*@foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
-                            {*@
-
-                            @for (int j = 0; j < module.VoorkennisModules.Count; j++)
-                                {
-                                    Administratix.BLL.Module voorkennis = module.VoorkennisModules[j];
-                                <div class="@(j % 2 == 0 ? "" : "shaded")">
-
-                                    @if (voorkennis.CursistIsIngeschreven)
-                                    {
-
-                                        if (voorkennis.PuntenTotaal > 0)
+                                        // Cursist is ingeschreven, geef punte status weer
+                                        if (module.PuntenTotaal > 0)
                                         {
                                             // Cursist heeft punten
-                                            if (voorkennis.CursistIsGeslaagd)
+                                            if (module.CursistIsGeslaagd)
                                             {
-                                                <img class="img_StatusCirkelGroen" />
+                                                <img class="iconCenter img_StatusCirkelGroen" />
                                             }
                                             else
                                             {
-                                                <img class="img_StatusCirkelRood" />
+                                                <img class="iconCenter img_StatusCirkelRood" />
                                             }
                                         }
                                         else
                                         {
                                             // Cursist heeft nog geen punten
-                                            <img class="img_StatusCirkelBlauw" />
-
+                                            <img class="iconCenter img_StatusCirkelBlauw" />
                                         }
                                     }
                                     else
                                     {
                                         // Cursist is niet ingeschreven, geen inschrijf status weer
-                                        if (voorkennis.CursistHeeftVoorkennis)
+                                        if (module.CursistHeeftVoorkennis)
                                         {
-                                            <img class="img_StatusNoteGroen" />
+                                            <img class="iconCenter img_StatusNoteGroen" />
                                         }
                                         else
                                         {
-                                            <img class="img_StatusNoteRood" />
+                                            <img class="iconCenter img_StatusNoteRood" />
                                         }
                                     }
+                                </div>
 
-                                    @voorkennis.Naam
+                                @module.Naam
+                                @if (module.VoorkennisModules.Count != 0)
+                                {
+                                    <div class="iconExpand">▼</div>
+                                }
+
+                            </a>
+                            @if (module.VoorkennisModules.Count != 0)
+                            {
+                                <div class="itemContent">
+                                    @*@foreach (Administratix.BLL.Module voorkennis in module.VoorkennisModules)
+                                    {*@
+                                    <div class="itemContentTitle">
+                                        nodige voorkennis
+                                    </div>
+
+                                    @for (int j = 0; j < module.VoorkennisModules.Count; j++)
+                                    {
+                                        Administratix.BLL.Module voorkennis = module.VoorkennisModules[j];
+                                        <div class="itemContentText @(j % 2 == 0 ? "" : "shaded")">
+
+                                            @if (voorkennis.CursistIsIngeschreven)
+                                            {
+
+                                                if (voorkennis.PuntenTotaal > 0)
+                                                {
+                                                    // Cursist heeft punten
+                                                    if (voorkennis.CursistIsGeslaagd)
+                                                    {
+                                                        <img class="img_StatusCirkelGroen" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img_StatusCirkelRood" />
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    // Cursist heeft nog geen punten
+                                                    <img class="img_StatusCirkelBlauw" />
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // Cursist is niet ingeschreven, geen inschrijf status weer
+                                                if (voorkennis.CursistHeeftVoorkennis)
+                                                {
+                                                    <img class="img_StatusNoteGroen" />
+                                                }
+                                                else
+                                                {
+                                                    <img class="img_StatusNoteRood" />
+                                                }
+                                            }
+
+                                            @voorkennis.Naam
+
+                                        </div>
+                                    }
                                 </div>
                             }
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
 
-                    @*<div class="containerTraject">
+                @*<div class="containerTraject">
                         <div class="itemTraject containerTitle">Naam</div>
                         <div class="itemTraject containerTitle">Voorkennis</div>
                         @for (int i = 0; i < trajectModules.Count; i++)
                 {
                     Administratix.BLL.Module module = trajectModules[i];
-                           
+
 
                             <div class="itemTraject @(i%2 == 0 ? "":"shaded")">
 
@@ -280,9 +295,9 @@
 
                 }
                     </div>*@
-                    }
+            }
 
-                    @*<table>
+            @*<table>
                 <tr>
                     <th>Naam</th>
                     <th>Voorkennis</th>
@@ -375,6 +390,6 @@
                 }
             </table>*@
 
-
-                </div>
+        </div>
+        </div>
 </main>
