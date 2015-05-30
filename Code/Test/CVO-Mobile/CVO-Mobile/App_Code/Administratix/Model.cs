@@ -20,9 +20,9 @@ namespace Administratix
                 return DAL.LesDavinci.SelectAllByCursistNummerAndDates(cursistNummer, begin, einde);
             }
 
-            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummerWithVakantieDagen(List<BLL.LesDavinci> lessenrooster, List<BLL.Kalender> vakantiedagen)
+            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummerWithVakantieDagen(List<BLL.LesDavinci> lessenrooster, List<BLL.KalenderDag> vakantiedagen)
             {
-                foreach (BLL.Kalender k in vakantiedagen)
+                foreach (BLL.KalenderDag k in vakantiedagen)
                 {
                     if (!k.Omschrijving.Equals(""))
                     {
@@ -221,13 +221,8 @@ namespace Administratix
 
         public class Kalender
         {
-            public static List<BLL.Kalender> KalenderSelectAll()
-            {
-                Administratix.DAL.Kalender dal = new DAL.Kalender();
-                return dal.SelectAll();
-            }
 
-            public static List<BLL.Kalender> KalenderSelectAllByDates(DateTime Date1,DateTime  Date2)
+            public static List<BLL.KalenderDag> KalenderSelectAllByDates(DateTime Date1, DateTime Date2)
             {
                 return DAL.Feestdagen.SelectFeestDagen(Date1,Date2);
             }

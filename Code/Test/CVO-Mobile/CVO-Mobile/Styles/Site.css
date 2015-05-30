@@ -424,3 +424,34 @@ th {
 .loginForm > button:hover{
     background-color: #FFF5F5;
 }
+
+.kalenderBox{
+    width: 14%;
+    min-width: 120px;
+}
+
+.kalenderIcons{
+    height:20px;
+}
+
+.kalenderBox.blue > .itemTitle{
+    background-color: #0076C8;
+}
+
+.kalenderBox.blue > .itemContent{
+    border: 2px solid #0076C8;
+}
+
+.kalenderBox.fade > .itemTitle{
+    background-color: #D69284;
+}
+
+.kalenderBox.fade > .itemContent{
+    border: 2px solid #D69284;
+}
+
+/*.itemBox.kalenderBox:target{
+    width: 100%;
+    max-width: 1000px;
+    display: block;
+}*/

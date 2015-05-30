@@ -147,16 +147,72 @@ namespace Administratix.BLL
 
     /// <summary> 
     /// Class definition Kalender 
-    /// Used in DAL.Kalender and DAL.Feestdagen
+    /// Used in DAL.Kalender and DAL.Feesten
     /// </summary> 
+
     public class Kalender
     {
-        public int Id { get; set; }
+        public List<BLL.KalenderDag> Dagen { get; set; }
+        public DateTime StartDatum { get; set; }
+        public DateTime EindDatum { get; set; }
+
+        public Kalender()
+        {
+            Dagen = new List<KalenderDag>();
+        }
+
+        public void CreerDagen(DateTime startDatum, DateTime eindDatum)
+        {
+            this.StartDatum = new DateTime();
+            this.EindDatum = new DateTime();
+            Dagen = new List<KalenderDag>();
+
+            this.StartDatum = startDatum;
+            this.EindDatum = eindDatum;
+
+            while (startDatum.Date <= eindDatum.Date)
+            {
+                BLL.KalenderDag dag = new BLL.KalenderDag();
+                dag.Datum = startDatum;
+                Dagen.Add(dag);
+
+                startDatum = startDatum.AddDays(1);
+            }
+
+        }
+
+        public void VoegFeestenToe(List<BLL.KalenderDag> feestDagen)
+        {
+            foreach (BLL.KalenderDag dag in feestDagen)
+            {
+                //tel dagen van begin = dag in lijst
+                int nr = (dag.Datum - StartDatum).Days;
+
+                //safeguard
+                if (nr >= 0 && nr <= Dagen.Count)
+                {
+                    Dagen[nr].Feesten.Add(dag);
+                }
+                
+            }
+        }
+    }
+
+    public class KalenderDag
+    {
+        public DateTime Datum { get; set; }
+        public List<BLL.LesDavinci> Lessen { get; set; }
+        public List<BLL.KalenderDag> Feesten { get; set; }
         public int IdSchooljaar { get; set; }
         public string Schooljaar { get; set; }
-        public DateTime Datum { get; set; }
         public string Omschrijving { get; set; }
         //public int IdVerlofdagtype { get; set; }
+
+        public KalenderDag()
+        {
+            Lessen = new List<LesDavinci>();
+            Feesten = new List<KalenderDag>();
+        }
     }
 
     public class Lessenrooster

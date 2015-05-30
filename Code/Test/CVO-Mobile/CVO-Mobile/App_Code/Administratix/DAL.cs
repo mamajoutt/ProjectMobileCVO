@@ -987,89 +987,80 @@ namespace Administratix.DAL
         }
     }
 
-    public class Kalender : MobileCVO.DAL.IDal<BLL.Kalender>
-    {
-        private string message;
-        public string Message
-        {
-            get
-            {
-                return message;
-            }
-        }
+    //public class KalenderDag : MobileCVO.DAL.IDal<BLL.KalenderDag>
+    //{
+    //    private string message;
+    //    public string Message
+    //    {
+    //        get
+    //        {
+    //            return message;
+    //        }
+    //    }
 
-        public Kalender()
-        {
-            this.message = "";
-        }
+    //    public KalenderDag()
+    //    {
+    //        this.message = "";
+    //    }
 
-        public int Insert(BLL.Kalender entity)
-        {
-            throw new NotImplementedException();
-        }
 
-        public BLL.Kalender SelectOne(int id)
-        {
-            throw new NotImplementedException();
-        }
+    //    public List<BLL.KalenderDag> SelectAll()
+    //    {
+    //        List<BLL.KalenderDag> feestDagenLijst = new List<BLL.KalenderDag>();
 
-        public List<BLL.Kalender> SelectAll()
-        {
-            List<BLL.Kalender> feestDagenLijst = new List<BLL.Kalender>();
+    //        SqlConnection connection = new SqlConnection();
+    //        connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
+    //        SqlCommand command = new SqlCommand();
 
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
-            SqlCommand command = new SqlCommand();
+    //        String sqlString = "grp2_SelectFeestdagenVersieMo";
+    //        command.CommandType = CommandType.StoredProcedure;
+    //        command.CommandText = sqlString;
+    //        command.Connection = connection;
+    //        this.message = "Niets te melden";
+    //        SqlDataReader result;
 
-            String sqlString = "grp2_SelectFeestdagenVersieMo";
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = sqlString;
-            command.Connection = connection;
-            this.message = "Niets te melden";
-            SqlDataReader result;
+    //        try
+    //        {
+    //            connection.Open();
+    //            this.message = "De database is klaar";
+    //            using (result = command.ExecuteReader())
+    //            {
+    //                if (result.HasRows)
+    //                {
+    //                    while (result.Read())
+    //                    {
+    //                        BLL.KalenderDag feestDag = new BLL.KalenderDag();
+    //                        feestDag.Schooljaar = result["Schooljaar"].ToString();
+    //                        feestDag.Datum = Convert.ToDateTime(result["Datum"]);
+    //                        feestDag.Omschrijving = result["Omschrijving"].ToString();
+    //                        feestDagenLijst.Add(feestDag);
+    //                    }
+    //                }
+    //            }
+    //        }
 
-            try
-            {
-                connection.Open();
-                this.message = "De database is klaar";
-                using (result = command.ExecuteReader())
-                {
-                    if (result.HasRows)
-                    {
-                        while (result.Read())
-                        {
-                            BLL.Kalender feestDag = new BLL.Kalender();
-                            feestDag.Schooljaar = result["Schooljaar"].ToString();
-                            feestDag.Datum = Convert.ToDateTime(result["Datum"]);
-                            feestDag.Omschrijving = result["Omschrijving"].ToString();
-                            feestDagenLijst.Add(feestDag);
-                        }
-                    }
-                }
-            }
+    //        catch (SqlException e)
+    //        {
+    //            this.message = e.Message;
+    //        }
+    //        finally
+    //        {
+    //            connection.Close();
+    //        }
+    //        return feestDagenLijst;
+    //    }
 
-            catch (SqlException e)
-            {
-                this.message = e.Message;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return feestDagenLijst;
-        }
-
-        public List<BLL.Kalender> SelectAllByCursistNummer(int cursistNummer)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public List<BLL.Kalender> SelectAllByCursistNummer(int cursistNummer)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
     public class Feestdagen
     {
-        public static List<BLL.Kalender> SelectFeestDagen(DateTime Date1, DateTime Date2)
+        public static List<BLL.KalenderDag> SelectFeestDagen(DateTime Date1, DateTime Date2)
         {
-            List<BLL.Kalender> lijstfeestdagen = new List<BLL.Kalender>();
+            List<BLL.KalenderDag> lijstfeestdagen = new List<BLL.KalenderDag>();
 
             SqlConnection con = new SqlConnection();
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
@@ -1095,7 +1086,7 @@ namespace Administratix.DAL
                     {
                         while (result.Read())
                         {
-                            BLL.Kalender kalender = new BLL.Kalender();
+                            BLL.KalenderDag kalender = new BLL.KalenderDag();
                             kalender.Datum = Convert.ToDateTime(result["Datum"]);
                             kalender.IdSchooljaar = Convert.ToInt32(result["IdSchooljaar"].ToString());
                             kalender.Omschrijving = result["Omschrijving"].ToString();

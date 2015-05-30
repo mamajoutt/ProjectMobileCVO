@@ -113,6 +113,7 @@
     <Content Include="Shared\_Header.cshtml" />
     <Content Include="Shared\_Layout_old.cshtml" />
     <Content Include="Deelpagina%27s\Default.cshtml" />
+    <Content Include="Deelpagina%27s\Kalender.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
