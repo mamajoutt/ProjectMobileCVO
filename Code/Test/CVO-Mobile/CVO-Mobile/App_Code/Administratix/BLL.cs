@@ -196,6 +196,38 @@ namespace Administratix.BLL
                 
             }
         }
+
+        public void VoegLessenToe(List<BLL.LesDavinci> lesDagen)
+        {
+            foreach (BLL.LesDavinci les in lesDagen)
+            {
+                //tel dagen van begin = dag in lijst
+                int nr = (les.Datum - StartDatum).Days;
+
+                //safeguard
+                if (nr >= 0 && nr <= Dagen.Count)
+                {
+                    Dagen[nr].Lessen.Add(les);
+                }
+
+            }
+        }
+
+        public void VoegDeadlinesToe(List<Moodle.BLL.Deadline> deadlines)
+        {
+            foreach (Moodle.BLL.Deadline deadline in deadlines)
+            {
+                //tel dagen van begin = dag in lijst
+                int nr = (deadline.Date - StartDatum).Days;
+
+                //safeguard
+                if (nr >= 0 && nr <= Dagen.Count)
+                {
+                    Dagen[nr].Deadlines.Add(deadline);
+                }
+
+            }
+        }
     }
 
     public class KalenderDag
@@ -203,6 +235,7 @@ namespace Administratix.BLL
         public DateTime Datum { get; set; }
         public List<BLL.LesDavinci> Lessen { get; set; }
         public List<BLL.KalenderDag> Feesten { get; set; }
+        public List<Moodle.BLL.Deadline> Deadlines { get; set; }
         public int IdSchooljaar { get; set; }
         public string Schooljaar { get; set; }
         public string Omschrijving { get; set; }
@@ -212,6 +245,7 @@ namespace Administratix.BLL
         {
             Lessen = new List<LesDavinci>();
             Feesten = new List<KalenderDag>();
+            Deadlines = new List<Moodle.BLL.Deadline>();
         }
     }
 

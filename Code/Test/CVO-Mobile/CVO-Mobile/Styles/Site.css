@@ -124,6 +124,34 @@ th {
     display: inline-block;
 }
 
+.img_Les {
+    background-image: url('../Images/Note_White.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_Deadline {
+    background-image: url('../Images/icon_Clock.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_nav_right_white {
+    background-image: url('../Images/nav_right_white.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.img_nav_left_white {
+    background-image: url('../Images/nav_left_white.png');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
 .moodleCourse {
     font-size: 25px;
     padding-bottom: 10px;
@@ -426,8 +454,10 @@ th {
 }
 
 .kalenderBox{
-    width: 14%;
-    min-width: 120px;
+    /*width: 14%;*/
+    width: 130px;
+    min-width: 130px;
+    /*margin: 5px 2px;*/
 }
 
 .kalenderIcons{
@@ -450,8 +480,41 @@ th {
     border: 2px solid #D69284;
 }
 
-/*.itemBox.kalenderBox:target{
+.itemContainer.kalender{
+    justify-content: space-around;
+}
+
+.itemBox.kalenderBox:target{
     width: 100%;
+    min-width :260px;
     max-width: 1000px;
     display: block;
-}*/
+}
+
+.kalenderWeek{
+    width: 100%;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content: space-between;
+}
+
+.kalenderTitle{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #DB5C3D;
+    padding: 7px;
+    font-size: large;
+    color: #FFF;
+    border-radius: 5px 0px 0px 0px;
+    font-size:28px;
+    display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom:10px;
+    
+}
+
+.kalenderTitle > div{
+    margin:0px auto;
+    display: inline-block;
+}

@@ -72,11 +72,15 @@
     <Content Include="Images\Circle_empty.png" />
     <Content Include="Images\Circle_V.png" />
     <Content Include="Images\Circle_X.png" />
+    <Content Include="Images\icon_Clock.png" />
     <Content Include="Images\icon_Sun.png" />
     <Content Include="Images\Logo_mobileCVO.jpg" />
     <Content Include="Images\nav_left.png" />
+    <Content Include="Images\nav_left_white.png" />
     <Content Include="Images\nav_right.png" />
+    <Content Include="Images\nav_right_white.png" />
     <Content Include="Images\Note_V.png" />
+    <Content Include="Images\Note_White.png" />
     <Content Include="Images\Note_X.png" />
     <Content Include="Images\traject.png" />
     <Content Include="Styles\App.css" />
