@@ -1,0 +1,64 @@
+﻿@{
+    Session["Page"] = "0";
+    
+    Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "Home";
+
+    string action = "";
+
+    if (IsPost)
+    {
+        action = Request["action"];
+
+        switch (action)
+        {
+            case "login":
+                if (Session["cursist"] == null)
+                {
+                    try
+                    {
+                        Session["loginError"] = "";
+                        Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
+                    }
+                    catch (Exception e)
+                    {
+
+                        Session["loginError"] = e.Message;
+                    }
+
+                }
+                break;
+
+            case "logout":
+                Session["cursist"] = null;
+                break;
+
+        }
+    }
+
+}
+
+
+@if (Session["cursist"] != null)
+{
+    <div class="homeLinkButtonContainer">
+        <a class="homeLinkButton" href="~/Deelpagina's/Kalender.cshtml">Kalender</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/Deadlines.cshtml">Deadlines</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/Evenementen.cshtml">Evenementen</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/ExamenData.cshtml">ExamenData</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/ExamenPunten.cshtml">ExamenPunten</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/Lessenrooster.cshtml">Lessenrooster</a>
+        <a class="homeLinkButton" href="~/Deelpagina's/TrajectOverzicht.cshtml">TrajectOverzicht</a>
+        <a class="homeLinkButton" href="https://moodle.cvoantwerpen.be">Moodle</a>
+        <a class="homeLinkButton" href="http://www.cvoantwerpen.be">CVO Antwerpen</a>
+    </div>
+
+    //Session["cursistNummer"].ToString();
+}
+else
+{
+    <form id="login" action="" method="post" class="loginForm">
+        @Session["loginError"]
+        <input type="text" required name="Login-CursistNummer" id="Login-CursistNummer" />  <button type="submit" name="action" value="login">Inloggen</button>
+    </form>
+}
