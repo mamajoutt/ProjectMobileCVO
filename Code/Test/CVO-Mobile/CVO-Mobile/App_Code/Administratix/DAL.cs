@@ -26,25 +26,15 @@ namespace Administratix.DAL
         public static List<string> Makelist()
         {
             List<string> test = new List<string>();
-            test.Add("~/Default.cshtml");
-            test.Add("/Deelpagina's/Kalender.cshtml");
-            test.Add("/Deelpagina's/Deadlines.cshtml");
-            test.Add("/Deelpagina's/Evenementen.cshtml");
-            test.Add("/Deelpagina's/ExamenData.cshtml");
-            test.Add("/Deelpagina's/ExamenPunten.cshtml");
-            test.Add("/Deelpagina's/Lessenrooster.cshtml");
-            test.Add("/Deelpagina's/TrajectOverzicht.cshtml");
+            test.Add("../Default.cshtml");
+            test.Add("~/Deelpagina's/Kalender.cshtml");
+            test.Add("~/Deelpagina's/Deadlines.cshtml");
+            test.Add("~/Deelpagina's/Evenementen.cshtml");
+            test.Add("~/Deelpagina's/ExamenData.cshtml");
+            test.Add("~/Deelpagina's/ExamenPunten.cshtml");
+            test.Add("~/Deelpagina's/Lessenrooster.cshtml");
+            test.Add("~/Deelpagina's/TrajectOverzicht.cshtml");
             return test;
-        }
-        public static string GetPrevious(int i)
-        {
-            List<string> pages = Makelist();
-            return pages[i-1];
-        }
-        public static string GetNext(int i)
-        {
-            List<string> pages = Makelist();
-            return pages[i + 1];
         }
     }
 

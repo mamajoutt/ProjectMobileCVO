@@ -232,11 +232,27 @@ namespace Administratix
         {
             public static string volgende(int i)
             {
-                return DAL.paginaTest.GetNext(i);
+                try
+                {
+                    List<string> pages = DAL.paginaTest.Makelist();
+                    return pages[i + 1];
+                }
+                catch
+                {
+                    return "Error";
+                }
             }
             public static string vorige(int i)
             {
-                return DAL.paginaTest.GetPrevious(i);
+                try
+                {
+                    List<string> pages = DAL.paginaTest.Makelist();
+                    return pages[i - 1];
+                }
+                catch
+                {
+                    return "Error";
+                }
             }
         }
     }

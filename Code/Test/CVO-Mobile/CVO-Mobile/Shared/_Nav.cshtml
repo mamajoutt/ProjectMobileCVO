@@ -7,13 +7,13 @@
         @if (Session["cursist"] != null)
         {
             <a href="~/"><img src="~/Images/1431366103_text_align_full-128.png" alt="Logo Sandwich" /></a>
-            @if (Session["Page"] != "0")
+            if (Session["Page"] != "0")
             {
                 <a href="@Administratix.Model.pagina.vorige(Convert.ToInt32(Session["Page"]))"><img src="~/Images/nav_left.png" alt="Nav Links" /></a>
             }
-            @if (Session["Page"] != "7")
+            if (Session["Page"] != "7")
             {
-                <a href="@Administratix.Model.pagina.vorige(Convert.ToInt32(Session["Page"]))"><img src="~/Images/nav_right.png" alt="Nav Rechts" /></a>
+                <a href="@Administratix.Model.pagina.volgende(Convert.ToInt32(Session["Page"]))"><img src="~/Images/nav_right.png" alt="Nav Rechts" /></a>
             }
         }
     </div>
