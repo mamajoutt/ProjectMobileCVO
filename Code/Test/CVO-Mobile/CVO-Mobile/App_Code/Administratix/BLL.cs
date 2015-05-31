@@ -252,7 +252,30 @@ namespace Administratix.BLL
     public class Lessenrooster
     {
         public static bool FeestdagenTonen { get; set; }
-        public static bool Compact { get; set; }
+        public List<BLL.LesDavinci> Lesdagen { get; set; }
+
+        public Lessenrooster()
+        {
+            Lesdagen = new List<LesDavinci>();
+        }
+
+        public void VoegFeestdagenToe(List<BLL.KalenderDag> feestdagen)
+        {
+            foreach (BLL.KalenderDag k in feestdagen)
+            {
+                if (!k.Omschrijving.Equals(""))
+                {
+                    BLL.LesDavinci dag = new BLL.LesDavinci();
+                    dag.Datum = k.Datum;
+                    dag.Module = k.Omschrijving;
+
+                    Lesdagen.Add(dag);
+                }
+
+            }
+            Lesdagen = Lesdagen.OrderBy(o => o.Datum).ThenBy(o => o.Aanvangsdatum).ToList();
+
+        }
     }
 
 }

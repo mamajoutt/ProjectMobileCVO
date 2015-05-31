@@ -20,23 +20,6 @@ namespace Administratix
                 return DAL.LesDavinci.SelectAllByCursistNummerAndDates(cursistNummer, begin, einde);
             }
 
-            public static List<BLL.LesDavinci> LesDavinciSelectAllByCursistNummerWithVakantieDagen(List<BLL.LesDavinci> lessenrooster, List<BLL.KalenderDag> vakantiedagen)
-            {
-                foreach (BLL.KalenderDag k in vakantiedagen)
-                {
-                    if (!k.Omschrijving.Equals(""))
-                    {
-                        BLL.LesDavinci dag = new BLL.LesDavinci();
-                        dag.Datum = k.Datum;
-                        dag.Module = k.Omschrijving;
-
-                        lessenrooster.Add(dag);
-                    }
-
-                }
-                return lessenrooster.OrderBy(o => o.Datum).ThenBy(o => o.Aanvangsdatum).ToList();
-
-            }
         }
 
         public class Evenement

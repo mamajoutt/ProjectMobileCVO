@@ -54,12 +54,6 @@
     List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
     Moodle.BLL.Deadline _deadlineOnDate = new Moodle.BLL.Deadline();
 
-    //if (IsPost)
-    //{
-    //    action = Request["action"];
-
-    //    if (action.Equals("viewing"))
-    //    {
 
 
     Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
@@ -108,7 +102,14 @@
     if (@cursistId == -1)
     {
         <div>
-            Geen cursist gevonden met het volgende email adress: @email
+            @if (email.Equals(""))
+            {
+                @:Er is geen e-mail adres gevonden voor deze cursist. Gelieve contact op te nemen met de administratie.
+            }
+            else
+            {
+                @:Geen cursist gevonden met het volgende email adress: @email
+            }
         </div>
     }
     else
@@ -121,8 +122,10 @@
 
             @if (_upcommingDeadlines.Count == 0)
             {
-                @:Je hebt momenteel geen deadlines in de komende 2 weken.
-                    }
+                <div class="itemContentText">
+                    Je hebt momenteel geen deadlines in de komende 2 weken.
+                </div>
+            }
             else
             {
 

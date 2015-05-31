@@ -80,7 +80,6 @@
 
     lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerAndDates(cursist.CursistNummer, startDatum, eindDatum);
     feestdagen = Administratix.Model.Kalender.KalenderSelectAllByDates(startDatum, eindDatum);
-    //lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerWithVakantieDagen(lessenrooster, feestdagen);
 
 
 
@@ -127,21 +126,6 @@
 
 
 }
-
-
-
-@*debug*@
-@*<div>
-        vandaag: @vandaag.ToString() <br />
-        maand: @maand <br />
-        jaar: @jaar <br />
-        startDatum: @startDatum.ToString() <br />
-        eindDatum: @eindDatum.ToString() <br />
-        startWeekDag: @startWeekDag <br />
-        eindWeekDag: @eindWeekDag <br />
-        #Deadlines: @_upcommingDeadlines.Count
-    </div>*@
-
 
 <div class="kalenderTitle">
     <div>
@@ -254,62 +238,4 @@
 
     }
 </div>
-
-@*<div class="itemContainer kalender">
-        @for (int i = 0; i < kalender.Dagen.Count; i++)
-            {
-                Administratix.BLL.KalenderDag dag = kalender.Dagen[i];
-
-
-        <div class="itemBox kalenderBox @(dag.Datum.Date == vandaag.Date?"blue":"") @(dag.Datum.Month != vandaag.Month?"fade":"")" id="@i">
-            <a class="itemTitle" href="#@i">
-                @dag.Datum.ToString("ddd d/M", culture)
-                <div class="kalenderIcons">
-                    @if (dag.Feesten.Count > 0)
-                            {
-                        <img class="img_Vakantie" />
-                            }
-                    @if (dag.Lessen.Count > 0)
-                            {
-                        <img class="img_Les" />
-                            }
-                </div>
-            </a>
-
-            <div class="itemContent kalender">
-                @if (dag.Feesten.Count > 0)
-                        {
-                    <div class="itemContentTitle">
-                        Feesten
-                    </div>
-                        }
-                @foreach (Administratix.BLL.KalenderDag feest in dag.Feesten)
-                        {
-                    @feest.Omschrijving <br />
-                        }
-                @if (dag.Lessen.Count > 0)
-                        {
-                    <div class="itemContentTitle">
-                        Lessen
-                    </div>
-                        }
-                @foreach (Administratix.BLL.LesDavinci les in dag.Lessen)
-                        {
-                    <div class="itemContentText rooster">
-                        @les.Module
-                    </div>
-                    <div class="itemContentText rooster">
-                        @les.Aanvangsdatum.ToString("HH:mm")
-                        -
-                        @les.Einddatum.ToString("HH:mm")
-                    </div>
-                        }
-            </div>
-        </div>
-
-
-
-                    }
-    </div>*@
-
 

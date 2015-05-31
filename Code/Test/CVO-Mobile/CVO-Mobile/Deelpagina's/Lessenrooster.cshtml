@@ -18,7 +18,7 @@
                 {
                     try
                     {
-                        
+
                         Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
                     }
                     catch (Exception e)
@@ -26,10 +26,10 @@
 
                         Session["loginError"] = e.Message;
                     }
-                    
+
                 }
                 break;
-                
+
             case "logout":
                 Session["cursist"] = null;
                 break;
@@ -49,7 +49,7 @@
 
         switch (action)
         {
-        case "feestdagen-inclusief":
+            case "feestdagen-inclusief":
                 Administratix.BLL.Lessenrooster.FeestdagenTonen = true;
                 break;
 
@@ -57,28 +57,14 @@
                 Administratix.BLL.Lessenrooster.FeestdagenTonen = false;
                 break;
 
-            case "display-compact":
-                Administratix.BLL.Lessenrooster.Compact = true;
-                break;
-
-            case "display-volledig":
-                Administratix.BLL.Lessenrooster.Compact = false;
-                break;
-                
             default:
                 break;
         }
     }
 
-
-    //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("nl-BE");
-
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
 
-    string message = "Alles gaat goed.";
-
-    List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
-    List<Administratix.BLL.KalenderDag> feestdagen = new List<Administratix.BLL.KalenderDag>();
+    Administratix.BLL.Lessenrooster lessenrooster = new Administratix.BLL.Lessenrooster();
     if (Session["cursist"] != null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
@@ -90,85 +76,72 @@
         //startdatum overwrite voor voorstelling
         startDatum = new DateTime(2015, 1, 1);
 
-        //datum na juli -> jaar eind datum = volgend jaar, anders dit jaar
+        //datum na juli -> einde schooljaar = volgend jaar, anders dit jaar
         int jaar = startDatum.Month > 7 ? startDatum.Year + 1 : startDatum.Year;
-        //eind datum rooster (einde schooljaar, begin augustus)
         DateTime eindDatum = new DateTime(jaar, 8, 1);
 
-        lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerAndDates(cursist.CursistNummer, startDatum, eindDatum);
+        lessenrooster.Lesdagen = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerAndDates(cursist.CursistNummer, startDatum, eindDatum);
         if (Administratix.BLL.Lessenrooster.FeestdagenTonen)
         {
-            feestdagen = Administratix.Model.Kalender.KalenderSelectAllByDates(startDatum, eindDatum);
-            lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerWithVakantieDagen(lessenrooster, feestdagen);
+            lessenrooster.VoegFeestdagenToe(Administratix.Model.Kalender.KalenderSelectAllByDates(startDatum, eindDatum));
         }
 
     }
-    
+
 }
 
 
+<form id="lessenrooster-display" action="" method="post" class="containerBig containerOptions">
 
-        @*@if (Session["cursistNummer"] != null && Session["cursistNummer"] != "")
-            {
+    <div class="containerOption">
+        <div class="containerTitle">Feestdagen</div>
+        <button type="submit" name="action" value="feestdagen-exclusief" class="optionButton @(Administratix.BLL.Lessenrooster.FeestdagenTonen ? "" : "optionSelected")">Verbergen</button>
+        <button type="submit" name="action" value="feestdagen-inclusief" class="optionButton @(Administratix.BLL.Lessenrooster.FeestdagenTonen ? "optionSelected" : "")">Tonen</button>
 
-            }*@
-        <form id="lessenrooster-display" action="" method="post" class="containerBig containerOptions">
+    </div>
 
-            <div class="containerOption">
-                <div class="containerTitle">Feestdagen</div>
-                <button type="submit" name="action" value="feestdagen-exclusief" class="optionButton @(Administratix.BLL.Lessenrooster.FeestdagenTonen ? "" : "optionSelected")">Verbergen</button>
-                <button type="submit" name="action" value="feestdagen-inclusief" class="optionButton @(Administratix.BLL.Lessenrooster.FeestdagenTonen ? "optionSelected" : "")">Tonen</button>
+</form>
 
+
+@for (int i = 0; i < lessenrooster.Lesdagen.Count; i++)
+{
+    Administratix.BLL.LesDavinci les = lessenrooster.Lesdagen[i];
+    <div class="itemBox roosterBox" id="@i">
+        <a class="itemTitle" href="#@i">
+
+            <div class="roosterDatum">
+                @les.Datum.ToString("dd-MM-yyyy", culture)
             </div>
-            @*<div class="containerOption">
-                <div class="containerTitle">Layout</div>
-                <button type="submit" name="action" value="display-volledig" class="optionButton @(Administratix.BLL.Lessenrooster.Compact ? "" : "optionSelected")">Volledig</button>
-                <button type="submit" name="action" value="display-compact" class="optionButton @(Administratix.BLL.Lessenrooster.Compact ? "optionSelected" : "")">Compact</button>
-            </div>*@
-
-
-        </form>
-
-
-        @for (int i = 0; i < lessenrooster.Count; i++)
-        {
-            Administratix.BLL.LesDavinci les = lessenrooster[i];
-            <div class="itemBox roosterBox" id="@i">
-                <a class="itemTitle" href="#@i">
-                    
-                    <div class="roosterDatum">
-                        @les.Datum.ToString("dd-MM-yyyy", culture)
-                    </div>
-                    @if (les.Docent == null)
-                    {
-                        <img class="iconCenter img_Vakantie" />
-                    }
-                    else{
-                    <div class="roosterTijd">
-                        @les.Aanvangsdatum.ToString("HH:mm", culture) - @les.Einddatum.ToString("HH:mm", culture)
-                    </div>
-                    }
-                    <div class="roosterModule">
-                        @les.Module
-                    </div>
-                </a>
-                @if (les.Docent != null)
-                {
-                <div class="itemContent rooster">
-                    <div class="itemContentText rooster">
-                        Cursus nummer: @les.Cursusnummer
-                    </div>
-                    <div class="itemContentText rooster">
-                        lokaal: @les.Lokaal
-                    </div>
-                    <div class="itemContentText rooster">
-                        Docent: @les.Docent
-                    </div>
-                    <div class="itemContentText rooster">
-                        Campus: @les.Campus
-                    </div>
+            @if (les.Docent == null)
+            {
+                <img class="iconCenter img_Vakantie" />
+            }
+            else
+            {
+                <div class="roosterTijd">
+                    @les.Aanvangsdatum.ToString("HH:mm", culture) - @les.Einddatum.ToString("HH:mm", culture)
                 </div>
-                }
+            }
+            <div class="roosterModule">
+                @les.Module
+            </div>
+        </a>
+        @if (les.Docent != null)
+        {
+            <div class="itemContent rooster">
+                <div class="itemContentText rooster">
+                    Cursus nummer: @les.Cursusnummer
+                </div>
+                <div class="itemContentText rooster">
+                    lokaal: @les.Lokaal
+                </div>
+                <div class="itemContentText rooster">
+                    Docent: @les.Docent
+                </div>
+                <div class="itemContentText rooster">
+                    Campus: @les.Campus
+                </div>
             </div>
         }
-    
+    </div>
+}
