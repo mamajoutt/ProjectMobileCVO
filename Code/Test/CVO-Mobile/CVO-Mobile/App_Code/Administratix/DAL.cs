@@ -27,13 +27,13 @@ namespace Administratix.DAL
         {
             List<string> test = new List<string>();
             test.Add("../Default.cshtml");
-            test.Add("~/Deelpagina's/Kalender.cshtml");
-            test.Add("~/Deelpagina's/Deadlines.cshtml");
-            test.Add("~/Deelpagina's/Evenementen.cshtml");
-            test.Add("~/Deelpagina's/ExamenData.cshtml");
-            test.Add("~/Deelpagina's/ExamenPunten.cshtml");
-            test.Add("~/Deelpagina's/Lessenrooster.cshtml");
-            test.Add("~/Deelpagina's/TrajectOverzicht.cshtml");
+            test.Add("/Deelpagina's/Kalender.cshtml");
+            test.Add("/Deelpagina's/Deadlines.cshtml");
+            test.Add("/Deelpagina's/Evenementen.cshtml");
+            test.Add("/Deelpagina's/ExamenData.cshtml");
+            test.Add("/Deelpagina's/ExamenPunten.cshtml");
+            test.Add("/Deelpagina's/Lessenrooster.cshtml");
+            test.Add("/Deelpagina's/TrajectOverzicht.cshtml");
             return test;
         }
     }
