@@ -65,4 +65,10 @@ namespace Moodle.BLL
             this.FullName = (string)jSon["fullname"];
         }
     }
+
+    public class pages
+    {
+        List<string> pagina = new List<string>();
+        
+    }
 }

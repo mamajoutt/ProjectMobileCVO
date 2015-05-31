@@ -227,5 +227,17 @@ namespace Administratix
                 return DAL.Feestdagen.SelectFeestDagen(Date1,Date2);
             }
         }
+
+        public class pagina
+        {
+            public static string volgende(int i)
+            {
+                return DAL.paginaTest.GetNext(i);
+            }
+            public static string vorige(int i)
+            {
+                return DAL.paginaTest.GetPrevious(i);
+            }
+        }
     }
 }
