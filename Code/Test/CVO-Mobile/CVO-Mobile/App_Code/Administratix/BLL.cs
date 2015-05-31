@@ -338,6 +338,10 @@ namespace Administratix.BLL
             Lesdagen = new List<LesDavinci>();
         }
 
+        /// <summary>
+        /// Voegt feestdagen toe aan de lijst van lesdagen
+        /// </summary>
+        /// <param name="feestdagen">Lijst met feestdagen</param>
         public void VoegFeestdagenToe(List<BLL.KalenderDag> feestdagen)
         {
             foreach (BLL.KalenderDag k in feestdagen)

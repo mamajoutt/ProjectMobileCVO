@@ -10,9 +10,7 @@ namespace MobileCVO.DAL
     interface IDal<TypeEntity>
     {
         string Message {get;} 
-        //bool Update(TypeEntity entity); 
         int Insert(TypeEntity entity); 
-        //bool Delete(int Id); 
         TypeEntity SelectOne(int id);
         List<TypeEntity> SelectAll();
         List<TypeEntity> SelectAllByCursistNummer(int cursistNummer);
@@ -45,8 +43,6 @@ namespace Administratix.DAL
         {
             List<KeyValuePair<int, int>> idPairs = new List<KeyValuePair<int, int>>();
 
-            //List<BLL.CursusResultaat> resultaten = new List<BLL.CursusResultaat>();
-
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
                  System.Configuration.ConfigurationManager.
@@ -64,13 +60,11 @@ namespace Administratix.DAL
             command.CommandText = sqlString;
 
             command.Connection = connection;
-            //this.message = "Niets te melden";
 
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -89,7 +83,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                throw e;
             }
             finally
             {
@@ -120,13 +114,11 @@ namespace Administratix.DAL
             command.CommandText = sqlString;
 
             command.Connection = connection;
-            //this.message = "Niets te melden";
 
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -137,8 +129,6 @@ namespace Administratix.DAL
                             BLL.Module module = new BLL.Module();
                             module.Id = Convert.ToInt32(result["Id"].ToString());
                             module.Naam = result["Naam"].ToString();
-                            //module.Lestijden = Convert.ToInt32(result["Lestijden"].ToString());
-                            //module.Code = result["Code"].ToString();
 
                             modules.Add(module);
                         }
@@ -148,7 +138,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                throw e;
             }
             finally
             {
@@ -536,24 +526,6 @@ namespace Administratix.DAL
             this.message = "";
         }
 
-        public List<BLL.CursusResultaat> SelectAll()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public BLL.CursusResultaat SelectOne(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public int Insert(BLL.CursusResultaat entity)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public List<BLL.CursusResultaat> SelectAllByCursistNummer(int cursistNummer)
         {
             List<BLL.CursusResultaat> resultatenLijst = new List<BLL.CursusResultaat>();
@@ -731,54 +703,33 @@ namespace Administratix.DAL
         }
     }
 
-    public class LesDavinci //: MobileCVO.DAL.IDal<BLL.LesDavinci>
+    public class LesDavinci
     {
-        /*private string message;
-        public string Message
-        {
-            get
-            {
-                return message;
-            }
-        }
-
-        public LesDavinci()
-        {
-            this.message = "";
-        }*/
 
         public static List<BLL.LesDavinci> SelectAllByCursistNummer(int cursistNummer)
         {
             List<BLL.LesDavinci> lessenrooster = new List<BLL.LesDavinci>();
-            // geen plain vanilla sql statement meegeven,
-            // parameters gebruiken
+
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
                  System.Configuration.ConfigurationManager.
                  ConnectionStrings["MobileCVO"].ToString();
-            // Sqlcommand object
+
             SqlCommand command = new SqlCommand();
-            // in de CommandText eigenschap stoppen de naam
-            // van de stored procedure
+
             string sqlString = "grp2_SelectAllLesDavinciByCursistNummer";
 
-            // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
-            // zeg aan het command object dat het een tored procedure
-            // zal krijgen en geen SQL Statement
+
             command.CommandType = CommandType.StoredProcedure;
-            // stop het sql statement in het command object
             command.CommandText = sqlString;
-            // geeft het connection object door aan het command object
             command.Connection = connection;
-            //this.message = "Niets te melden";
-            // we gaan ervan uit dat het mislukt
+
             SqlDataReader result;
             try
             {
                 connection.Open();
-                //this.message = "De database is klaar!";
 
                 using (result = command.ExecuteReader())
                 {
@@ -803,7 +754,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                throw e;
             }
             finally
             {
@@ -865,7 +816,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                throw e;
             }
             finally
             {
@@ -876,35 +827,27 @@ namespace Administratix.DAL
         }
     }
 
-    public class Cursist //: MobileCVO.DAL.IDal<BLL.LesDavinci>
+    public class Cursist
     {
         public static BLL.Cursist SelectCursistByCursistNummer(int cursistNummer)
         {
             BLL.Cursist cursist = new BLL.Cursist();
-            // geen plain vanilla sql statement meegeven,
-            // parameters gebruiken
+
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString =
                  System.Configuration.ConfigurationManager.
                  ConnectionStrings["MobileCVO"].ToString();
-            // Sqlcommand object
             SqlCommand command = new SqlCommand();
-            // in de CommandText eigenschap stoppen de naam
-            // van de stored procedure
+
             string sqlString = "grp2_SelectCursistByCursistNummer";
 
-            // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
-            // zeg aan het command object dat het een tored procedure
-            // zal krijgen en geen SQL Statement
+
             command.CommandType = CommandType.StoredProcedure;
-            // stop het sql statement in het command object
             command.CommandText = sqlString;
-            // geeft het connection object door aan het command object
             command.Connection = connection;
-            //this.message = "Niets te melden";
-            // we gaan ervan uit dat het mislukt
+
             SqlDataReader result;
             try
             {
@@ -928,7 +871,7 @@ namespace Administratix.DAL
             }
             catch (SqlException e)
             {
-                //this.message = e.Message;
+                throw e;
             }
             finally
             {
@@ -939,74 +882,6 @@ namespace Administratix.DAL
         }
     }
 
-    //public class KalenderDag : MobileCVO.DAL.IDal<BLL.KalenderDag>
-    //{
-    //    private string message;
-    //    public string Message
-    //    {
-    //        get
-    //        {
-    //            return message;
-    //        }
-    //    }
-
-    //    public KalenderDag()
-    //    {
-    //        this.message = "";
-    //    }
-
-
-    //    public List<BLL.KalenderDag> SelectAll()
-    //    {
-    //        List<BLL.KalenderDag> feestDagenLijst = new List<BLL.KalenderDag>();
-
-    //        SqlConnection connection = new SqlConnection();
-    //        connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MobileCVO"].ToString();
-    //        SqlCommand command = new SqlCommand();
-
-    //        String sqlString = "grp2_SelectFeestdagenVersieMo";
-    //        command.CommandType = CommandType.StoredProcedure;
-    //        command.CommandText = sqlString;
-    //        command.Connection = connection;
-    //        this.message = "Niets te melden";
-    //        SqlDataReader result;
-
-    //        try
-    //        {
-    //            connection.Open();
-    //            this.message = "De database is klaar";
-    //            using (result = command.ExecuteReader())
-    //            {
-    //                if (result.HasRows)
-    //                {
-    //                    while (result.Read())
-    //                    {
-    //                        BLL.KalenderDag feestDag = new BLL.KalenderDag();
-    //                        feestDag.Schooljaar = result["Schooljaar"].ToString();
-    //                        feestDag.Datum = Convert.ToDateTime(result["Datum"]);
-    //                        feestDag.Omschrijving = result["Omschrijving"].ToString();
-    //                        feestDagenLijst.Add(feestDag);
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        catch (SqlException e)
-    //        {
-    //            this.message = e.Message;
-    //        }
-    //        finally
-    //        {
-    //            connection.Close();
-    //        }
-    //        return feestDagenLijst;
-    //    }
-
-    //    public List<BLL.Kalender> SelectAllByCursistNummer(int cursistNummer)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 
     public class Feestdagen
     {
@@ -1051,7 +926,7 @@ namespace Administratix.DAL
 
             catch (SqlException e)
             {
-                //this.Message = e.Message;
+                throw e;
             }
             finally
             {
