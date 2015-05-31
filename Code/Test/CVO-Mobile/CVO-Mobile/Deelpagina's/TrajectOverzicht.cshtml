@@ -40,29 +40,15 @@
         Response.Redirect("~/Deelpagina's/Default.cshtml");
     }
 
-    List<Administratix.BLL.StatusTraject> Resultaat = new List<Administratix.BLL.StatusTraject>();
-    List<Administratix.BLL.Module> trajectModules = new List<Administratix.BLL.Module>();
-    List<Administratix.BLL.CursusResultaat> resultaten = new List<Administratix.BLL.CursusResultaat>();
-    List<KeyValuePair<int, int>> voorkennisPairs = new List<KeyValuePair<int, int>>();
-
-    if (Session["cursist"] != null)
-    {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
+        Administratix.BLL.TrajectOverzicht traject = new Administratix.BLL.TrajectOverzicht();
         // Haal trajectmodules op
-        trajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursist.CursistNummer);
+        traject.TrajectModules = Administratix.Model.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursist.CursistNummer);
         // Haal cursist resultaten op
-        resultaten = Administratix.Model.CursusResultaat.CursusResultaatSelectAllByCursistNummer(cursist.CursistNummer);
-        // Voeg punten toe een trajectmodules
-        trajectModules = Administratix.Model.TrajectOverzicht.CombineerModuleResultatenMetTrajectModules(trajectModules, resultaten);
+        traject.VoegModuleResultatenToe(Administratix.Model.CursusResultaat.CursusResultaatSelectAllByCursistNummer(cursist.CursistNummer));
         // Haal nodige voorkenis op, 140 == Informatica
-        voorkennisPairs = Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140);
-        // Voeg nodige voorkennis toe aan trqjectmodules
-        Administratix.Model.TrajectOverzicht.ModulesAddVoorkennis(trajectModules, voorkennisPairs);
-
-        trajectModules = trajectModules.OrderBy(o => o.Naam).ToList();
-
-    }
-
+        traject.LinkVoorkennisMetKeyValuePair(Administratix.Model.TrajectOverzicht.SelectVoorkennisIdsByOpleidingsvariantId(140));
+        
 }
 
 
@@ -105,16 +91,16 @@
     </div>
 </div>
 
-@if (trajectModules.Count <= 0)
+@if (traject.TrajectModules.Count <= 0)
             {
     <p>Je bent nog niet ingeschreven in een traject.</p>
             }
             else
             {
     <div class="itemContainer">
-        @for (int i = 0; i < trajectModules.Count; i++)
+        @for (int i = 0; i < traject.TrajectModules.Count; i++)
                     {
-                        Administratix.BLL.Module module = trajectModules[i];
+                        Administratix.BLL.Module module = traject.TrajectModules[i];
             <div class="itemBox" id="@module.Id">
                 <a class="itemTitle" href="#@module.Id">
 

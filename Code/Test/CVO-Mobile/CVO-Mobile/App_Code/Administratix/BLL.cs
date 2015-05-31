@@ -63,14 +63,93 @@ namespace Administratix.BLL
     /// Class definition StatusTraject 
     /// Used in DAL.StatusTraject
     /// </summary> 
-    public class StatusTraject
+    public class TrajectOverzicht
     {
-        
-        public int Cursusnummer { get; set; }
-        public string Module { get; set; }
-        public string Start { get; set; }
-        public int AantalPlaatsen { get; set; }
-        public bool Inschrijfbaar { get; set; }  
+        public List<BLL.Module> TrajectModules { get; set; }
+
+        public TrajectOverzicht()
+        {
+            this.TrajectModules = new List<Module>();
+        }
+
+        /// <summary>
+        /// Voegt cursist resultaten toe aan de modules die tot het traject behoren
+        /// </summary>
+        /// <param name="resultaten">Cursust resultaten</param>
+        public void VoegModuleResultatenToe(List<CursusResultaat> resultaten){
+            foreach (BLL.Module module in this.TrajectModules)
+            {
+                foreach (BLL.CursusResultaat resultaat in resultaten)
+                {
+                    if (resultaat.IdModuleVariant == module.Id)
+                    {
+                        module.CursistIsIngeschreven = true;
+                        module.PuntenTotaal = resultaat.PuntenTotaal;
+                        if (module.PuntenTotaal > 50)
+                        {
+                            module.CursistIsGeslaagd = true;
+                        }
+                    }
+                }
+            }
+
+            this.TrajectModules = this.TrajectModules.OrderBy(o => o.Naam).ToList();
+        }
+
+        /// <summary>
+        /// Linkt modules in het traject aan andere modules in het traject als voorkennis
+        /// </summary>
+        /// <param name="voorkennisPairs">Voorkennis links tussen modules</param>
+        public void LinkVoorkennisMetKeyValuePair(List<KeyValuePair<int, int>> voorkennisPairs)
+        {
+            foreach (KeyValuePair<int, int> pair in voorkennisPairs)
+            {
+                BLL.Module trajectModule = FindModuleById(pair.Key);
+                BLL.Module voorkennisModule = FindModuleById(pair.Value);
+                trajectModule.VoorkennisModules.Add(voorkennisModule);
+            }
+
+            foreach (BLL.Module module in this.TrajectModules)
+            {
+                module.CursistHeeftVoorkennis = HeeftNodigeVoorkennis(module);
+            }
+        }
+
+        /// <summary>
+        /// Kijkt of de cursist de nodige voorkennis heeft voor een module
+        /// </summary>
+        /// <param name="module">Module die bekenen moet worken</param>
+        /// <returns>Of een cursist al dan niet de nodige voorkennis heeft</returns>
+        private bool HeeftNodigeVoorkennis(BLL.Module module)
+        {
+            foreach (BLL.Module voorkennis in module.VoorkennisModules)
+            {
+                if (!voorkennis.CursistIsIngeschreven || !voorkennis.CursistIsGeslaagd)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Zoekt een module in de modules die tot het project behoren aan de hand van zijn Id
+        /// </summary>
+        /// <param name="id">Id van de module</param>
+        /// <returns>De module met de overeenstemmende Id</returns>
+        private BLL.Module FindModuleById(int id)
+        {
+            BLL.Module module = new BLL.Module();
+            foreach (BLL.Module m in this.TrajectModules)
+            {
+                if (m.Id == id)
+                {
+                    module = m;
+                }
+            }
+            return module;
+
+        }
     }
 
     /// <summary> 

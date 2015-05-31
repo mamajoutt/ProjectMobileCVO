@@ -80,14 +80,6 @@ namespace Administratix
             }
         }
 
-        public class StatusTraject
-        {
-            public static List<BLL.StatusTraject> SelectStatusByCursistNummer(int cursistNummer)
-            {
-                return DAL.StatusTraject.SelectStatusByCursistNummer(cursistNummer);
-            }
-        }
-
         public class TrajectOverzicht
         {
             public static List<KeyValuePair<int, int>> SelectVoorkennisIdsByOpleidingsvariantId(int id)
@@ -99,69 +91,6 @@ namespace Administratix
             {
                 return DAL.TrajectOverzicht.SelectTrajectModulesByCursistNummer(cursistNummer);
             }
-
-            public static List<BLL.Module> CombineerModuleResultatenMetTrajectModules(List<BLL.Module> trajectModules, List<BLL.CursusResultaat> moduleResultaten)
-            {
-                foreach (BLL.Module module in trajectModules)
-                {
-                    foreach (BLL.CursusResultaat resultaat in moduleResultaten)
-                    {
-                        if (resultaat.IdModuleVariant == module.Id)
-                        {
-                            module.CursistIsIngeschreven = true;
-                            module.PuntenTotaal = resultaat.PuntenTotaal;
-                            if (module.PuntenTotaal > 50)
-                            {
-                                module.CursistIsGeslaagd = true;
-                            }
-                        }
-                    }
-                }
-
-                return trajectModules;
-            }
-
-            public static void ModulesAddVoorkennis(List<BLL.Module> trajectModules, List<KeyValuePair<int, int>> voorkennisPairs)
-            {
-                foreach (KeyValuePair<int, int> pair in voorkennisPairs)
-                {
-                    BLL.Module trajectModule = GetModuleFromListById(trajectModules, pair.Key);
-                    BLL.Module voorkennisModule = GetModuleFromListById(trajectModules, pair.Value);
-                    trajectModule.VoorkennisModules.Add(voorkennisModule);
-                }
-
-                foreach (BLL.Module module in trajectModules)
-                {
-                    module.CursistHeeftVoorkennis = HeeftNodigeVoorkennis(module);
-                }
-            }
-
-            private static bool HeeftNodigeVoorkennis(BLL.Module module)
-            {
-                foreach (BLL.Module voorkennis in module.VoorkennisModules)
-                {
-                    if (!voorkennis.CursistIsIngeschreven || !voorkennis.CursistIsGeslaagd)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            private static BLL.Module GetModuleFromListById(List<BLL.Module> modules, int id)
-            {
-                BLL.Module module = new BLL.Module();
-                foreach (BLL.Module m in modules)
-                {
-                    if (m.Id == id)
-                    {
-                        module = m;
-                    }
-                }
-                return module;
-
-            }
-
         }
 
         public class ModuleExamenData
