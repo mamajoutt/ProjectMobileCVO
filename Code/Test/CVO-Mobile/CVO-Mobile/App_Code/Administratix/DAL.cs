@@ -606,6 +606,22 @@ namespace Administratix.DAL
 
             return resultatenLijst;
         }
+
+
+        public int Insert(BLL.CursusResultaat entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BLL.CursusResultaat SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BLL.CursusResultaat> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TweedeZitInschrijving : MobileCVO.DAL.IDal<BLL.TweedeZitInschrijving>
