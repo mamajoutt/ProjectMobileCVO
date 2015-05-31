@@ -526,6 +526,19 @@ namespace Administratix.DAL
             this.message = "";
         }
 
+        public int Insert(BLL.CursusResultaat entity)
+        {
+            throw new  NotImplementedException();
+        }
+        public BLL.CursusResultaat SelectOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public List<BLL.CursusResultaat> SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<BLL.CursusResultaat> SelectAllByCursistNummer(int cursistNummer)
         {
             List<BLL.CursusResultaat> resultatenLijst = new List<BLL.CursusResultaat>();
