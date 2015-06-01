@@ -44,23 +44,6 @@
         Response.Redirect("~/Deelpagina's/Default.cshtml");
     }
     
-    //if (IsPost)
-    //{
-    //    action = Request["action"];
-
-    //    if (action != null)
-    //    {
-    //        if (action.Equals("login") && Session["cursist"] == null)
-    //        {
-    //            Session["cursist"] = Administratix.Model.Cursist.CursistSelectAllByCursistNummer(Convert.ToInt32(Request["Login-CursistNummer"]));
-    //        }
-    //        if (action.Equals("logout"))
-    //        {
-    //            Session["cursist"] = null;
-    //        }
-    //    }
-    //}
-    
 
     //Dit is om nederlandse weekdagen te krijgen
     System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
@@ -78,12 +61,12 @@
         evenementenLijst = Administratix.Model.Evenement.EvenementSelectAll();
 
         if (action != null)
-        { 
+        {
             if (action.Equals("inschrijven"))
             {
                 message = Administratix.Model.EvenementInschrijving.EvenementInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer), Request["evenementId-inschrijving"], Request["opmerkingen-inschrijving"]);
             }
-            if (action.Equals("evenementInschrijvingLijst-tonen"))
+            if (action.Equals("ingeschreven-tonen"))
             {
                 evenementInschrijvingLijst = Administratix.Model.EvenementInschrijving.evenementInschrijvingSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
             }
@@ -93,136 +76,89 @@
     
 }
 
-        <form id="evenementen-display" action="" method="post">
-            <fieldset>
-                <legend>Display opties</legend>
-                <button type="submit" name="action" value="evenementInschrijvingLijst-tonen">Mijn ingeschreven evenementen</button>
-                <button type="submit" name="action" value="alle-evenementen">Alle evenementen</button>
-            </fieldset>
-        </form>
+<h1>Evenementen</h1>
+<form id="evenementen-display" action="" method="post" class="containerBig containerOptions">
+    <div class="containerOption">
+        <div class="containerTitle"></div>
+        <button type="submit" name="action" class="optionButton" value="ingeschreven-tonen">Ingeschreven</button></a>
+        <button type="submit" name="action"  class="optionButton" value="alleEvenementen-tonen">Alle</button></a>
+    </div>
+</form>
 
 
-    @if (action.Equals("evenementInschrijvingLijst-tonen"))
+    @if (action.Equals("ingeschreven-tonen"))
     {
-            <div class="containerBig">
-                <div class="containerCalendarRow">
-                    <div class="containerCalendarTitle">
-                        Reservatiedatum
+        for (int i = 0; i < evenementInschrijvingLijst.Count; i++)
+        {
+            Administratix.BLL.EvenementInschrijving inschrijving = evenementInschrijvingLijst[i];
+            <div class="itemBox tableBox" id="@i">
+                <a class="itemTitle" href="#@i">
+                    <div class="tableTitle1">
+                        Datum: @inschrijving.Datum.ToString("dd-MM-yyyy", culture) 
                     </div>
-                    <div class="containerCalendarTitle">
-                        Naam
+                    <div class="tableTitle2">
+                        Tijdstip: @inschrijving.StartUur.ToString("HH:mm", culture) - @inschrijving.EindUur.ToString("HH:mm", culture)
                     </div>
-                    <div class="containerCalendarTitle">
-                        Datum
+                    <div class="tableTitle3">
+                        Naam: @inschrijving.Naam
                     </div>
-                    <div class="containerCalendarTitle">
-                        Locatie
+                </a>
+                <div class="itemContent table">
+                    <div class="itemContentText table">
+                        Reservatiedatum: @inschrijving.ReservatieDatum.ToString("dd-MM-yyyy", culture)
                     </div>
-                    <div class="containerCalendarTitle">
-                        Start
+                    <div class="itemContentText table">
+                        Locatie: @inschrijving.Locatie
                     </div>
-                    <div class="containerCalendarTitle">
-                        Eind
+                    <div class="itemContentText table">
+                        Opmerkingen: @inschrijving.Opmerkingen
                     </div>
-                    <div class="containerCalendarTitle">
-                        Opmerkingen
-                    </div>
+
                 </div>
-                @for (int i = 0; i < evenementInschrijvingLijst.Count; i++)
-                {
-                    Administratix.BLL.EvenementInschrijving inschrijving = evenementInschrijvingLijst[i];
-                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-                        <div class="containerCalendarColumn">
-                            @inschrijving.ReservatieDatum.ToString("dd-MM-yyyy", culture)
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.Naam
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.Datum.ToString("dd-MM-yyyy", culture)
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.Locatie
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.StartUur.ToString("HH:mm", culture)
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.EindUur.ToString("HH:mm", culture)
-                        </div>
-                        <div class="containerCalendarColumn">
-                            @inschrijving.Opmerkingen
-                        </div>
-                    </div>
+            </div>
 
-                }
-              </div>
-                }
-                else
-                {
-                <div class="containerBig">
-                    <div class="containerCalendarRow">
-                        <div class="containerCalendarTitle">
-                            Naam
-                        </div>
-                        <div class="containerCalendarTitle">
-                            Datum
-                        </div>
-                        <div class="containerCalendarTitle">
-                            Locatie
-                        </div>
-                        <div class="containerCalendarTitle">
-                            Start
-                        </div>
-                        <div class="containerCalendarTitle">
-                            Einde
-                        </div>
-                        <div class="containerCalendarTitle">
+        }
+    }
+    else
+    {
 
-                        </div>
-                        @if(Session["cursist"]!=null){
-                            <div class="containerCalendarTitle">
-                                Opmerkingen
+        for (int i = 0; i < evenementenLijst.Count; i++)
+        {
+            Administratix.BLL.Evenement evenement = evenementenLijst[i];
+                    <div class="itemBox tableBox" id="@i">
+                        <a class="itemTitle" href="#@i">
+                            <div class="tableTitle1">
+                                Datum: @evenement.Datum.ToString("dd-MM-yyyy", culture)
                             </div>
-            }
-                    </div>
-
-                    @for (int i = 0; i < evenementenLijst.Count; i++)
-              {
-                    Administratix.BLL.Evenement evenement = evenementenLijst[i];
-                        <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-
-                            <div class="containerCalendarTitle">
-                                @evenement.Naam
+                            <div class="tableTitle2">
+                                Tijdstip: @evenement.Start.ToString("HH:mm", culture) - @evenement.Eind.ToString("HH:mm", culture)
                             </div>
-                            <div class="containerCalendarTitle">
-                                @evenement.Datum.ToString("dd-MM-yyyy", culture)
+                            <div class="tableTitle3">
+                                Naam: @evenement.Naam
                             </div>
-                            <div class="containerCalendarTitle">
-                                @evenement.Locatie
-                            </div>
-                            <div class="containerCalendarTitle">
-                                @evenement.Start.ToString("HH:mm", culture)
-                            </div>
-                            <div class="containerCalendarTitle">
-                                @evenement.Eind.ToString("HH:mm", culture)
+                        </a>
+                        <div class="itemContent table">
+                            <div class="itemContentText table">
+                                Locatie: @evenement.Locatie
                             </div>
                             @if (Session["cursist"] != null)
                             {
                                 <form id="evenementen-inschrijven" action="" method="post">
-                                    <div class="containerCalendarTitle">
+                                    <div class="itemContentText table">
                                         <input type="text" name="opmerkingen-inschrijving" id="opmerkingen-inschrijving" />
                                         <input type="hidden" name="evenementId-inschrijving" id="evenementId-inschrijving" value="@evenement.Id" />
                                     </div>
-                                    <div class="containerCalendarTitle">
+                                    <div class="itemContentText table">
                                         <button type="submit" name="action" value="inschrijven">Schrijf me in!</button>
                                     </div>
                                 </form>
                             }
+
                         </div>
-              }
-                </div>
-                }
+
+                    </div>
+        }
+    }
 
 
 

@@ -29,7 +29,7 @@ namespace Administratix.DAL
             test.Add("/Deelpagina's/Deadlines.cshtml");
             test.Add("/Deelpagina's/Evenementen.cshtml");
             test.Add("/Deelpagina's/ExamenData.cshtml");
-            test.Add("/Deelpagina's/ExamenPunten.cshtml");
+            test.Add("/Deelpagina's/PuntenOverzicht.cshtml");
             test.Add("/Deelpagina's/Lessenrooster.cshtml");
             test.Add("/Deelpagina's/TrajectOverzicht.cshtml");
             return test;

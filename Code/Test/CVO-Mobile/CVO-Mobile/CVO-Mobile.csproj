@@ -104,7 +104,7 @@
     <Content Include="Deelpagina%27s\Lessenrooster.cshtml" />
     <Content Include="Deelpagina%27s\Evenementen.cshtml" />
     <Content Include="Deelpagina%27s\ExamenData.cshtml" />
-    <Content Include="Deelpagina%27s\ExamenPunten.cshtml" />
+    <Content Include="Deelpagina%27s\PuntenOverzicht.cshtml" />
     <Content Include="Default.cshtml" />
     <Content Include="Shared\_Footer.cshtml" />
     <Content Include="Shared\_Layout.cshtml" />

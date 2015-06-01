@@ -52,183 +52,67 @@
     if (Session["cursist"] != null)
     {
         Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
+        
         moduleExamenDataLijst = Administratix.Model.ModuleExamenData.ModuleExamenDatumsSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
 
-        //if (action.Equals("feestdagen-toevoegen"))
-        //{
-        //    feestDagen = Administratix.Model.Kalender.KalenderSelectAll();
-        //    lessenRooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerWithVakantieDagen(lessenRooster, feestDagen);
-        //}
     }
     
 }
 
+<h1>Examendata</h1>
 
-        <form id="moduleExamenData-display" action="" method="post">
-            <fieldset>
-                <legend>Display opties</legend>
-                <button type="submit" name="action" value="display-compact">Compact Test</button>
-            </fieldset>
-        </form>
-
-        @if (action.Equals("display-compact"))
-        {
-
-            <div class="containerBig">
-                <div class="containerCalendarRow">
-                    <div class="containerCalendarTitle columnMed">
-                        Cursusnummer
-                    </div>
-                    <div class="containerCalendarTitle columnBig">
-                        Module
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        1ste zittijd
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        Deliberatiedatum
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        2de zittijd
-                    </div>
+@for (int i = 0; i < moduleExamenDataLijst.Count; i++)
+    {
+        Administratix.BLL.ModuleExamenData module = moduleExamenDataLijst[i];
+        <div class="itemBox tableBox" id="@i">
+            <a class="itemTitle" href="#@i">
+                <div class="tableTitle1">
+                    Cursusnummer: @module.CursusNummer
+                </div>
+                <div class="tableTitle2">
+                    Moduledatum: @module.AanvangsDatum.ToString("dd-MM-yyyy", culture) tot @module.EindDatum.ToString("dd-MM-yyyy", culture)
+                </div>
+                <div class="tableTitle3">
+                    Module: @module.Naam
+                </div>
+            </a>
+            <div class="itemContent table">
+                <div class="itemContentText table">
+                    @if(module.ExamenDatum.GetHashCode() == 0)
+                    {
+                       <p>1ste zitdatum: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>1ste zitdatum: @module.ExamenDatum.ToString("dd-MM-yyyy HH:mm", culture)</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if(module.DeliberatieDatum.GetHashCode() == 0)
+                    {
+                        <p>Deliberatiedatum: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>Deliberatiedatum: @module.ExamenDatum.ToString("dd-MM-yyyy HH:mm", culture)</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if(module.DatumTweedeZit.GetHashCode() == 0)
+                    {
+                        <p>2de zitdatum: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>2de zitdatum: @module.DatumTweedeZit.ToString("dd-MM-yyyy HH:mm", culture)</p>
+                    }
                 </div>
 
-                @for (int i = 0; i < moduleExamenDataLijst.Count; i++)
-                {
-                    Administratix.BLL.ModuleExamenData module = moduleExamenDataLijst[i];
-                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-                        <div class="containerCalendarColumn columnMed">
-                            @module.CursusNummer
-                        </div>
-                        <div class="containerCalendarColumn columnBig">
-                            @module.Naam
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.ExamenDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.ExamenDatum.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.DeliberatieDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.DeliberatieDatum.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.DatumTweedeZit.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.DatumTweedeZit.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                    </div>
-
-                }
-                
             </div>
-        }
-        else
-        {
-            <div class="containerBig">
-                <div class="containerCalendarRow">
-                    <div class="containerCalendarTitle columnMed">
-                        Cursusnummer
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        Aanvangsdatum
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        Einddatum
-                    </div>
-                    <div class="containerCalendarTitle columnBig">
-                        Module
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        1ste zittijd
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        Deliberatiedatum
-                    </div>
-                    <div class="containerCalendarTitle columnMed">
-                        2de zittijd
-                    </div>
-                </div>
 
-                @for (int i = 0; i < moduleExamenDataLijst.Count; i++)
-                {
-                    Administratix.BLL.ModuleExamenData module = moduleExamenDataLijst[i];
-                    <div class="containerCalendarRow @(i%2 == 0 ? "":"shaded")">
-                        <div class="containerCalendarColumn columnMed">
-                            @module.CursusNummer
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.AanvangsDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.AanvangsDatum.ToString("dd-MM-yyyy", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.EindDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.EindDatum.ToString("dd-MM-yyyy", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnBig">
-                            @module.Naam
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.ExamenDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.ExamenDatum.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.DeliberatieDatum.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.DeliberatieDatum.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                        <div class="containerCalendarColumn columnMed">
-                            @if (module.DatumTweedeZit.GetHashCode() == 0)
-                            {
-                                <p>Niet bekend</p>
-                            }
-                            else
-                            {
-                                @module.DatumTweedeZit.ToString("dd-MM-yyyy HH:mm", culture)
-                            }
-                        </div>
-                    </div>
+        </div>
+    }
 
-                }
-            </div>
-        }
+
+            
 

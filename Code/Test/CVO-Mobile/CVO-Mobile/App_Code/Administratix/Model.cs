@@ -116,7 +116,7 @@ namespace Administratix
 
                 if (!Int32.TryParse(input, out cursistNummer))
                 {
-                    throw new Exception("Ongeldige crusist nummer.");
+                    throw new Exception("Ingegeven cursistnummer is ongeldig.");
                 }
 
 
@@ -124,7 +124,7 @@ namespace Administratix
 
                 if (cursist.CursistNummer == 0)
                 {
-                    throw new Exception("Ongeldige crusist nummer.");
+                    throw new Exception("Ingegeven cursistnummer is ongeldig.");
                 }
 
                 return cursist;
