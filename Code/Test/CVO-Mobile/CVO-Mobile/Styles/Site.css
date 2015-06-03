@@ -296,7 +296,7 @@ th {
 }
 
 .optionButton {
-    width: 125px;
+    width: auto;
     height: 50px;
     border: none;
     font-size: large;
