@@ -242,12 +242,10 @@ namespace Administratix.BLL
 
         public void CreerDagen(DateTime startDatum, DateTime eindDatum)
         {
-            this.StartDatum = new DateTime();
-            this.EindDatum = new DateTime();
-            Dagen = new List<KalenderDag>();
 
             this.StartDatum = startDatum;
             this.EindDatum = eindDatum;
+            Dagen = new List<KalenderDag>();
 
             while (startDatum.Date <= eindDatum.Date)
             {
@@ -318,7 +316,6 @@ namespace Administratix.BLL
         public int IdSchooljaar { get; set; }
         public string Schooljaar { get; set; }
         public string Omschrijving { get; set; }
-        //public int IdVerlofdagtype { get; set; }
 
         public KalenderDag()
         {
