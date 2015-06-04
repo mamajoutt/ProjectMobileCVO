@@ -68,6 +68,25 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\grp2_InsertCursistEvenement.sql" />
+    <Content Include="App_Data\grp2_InsertCursistTweedeZit.sql" />
+    <Content Include="App_Data\grp2_SelectAllEvenement.sql" />
+    <Content Include="App_Data\grp2_SelectAllEvenementInschrijvingByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectAllLesDavinciByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectAllModuleExamenDatumsByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectAllPlaatsingResultaatByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectAllTweedeZitInschrijvingByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectCursistEmailByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectDeliberatieDateByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectFeestdagen.sql" />
+    <Content Include="App_Data\grp2_SelectFeestdagenVersieMo.sql" />
+    <Content Include="App_Data\grp2_SelectOneEvenementById.sql" />
+    <Content Include="App_Data\grp2_SelectPlaatsingResultaatByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectResultatenByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectTrajectModulesByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_SelectTrajectVoorkennisByOpleidingsvariantId.sql" />
+    <Content Include="App_Data\grp2_SelectTweedeZitByCursistNummer.sql" />
+    <Content Include="App_Data\grp2_UpdateTweedeZit.sql" />
     <Content Include="Images\1431366103_text_align_full-128.png" />
     <Content Include="Images\Circle_empty.png" />
     <Content Include="Images\Circle_V.png" />
@@ -119,9 +138,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

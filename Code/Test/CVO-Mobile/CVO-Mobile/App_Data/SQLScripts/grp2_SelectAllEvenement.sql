@@ -1,6 +1,5 @@
 --Mohamed Amajooutt
 --10/05/2015
- 
 --Lijst geven van alle evenementen vanaf huidige datum gesorteerd op datum
 use Administratix_cursist
 go

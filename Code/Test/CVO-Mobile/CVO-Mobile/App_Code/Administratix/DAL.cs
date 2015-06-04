@@ -11,7 +11,6 @@ namespace MobileCVO.DAL
     {
         string Message {get;} 
         int Insert(TypeEntity entity); 
-        TypeEntity SelectOne(int id);
         List<TypeEntity> SelectAll();
         List<TypeEntity> SelectAllByCursistNummer(int cursistNummer);
     }
@@ -170,10 +169,6 @@ namespace Administratix.DAL
             throw new NotImplementedException();
         }
 
-        public BLL.ModuleExamenData SelectOne(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<BLL.ModuleExamenData> SelectAll()
         {
@@ -332,12 +327,6 @@ namespace Administratix.DAL
         }
 
 
-        public BLL.Evenement SelectOne(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public int Insert(BLL.Evenement entity)
         {
             throw new NotImplementedException();
@@ -377,7 +366,7 @@ namespace Administratix.DAL
             SqlCommand command = new SqlCommand();
             // in de CommandText eigenschap stoppen de naam
             // van de stored procedure
-            string sqlString = "grp2_InsertCursistEvenement";
+            string sqlString = "grp2_InsertEvenementInschrijving";
             // shortcut to add parameter
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                 SqlDbType.Int)).Value = inschrijvingEvenement.IdCursist;
@@ -435,11 +424,6 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return result; // 0 of de Id van de nieuwe rij
-        }
-
-        public BLL.EvenementInschrijving SelectOne(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public List<BLL.EvenementInschrijving> SelectAll()
@@ -530,10 +514,7 @@ namespace Administratix.DAL
         {
             throw new  NotImplementedException();
         }
-        public BLL.CursusResultaat SelectOne(int id)
-        {
-            throw new NotImplementedException();
-        }
+
         public List<BLL.CursusResultaat> SelectAll()
         {
             throw new NotImplementedException();
@@ -698,11 +679,6 @@ namespace Administratix.DAL
                 connection.Close();
             }
             return result; // 0 of de Id van de nieuwe rij
-        }
-
-        public BLL.TweedeZitInschrijving SelectOne(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public List<BLL.TweedeZitInschrijving> SelectAll()

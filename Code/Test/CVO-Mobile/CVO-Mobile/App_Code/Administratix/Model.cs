@@ -30,11 +30,6 @@ namespace Administratix
                 return dal.SelectAll();
             }
 
-            public static Administratix.BLL.Evenement EvenementSelectOne(int id)
-            {
-                Administratix.DAL.Evenement dal = new DAL.Evenement();
-                return dal.SelectOne(id);
-            }
         }
 
         public class EvenementInschrijving

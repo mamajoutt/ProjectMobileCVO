@@ -1,20 +1,18 @@
 --Mohamed Amajoutt
 --10/05/2015
- 
- 
 --Stored procedure insert voor de tabel grp2_EvenementInschrijving
 --Cursist inschrijven voor evenement
 use Administratix_cursist
 go
  
-if exists (select 1 from sysobjects where name = 'grp2_InsertCursistEvenement' AND type = 'P') -- P = procedure
+if exists (select 1 from sysobjects where name = 'grp2_InsertEvenementInschrijving' AND type = 'P') -- P = procedure
 begin
-	drop proc grp2_InsertCursistEvenement
+	drop proc grp2_InsertEvenementInschrijving
 end
 go
  
 -- aanmaken van de procedure
-create procedure grp2_InsertCursistEvenement
+create procedure grp2_InsertEvenementInschrijving
 (
 	@CursistNummer int,
 	@IdEvenement int,
