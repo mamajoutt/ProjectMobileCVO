@@ -68,8 +68,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\grp2_InsertCursistEvenement.sql" />
     <Content Include="App_Data\grp2_InsertCursistTweedeZit.sql" />
+    <Content Include="App_Data\grp2_InsertEvenementInschrijving.sql" />
     <Content Include="App_Data\grp2_SelectAllEvenement.sql" />
     <Content Include="App_Data\grp2_SelectAllEvenementInschrijvingByCursistNummer.sql" />
     <Content Include="App_Data\grp2_SelectAllLesDavinciByCursistNummer.sql" />
