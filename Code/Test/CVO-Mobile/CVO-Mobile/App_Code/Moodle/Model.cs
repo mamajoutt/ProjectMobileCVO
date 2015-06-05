@@ -84,8 +84,8 @@ namespace Moodle
 
             // start date always start of the day
             startDate = startDate.Date;
-            // remove 1 minute to only get requested range
-            DateTime endDate = startDate.AddDays(daysRange).AddMinutes(-1);
+
+            DateTime endDate = startDate.AddDays(daysRange);
 
             foreach (BLL.Course course in courses)
             {
@@ -93,7 +93,7 @@ namespace Moodle
                 foreach (BLL.Assignment assign in course.Assignments)
                 {
                     // Only upcomming deadlines starting on date for the next x days to come
-                    if (assign.DueDate >= startDate && assign.DueDate <= endDate)
+                    if (assign.DueDate >= startDate && assign.DueDate < endDate)
                     {
                         AddAssingmentToDeadlines(assign, deadlines);
 

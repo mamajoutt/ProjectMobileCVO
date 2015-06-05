@@ -103,14 +103,12 @@ namespace Administratix.DAL
 
             SqlCommand command = new SqlCommand();
 
-            string sqlString = "grp2_SelectTrajectModulesByCursistNummer";
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.CommandText = "grp2_SelectTrajectModulesByCursistNummer";
 
             command.Parameters.Add(new SqlParameter("@CursistNummer",
                SqlDbType.Int)).Value = cursistNummer;
-
-            command.CommandType = CommandType.StoredProcedure;
-
-            command.CommandText = sqlString;
 
             command.Connection = connection;
 
