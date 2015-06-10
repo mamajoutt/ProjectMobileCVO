@@ -8,11 +8,20 @@
     margin-bottom: 15px;
 }
 
+body{
+    min-height: 95%;
+}
+
+html{
+    min-height: 100%;
+}
+
 main{
     display:flex;
     width:100%;
     align-items:center;
     justify-content:center;
+    min-height: 100%;
 }
 
 body {
@@ -24,7 +33,7 @@ a:link,a:visited,a:hover,a:active {
     text-decoration: none;
 }
 
-.#watermark {
+#watermark {
     margin: 0 auto;
     height: 91%;
     width: 50%;
@@ -65,12 +74,14 @@ th {
 }
 
 #centerContainer{
+    min-height: 100%;
     max-width: 1000px;
     max-width: 955px;
     width: 85%;
     min-width: 300px;
     background: #FFF;
 }
+
 
 #contentContainer{
     padding: 10px;
@@ -79,7 +90,7 @@ th {
     background-attachment: fixed;
     background-position:center,center,center,center;
     background-repeat:no-repeat;
-    back
+    min-height: 100%;
 }
 
 .img_StatusCirkelGroen {
@@ -174,6 +185,7 @@ th {
     margin-bottom: 20px;
     box-sizing: border-box;
     border-radius: 10px 0px;
+    background-color: #FFF;
 }
 
 .containerSmall {
@@ -221,6 +233,8 @@ th {
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
+    background-color: #FFF;
+    border-radius: 0px 0px 10px 0px;
 }
 
 .legendeItem {
@@ -472,6 +486,13 @@ th {
     min-width: 200px;
 }
 
+.loginForm{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
 .loginForm > button{
     border: 2px solid #676767;
     border-radius: 5px 0px;
@@ -547,3 +568,4 @@ margin-bottom:10px;
     margin:0px auto;
     display: inline-block;
 }
+

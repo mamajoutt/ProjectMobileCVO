@@ -43,34 +43,26 @@
     }
 
 
-
-    string token = "";
-    int cursistId = -1;
-    string email = "";
-
     Moodle.DAL.MoodlePackage.MoodleURL = "moodle-cvomobile.rhcloud.com";
 
     List<Moodle.BLL.Course> _enrolledCourses = new List<Moodle.BLL.Course>();
     List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
-    Moodle.BLL.Deadline _deadlineOnDate = new Moodle.BLL.Deadline();
-
-
 
     Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
 
-    token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
-    cursistId = Moodle.DAL.User.GetUserIdByEmail(token, cursist.Email);
+    string token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
+    int cursistId = Moodle.DAL.User.GetUserIdByEmail(token, cursist.Email);
 
     if (cursistId != -1)
     {
 
         // Get all courses the student is enrolled in
-        _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(token, cursistId);
+        _enrolledCourses = Moodle.Model.GetUserEnrolledCourses(token, cursistId);
 
         foreach (Moodle.BLL.Course _course in _enrolledCourses)
         {
             // Get all assignments of a course
-            _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(token, _course.Id);
+            _course.Assignments = Moodle.Model.GetAllAssingmentInCourse(token, _course.Id);
 
 
             foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
@@ -93,22 +85,16 @@
 }
 
 
-
-@if (Session["cursist"] != null)
-{
-
-
-
-    if (@cursistId == -1)
+    @if (@cursistId == -1)
     {
         <div>
-            @if (email.Equals(""))
+            @if (cursist.Email.Equals(""))
             {
                 @:Er is geen e-mail adres gevonden voor deze cursist. Gelieve contact op te nemen met de administratie.
             }
             else
             {
-                @:Geen cursist gevonden met het volgende email adress: @email
+                @:Geen cursist gevonden met het volgende email adress: @cursist.Email
             }
         </div>
     }
@@ -160,8 +146,6 @@
                         }
                     </a>
 
-
-
                     <div class="itemContent">
 
                         @for (int j = 0; j < course.Assignments.Count; j++)
@@ -173,13 +157,20 @@
                             <div class="itemContentText">
                                 @if (assign.UserScore.Equals("" + -1))
                                 {
-                                    @:Deadline: @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)
-	                                        }
-
+                                    @:Deadline: 
+                                    if (assign.DueDate.Date == new DateTime(1970, 1, 1).Date)
+                                    {
+                                        @:NVT
+	                                }
+                                    else
+                                    {
+                                        @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate);
+                                    }
+	                            }
                                 else
                                 {
                                     @:Score: @assign.UserScore / @assign.MaxGrade
-                                    }
+                                }
                             </div>
                         }
 
@@ -190,11 +181,5 @@
             }
         </div>
 
-
-
-
-
-
-
     }
-}
+

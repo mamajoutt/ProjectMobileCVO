@@ -14,6 +14,8 @@ namespace Moodle.DAL
 
     public class MoodlePackage
     {
+        // Originele code Fouad Abouchehatan 
+        // Aangepast foor Nikos vanden Broek
         public static string MoodleURL { set; get; }
         string service = "";
         List<KeyValuePair<string, string>> parameters;
@@ -224,16 +226,16 @@ namespace Moodle.DAL
         {
             int id = -1;
 
-            Moodle.DAL.MoodlePackage puser = new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
-            puser.AddParameter("wstoken", token);
-            puser.AddParameter("wsfunction", "core_user_get_users_by_field");
-            puser.AddParameter("moodlewsrestformat", "json");
-            puser.AddParameter("field", "email");
-            puser.AddParameter("values[0]", email);
+            Moodle.DAL.MoodlePackage pUser = new Moodle.DAL.MoodlePackage("/webservice/rest/server.php");
+            pUser.AddParameter("wstoken", token);
+            pUser.AddParameter("wsfunction", "core_user_get_users_by_field");
+            pUser.AddParameter("moodlewsrestformat", "json");
+            pUser.AddParameter("field", "email");
+            pUser.AddParameter("values[0]", email);
 
             try
             {
-                JArray jUser = JArray.Parse(puser.Send());
+                JArray jUser = JArray.Parse(pUser.Send());
                 id = Convert.ToInt32(jUser[0]["id"]);
 
             }
