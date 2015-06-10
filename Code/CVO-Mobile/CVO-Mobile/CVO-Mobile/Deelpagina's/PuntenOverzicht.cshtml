@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "Examenpunten";
+
+    string action = "";
+
+    Session["Page"] = "5";
+
+    Session["loginError"] = "";
+    if (IsPost)
+    {
+        action = Request["action"];
+
+        switch (action)
+        {
+            case "login":
+                if (Session["cursist"] == null)
+                {
+                    try
+                    {
+                        Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
+                    }
+                    catch (Exception e)
+                    {
+
+                        Session["loginError"] = e.Message;
+                    }
+
+                }
+                break;
+
+            case "logout":
+                Session["cursist"] = null;
+                break;
+
+        }
+    }
+
+    if (Session["cursist"] == null)
+    {
+        Response.Redirect("~/Deelpagina's/Default.cshtml");
+    }
+
+    //Dit is om nederlandse weekdagen te krijgen
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
+
+    string message = "Alles gaat goed";
+
+    List<Administratix.BLL.CursusResultaat> cursusResultatenLijst = new List<Administratix.BLL.CursusResultaat>();
+
+    if (Session["cursist"] != null)
+    {
+        Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
+
+        cursusResultatenLijst = Administratix.Model.CursusResultaat.CursusResultaatSelectAllByCursistNummer(Convert.ToInt32(cursist.CursistNummer));
+
+        if (action != null)
+        {
+            if (action.Equals("inschrijven"))
+            {
+                message = Administratix.Model.TweedeZitInschrijving.TweedeZitInschrijvingInsert(Convert.ToInt32(cursist.CursistNummer), Convert.ToInt32(Request["IdTweedeZit-inschrijving"]));
+            }
+            //if (action.Equals("tweedeZitInschrijvingLijst-tonen"))
+            //{
+                
+            //}
+        }
+    }
+    
+}
+<h1>Puntenoverzicht</h1>
+<form id="puntenoverzicht-display" action="" method="post" class="containerBig containerOptions">
+    <div class="containerOption">
+        <div class="containerTitle"></div>
+        <button type="submit" name="action" class="optionButton" value="tweedeZitInschrijvingLijst-tonen">Mijn 2de zit</button></a>
+        <button type="submit" name="action" class="optionButton" value="alle-resultaten">Alle resultaten</button></a>
+    </div>
+</form>
+
+@if (action.Equals("tweedeZitInschrijvingLijst-tonen"))
+{
+
+}
+else
+{
+    for (int i = 0; i < cursusResultatenLijst.Count; i++)
+    {
+        Administratix.BLL.CursusResultaat module = cursusResultatenLijst[i];
+        <div class="itemBox tableBox" id="@i">
+            <a class="itemTitle" href="#@i">
+                <div class="tableTitle1">
+                    Cursusnummer: @module.CursusNummer
+                </div>
+                <div class="tableTitle2">
+                    Module: @module.Module
+                </div>
+            </a>
+            <div class="itemContent table">
+                <div class="itemContentText table">
+                    @if (module.PuntenPermanenteEvaluatie == 0)
+                    {
+                        <p>PE: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>PE: @module.PuntenPermanenteEvaluatie</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if (module.PuntenEersteZit == 0)
+                    {
+                        <p>1ste zit: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>1ste zit: @module.PuntenEersteZit</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if (module.PuntenTotaal == 0)
+                    {
+                        <p>Totaal: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>Totaal: @module.PuntenEersteZit</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if (module.OpmerkingNaDeliberatieEersteZit == null)
+                    {
+                        <p>Deliberatie 1ste zit: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>Deliberatie 1ste zit: @module.OpmerkingNaDeliberatieEersteZit</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if (module.PuntenTweedeZit == 0)
+                    {
+                        <p>2de zit: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>2de zit: @module.PuntenTweedeZit</p>
+                    }
+                </div>
+                <div class="itemContentText table">
+                    @if (module.OpmerkingNaDeliberatieTweedeZit == null)
+                    {
+                        <p>Deliberatie 2de zit: niet bekend</p>
+                    }
+                    else
+                    {
+                        <p>Deliberatie 2de zit: @module.OpmerkingNaDeliberatieTweedeZit</p>
+                    }
+                </div>
+                @if(Session["cursist"] != null)
+                {
+                    <form id="tweedezit-inschrijven" action="" method="post">
+                        <div class="itemContentText table">
+                            <input type="hidden" name="IdTweedeZit-inschrijving" id="IdTweedeZit-inschrijving" value="@module.IdTweedeZit" />
+                            <button type="submit" name="action" value="inschrijven">Inschrijven</button>
+                        </div>          
+                    </form>
+                }
+
+            </div>
+
+        </div>
+    }
+}
+
+@message

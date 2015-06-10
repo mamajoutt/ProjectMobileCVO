@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Page.title</title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    @RenderPage("~/Shared/_Header.cshtml")
+    @RenderPage("~/Shared/_Nav.cshtml")
+    <div id="main">
+        @RenderBody()
+    </div>
+    @RenderPage("~/Shared/_Footer.cshtml")
+</body>
+</html>

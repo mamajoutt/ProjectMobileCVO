@@ -1,0 +1,241 @@
+﻿@{
+    Layout = "~/Shared/_Layout.cshtml";
+    Page.Title = "Kalender";
+
+    Session["Page"] = "1";
+
+    string action = "";
+
+    Session["loginError"] = "";
+    if (IsPost)
+    {
+        action = Request["action"];
+
+        switch (action)
+        {
+            case "login":
+                if (Session["cursist"] == null)
+                {
+                    try
+                    {
+
+                        Session["cursist"] = Administratix.Model.Cursist.Login(Request["Login-CursistNummer"]);
+                    }
+                    catch (Exception e)
+                    {
+
+                        Session["loginError"] = e.Message;
+                    }
+
+                }
+                break;
+
+            case "logout":
+                Session["cursist"] = null;
+                break;
+
+        }
+    }
+
+    if (Session["cursist"] == null)
+    {
+        Response.Redirect("~/Deelpagina's/Default.cshtml");
+    }
+
+    // Querrystring voor maand vooruit/achteruit
+    int maandOffset = 0;
+    if (Request.QueryString["maand"] != null)
+    {
+        string value = Request.QueryString["maand"];
+        maandOffset = Convert.ToInt32(value);
+    }
+
+
+
+
+    System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("nl-BE");
+
+    List<Administratix.BLL.LesDavinci> lessenrooster = new List<Administratix.BLL.LesDavinci>();
+    List<Administratix.BLL.KalenderDag> feestdagen = new List<Administratix.BLL.KalenderDag>();
+
+    Administratix.BLL.Cursist cursist = (Administratix.BLL.Cursist)Session["cursist"];
+    //lessenrooster = Administratix.Model.LesDavinci.LesroosterTonen(Convert.ToInt32(cursistNr));
+
+    //start datum rooster
+    DateTime vandaag = DateTime.Now;
+    DateTime visueleMaand = vandaag.AddMonths(maandOffset);
+
+    int maand = visueleMaand.Month; //Convert.ToInt32(vandaag.ToString("MM", culture));
+    int jaar = visueleMaand.Year; //Convert.ToInt32(vandaag.ToString("yyyy", culture));
+
+    DateTime startDatum = new DateTime(jaar, maand, 1);
+    int startWeekDag = (int)(startDatum.DayOfWeek + 6) % 7 + 1;
+    // starten op maandag
+    startDatum = startDatum.AddDays((1 - startWeekDag));
+
+    DateTime eindDatum = new DateTime(jaar, maand, DateTime.DaysInMonth(jaar, maand));
+    int eindWeekDag = (int)(eindDatum.DayOfWeek + 6) % 7 + 1;
+    // stoppen op zondag
+    eindDatum = eindDatum.AddDays(7 - eindWeekDag);
+
+    lessenrooster = Administratix.Model.LesDavinci.LesDavinciSelectAllByCursistNummerAndDates(cursist.CursistNummer, startDatum, eindDatum);
+    feestdagen = Administratix.Model.Kalender.KalenderSelectAllByDates(startDatum, eindDatum);
+
+
+
+    Administratix.BLL.Kalender kalender = new Administratix.BLL.Kalender();
+    kalender.CreerDagen(startDatum, eindDatum);
+    kalender.VoegFeestenToe(feestdagen);
+    kalender.VoegLessenToe(lessenrooster);
+
+    int count = 0;
+
+    List<Moodle.BLL.Deadline> _upcommingDeadlines = new List<Moodle.BLL.Deadline>();
+
+    Moodle.DAL.MoodlePackage.MoodleURL = "moodle-cvomobile.rhcloud.com";
+    string token = Moodle.DAL.Token.RequestTokenForService("cvomobile", "Boerderijm1n#s", "mobile");
+    int cursistId = Moodle.DAL.User.GetUserIdByEmail(token, cursist.Email);
+
+    if (cursistId != -1)
+    {
+
+        // Get all courses the student is enrolled in
+        List<Moodle.BLL.Course> _enrolledCourses = Moodle.DAL.Course.GetUserEnrolledCourses(token, cursistId);
+
+        foreach (Moodle.BLL.Course _course in _enrolledCourses)
+        {
+            // Get all assignments of a course
+            _course.Assignments = Moodle.DAL.Assignment.GetAllAssingmentInCourse(token, _course.Id);
+
+
+            foreach (Moodle.BLL.Assignment _assing in _course.Assignments)
+            {
+                // Add name of course for dealines
+                _assing.CourseName = _course.FullName;
+
+                // Get the score of the student for the assignment
+                double score = Moodle.Model.GetGradeOfStudentForAssignment(token, _assing.Id, cursistId);
+                _assing.UserScore = "" + score;
+            }
+        }
+
+        _upcommingDeadlines = Moodle.Model.GetDeadlinesInTimespan(_enrolledCourses, startDatum, (eindDatum - startDatum).Days);
+
+    }
+    kalender.VoegDeadlinesToe(_upcommingDeadlines);
+
+
+}
+
+<div class="kalenderTitle">
+    <div>
+        <a href="?maand=@(maandOffset-1)"><img class="img_nav_left_white" /></a>
+        @visueleMaand.ToString("MMMM", culture)
+        <a href="?maand=@(maandOffset+1)"><img class="img_nav_right_white" /></a>
+    </div>
+</div>
+
+<div class="itemContainer kalender">
+    @for (int i = 0; i < kalender.Dagen.Count / 7; i++)
+    {
+        <div class="kalenderWeek">
+            @for (int j = 0; j < 7; j++)
+            {
+                Administratix.BLL.KalenderDag dag = kalender.Dagen[count];
+
+
+                <div class="itemBox kalenderBox @(dag.Datum.Date == vandaag.Date?"blue":"") @(dag.Datum.Month != visueleMaand.Month ? "fade" : "")" id="@count">
+                    <a class="itemTitle" href="#@count">
+                        @dag.Datum.ToString("ddd d/M", culture)
+                        <div class="kalenderIcons">
+                            @if (dag.Feesten.Count > 0)
+                            {
+                                <img class="img_Vakantie" />
+                            }
+                            @if (dag.Lessen.Count > 0)
+                            {
+                                <img class="img_Les" />
+                            }
+                            @if (dag.Deadlines.Count > 0)
+                            {
+                                <img class="img_Deadline" />
+                            }
+                        </div>
+                    </a>
+
+                    <div class="itemContent kalender">
+                        @if (dag.Lessen.Count == 0 && dag.Feesten.Count == 0 && dag.Deadlines.Count == 0)
+                        {
+                            <div class="itemContentTitle">
+                                Geen activiteiten
+                            </div>
+                        }
+                        @if (dag.Feesten.Count > 0)
+                        {
+                            <div class="itemContentTitle">
+                                Feesten
+                            </div>
+                        }
+                        @foreach (Administratix.BLL.KalenderDag feest in dag.Feesten)
+                        {
+                            <div class="itemContentText rooster">
+                                @feest.Omschrijving
+                            </div>
+                        }
+                        @if (dag.Lessen.Count > 0)
+                        {
+                            <div class="itemContentTitle">
+                                Lessen
+                            </div>
+                        }
+                        @foreach (Administratix.BLL.LesDavinci les in dag.Lessen)
+                        {
+                            <div class="itemContentText rooster">
+                                @les.Module
+                            </div>
+                            <div class="itemContentText rooster">
+                                @les.Aanvangsdatum.ToString("HH:mm")
+                                -
+                                @les.Einddatum.ToString("HH:mm")
+                            </div>
+                        }
+
+                        @if (dag.Deadlines.Count > 0)
+                        {
+                            <div class="itemContentTitle">
+                                Deadlines
+                            </div>
+                        }
+                        @foreach (Moodle.BLL.Deadline deadline in dag.Deadlines)
+                        {
+                            foreach (Moodle.BLL.Assignment assign in deadline.Assignments)
+                            {
+                                <div class="itemContentText rooster">
+                                    @assign.CourseName
+                                </div>
+                                <div class="itemContentText rooster">
+                                    @if (assign.UserScore.Equals("" + -1))
+                                    {
+                                        @String.Format("{0:d/M/yyyy HH:mm}", assign.DueDate)
+                                    }
+
+                                    else
+                                    {
+                                        @:Score: @assign.UserScore / @assign.MaxGrade
+                                    }
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+
+                        count++;
+            }
+
+
+        </div>
+
+    }
+</div>
+
